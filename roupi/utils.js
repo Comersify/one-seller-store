@@ -1,5 +1,4 @@
-import { URL as API_URL } from "@/urls";
-import { token } from "@/token";
+import { URL as API_URL } from "../urls";
 
 export const useGET = async (url, conf) => {
   const get = {

@@ -1,6 +1,6 @@
 FROM node:18
-WORKDIR /app
 COPY package.json .
 RUN yarn add package.json
-COPY . /app
+WORKDIR /frontend
+COPY . /frontend
 CMD [ "npm", "run", "dev" ]
