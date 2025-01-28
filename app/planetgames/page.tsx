@@ -10,6 +10,7 @@ import {
 import Logo from "./resources/logo.png";
 import Image from "next/image";
 import { useStateContext } from "../../context/contextProvider";
+import { useGetProducts } from "../../roupi/product";
 import { useRef, useState, useEffect } from "react";
 import AvatarImage from "./resources/avatar.png";
 
@@ -52,6 +53,7 @@ export const Chat = () => {
   const msgRef = useRef();
   const chatRef = useRef();
   const chatOpenRef = useRef();
+  
   const [messages, setMessage] = useState<[]>([]);
 /*   const { sendMessage } = useWebSocket(
     `${process.env.NEXT_PUBLIC_WS_API_URL}/ws/chat/${profile.id}/`,
@@ -158,6 +160,8 @@ const Title = ({ text, subtext }: any) => (
 );
 
 export default function Home() {
+  const {product: hotDeals} = useGetProducts({filter: 'top-deals/'})
+  console.log(hotDeals)
   const { profile } = useStateContext();
   return (
     <>

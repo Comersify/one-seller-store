@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { ToggleSideBarButton } from "./components/shared/Buttons";
-import { useGetCategories } from "./roupi/category";
+import { ToggleSideBarButton } from "./shared/Buttons";
+import { useGetCategories } from "../../../roupi/category";
 
 const CategoryItem = ({ active, onClick, name, subCategories }) => {
   return (

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useGET } from "./utils";
-import { useStateContext } from "@/context/contextProvider";
 
 export const useGetProducts = ({ filter }) => {
   const [products, setProducts] = useState([]);

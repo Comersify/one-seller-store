@@ -76,21 +76,20 @@ export const Banners = () => {
     <div className="relative inset-0 bg-gradient-to-br from-indigo-50 to-indigo-100 opacity-90 overflow-hidden w-full h-[75vh] flex">
       <div className="flex flex-col w-full items-center justify-end">
         <div className="text-4xl animate-fadeInTopToBottom flex flex-row text-gray-900 font-bold">
-          Welcome To
           <h2
             style={{
               background: "-webkit-linear-gradient(45deg,  #f72585, #7209b7)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
-            className="text-4xl ml-3 font-bold"
+            className="text-6xl mb-12 ml-3 font-bold"
           >
-            PlanetGames
+            Planet Games
           </h2>
         </div>
 
         <div className="scale-x-[-1]">
-          <div className="bg-purple-600 rounded-full">
+          <div className="bg-purple-600 rounded-full px-[100px]">
 
           <Image
             src={Banner}

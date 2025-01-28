@@ -1,12 +1,12 @@
 "use client";
-import { useGetProducts } from "./roupi/product";
-import { FiltersSideBar } from "./components/FiltersSideBar";
-import { ProductCard } from "./components/ProductCard";
-import { Loading } from "./components/shared/Loading";
+import { useGetProducts } from "../../../../roupi/product";
+import { FiltersSideBar } from "../../components/FiltersSideBar";
+import { ProductCard } from "../../components/ProductCard";
+import { Loading } from "../../components/shared/Loading";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
-import { useStateContext } from "./context/contextProvider";
-import { Chat } from "../page";
+import { useStateContext } from "../../../../context/contextProvider";
+import { Chat } from "../../page";
 
 
 export default function Products() {
