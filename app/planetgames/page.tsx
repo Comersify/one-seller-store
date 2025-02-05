@@ -1,156 +1,15 @@
 "use client";
-import { Banners } from "./components/Ads";
+import { Banners, PlaystationIcon, XboxIcon } from "./components/Ads";
 import {
-  ChatIcon,
-  LeftArrow,
   RightArrow,
   ShoppingCartIcon,
-  XIcon,
 } from "./components/shared/Icons";
-import Logo from "./resources/logo.png";
-import Image from "next/image";
-import { useStateContext } from "../../context/contextProvider";
 import { useGetProducts } from "../../roupi/product";
-import { useRef, useState, useEffect } from "react";
-import AvatarImage from "./resources/avatar.png";
+import Link from "next/link";
+import PCIcon from "./resources/game.png";
+import Image from "next/image";
+import { Product } from "./components/Product";
 
-interface MessageProps {
-  profileImage: any;
-  message: string;
-  createdAt: string; // Should ideally be an ISO string for easy formatting
-  username?: string; // Optional field for showing the sender's name
-}
-
-const Message: React.FC<MessageProps> = ({ profileImage, message, revers }) => {
-  return (
-    <div
-      className={`flex ${
-        revers ? "" : "flex-row-reverse"
-      } gap-x-2 items-center justify-center px-2`}
-    >
-      <Image
-        width={200}
-        height={200}
-        src={profileImage ? profileImage : AvatarImage}
-        alt="Profile"
-        className="w-8 h-8 border border-purple-300  border-2 rounded-full object-cover"
-      />
-      <div
-        className={`flex items-start ${
-          revers ? "bg-blue-600 text-white" : ""
-        } font-bold p-2 w-full space-x-4 bg-white shadow rounded-lg`}
-      >
-        <p className={`text-sm ${revers ? "text-white" : "text-gray-600"}`}>
-          {message}
-        </p>
-      </div>
-    </div>
-  );
-};
-
-export const Chat = () => {
-  const { profile } = useStateContext();
-  const msgRef = useRef();
-  const chatRef = useRef();
-  const chatOpenRef = useRef();
-  
-  const [messages, setMessage] = useState<[]>([]);
-/*   const { sendMessage } = useWebSocket(
-    `${process.env.NEXT_PUBLIC_WS_API_URL}/ws/chat/${profile.id}/`,
-    {
-      onMessage: (newMessage: object) =>
-        setMessage((messages) => [...messages, newMessage]),
-      onMessages: (oldMessages: []) =>
-        setMessage((messages) => [...oldMessages, ...messages]),
-    }
-  ); */
-  useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-    }
-  }, [messages]);
-  const handleSendMessage = () => {
-    if (msgRef?.current?.value) {
-      sendMessage({
-        sender: profile.id,
-        msg: msgRef.current.value,
-      });
-      msgRef.current.value = "";
-    }
-  };
-  return (
-    <div className="fixed flex items-center justify-center rounded-full p-2 bg-blue-500 w-14 h-14 right-20 bottom-8 z-[1000]">
-      <label className="cursor-pointer" htmlFor="chat">
-        <ChatIcon />
-      </label>
-      <input
-        ref={chatOpenRef}
-        type="checkbox"
-        className="peer/chat hidden"
-        name="chat"
-        id="chat"
-      />
-      <div className="fixed p-2 items-cetner justify-between peer-checked/chat:block hidden bottom-[20px] right-[30px] z-[20000] border bg-gray-100 rounded-md h-[400px] w-[300px]">
-        <div className="h-full flex flex-col justify-between">
-          <div className="flex justify-between py-1 px-2">
-            <p className="font-bold">Admin</p>
-            <label className="cursor-pointer" htmlFor="chat">
-              <XIcon />
-            </label>
-          </div>
-          <div
-            ref={chatRef}
-            className="hover:overflow-y-auto border-t border-gray-300 overflow-y-hidden py-2 space-y-2 h-full"
-          >
-            {messages?.map((message) => (
-              <Message
-                message={message.message}
-                revers={message.sender_id ? false : true}
-                profileImage={message.sender_id ? profile.image : Logo}
-              />
-            ))}
-          </div>
-          <div className="flex px-2 gap-2 pt-2">
-            <input
-              ref={msgRef}
-              type="text"
-              className="w-full px-2 rounded-md"
-            />
-            <button
-              onClick={handleSendMessage}
-              className="py-1 px-2 bg-blue-500 text-white font-bold rounded-md"
-            >
-              Send
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const Product = ({
-  category,
-  productName,
-  price,
-  tag,
-}: {
-  category: string;
-  productName: string;
-  price: number;
-  tag?: string;
-}) => {
-  return (
-    <div className="rounded-md hover:cursor-pointer">
-      <div className="bg-gray-400 w-[215px] h-[320px]"></div>
-      <div>
-        <p className="text-gray-300">{category}</p>
-        <p className="text-gray-900 font-bold">{productName}</p>
-      </div>
-      <p className="text-purple-600 font-bold">{price}</p>
-    </div>
-  );
-};
 
 const Title = ({ text, subtext }: any) => (
   <>
@@ -159,10 +18,19 @@ const Title = ({ text, subtext }: any) => (
   </>
 );
 
+const Category = ({ name, slug, children, p = "p-7" }) => (
+  <Link href={`/products/${slug}`}>
+    <div className={`rounded-full bg-gray-200 hover:shadow-md ${p}`}>
+      {children}
+    </div>
+    <p className="font-bold text-center mt-2 text-xl">{name}</p>
+  </Link>
+)
+
+
 export default function Home() {
-  const {product: hotDeals} = useGetProducts({filter: 'top-deals/'})
+  const { product: hotDeals } = useGetProducts({ filter: 'super-deals/' })
   console.log(hotDeals)
-  const { profile } = useStateContext();
   return (
     <>
       <main>
@@ -173,16 +41,10 @@ export default function Home() {
             subtext="Explore our selected categories."
           />
           <div className="flex mt-4 space-x-20 p-12">
-            <div className="rounded-full bg-black p-8"></div>
-            <div className="rounded-full bg-black p-8"></div>
-            <div className="rounded-full bg-black p-8"></div>
-            <div className="rounded-full bg-black p-8"></div>
-            <div className="rounded-full bg-black p-8"></div>
-            <div className="rounded-full bg-black p-8"></div>
-            <div className="rounded-full bg-black p-8"></div>
-            <div className="rounded-full bg-black p-8"></div>
-            <div className="rounded-full bg-black p-8"></div>
-            <div className="rounded-full bg-black p-8"></div>
+
+            <Category name="Xbox" slug="xbox"><XboxIcon /></Category>
+            <Category name="Playstation" slug="playstation"><PlaystationIcon /></Category>
+            <Category p="p-[20px]" name="PC" slug="pc"><Image src={PCIcon} width={200} height={200} alt="pc-games" className="w-16 h-16" /></Category>
           </div>
         </section>
         <section className="flex flex-col items-center my-16 justify-center">
@@ -351,7 +213,6 @@ export default function Home() {
           </a>
         </section>
       </main>
-      {profile.id && <Chat />}
     </>
   );
 }

@@ -86,6 +86,7 @@ export const Nav = () => {
   useSettings();
   const { profile } = useStateContext();
   const [openMenu, setOpenMenu] = useState(false);
+  const [search, setSearch] = useState(false);
   const openSearchRef = useRef();
   const results = [];
   return (
@@ -103,32 +104,28 @@ export const Nav = () => {
               PlanetGames
             </p>
             <div className="hidden sm:flex w-full items-center justify-center relative">
-              {/* Peer Checkbox */}
-              <input
-                ref={openSearchRef}
-                type="checkbox"
-                className="peer/search hidden"
-                name="search"
-                id="search"
-              />
-
-              {/* Label */}
-              <label
+              <div
                 htmlFor="search"
-                className="border relative flex items-center justify-center px-2 py-1 rounded-md w-[min(100%,400px)]"
+                className="border relative flex items-center justify-center px-2 py-1 rounded-md w-[min(100%,400px)] cursor-pointer"
               >
                 <SearchIcon />
-                <input className="ml-2 bg-gray-50 border-none py-1 focus:outline-none focus:ring-0 w-full" />
-              </label>
+                <input
+                  onFocus={() => setSearch(true)}
+                  onBlur={() => setSearch(false)}
+                  className="ml-2 bg-gray-50 border-none py-1 focus:outline-none focus:ring-0 w-full" />
+              </div>
 
-              <div className="border shadow-md hidden peer-checked/search:block flex-col items-center justify-center top-12 rounded-md min-h-12 w-full absolute bg-white">
-                {results.length === 0 && (
-                  <p className="text-gray-500 text-sm font-bold">
+              {/* Dropdown that appears when checkbox is checked */}
+              {search && results.length === 0 && (
+                <div className="border shadow-md flex-col items-center justify-center top-12 rounded-md min-h-12 w-[min(100%,400px)] px-2 py-2 absolute bg-white">
+                  <p className="text-gray-500 text-sm font-bold px-4 py-4">
                     Start Typing To Search
                   </p>
-                )}
-              </div>
+                </div>
+              )}
             </div>
+
+
           </div>
           {!profile.email && (
             <div className="flex h-full items-center">
@@ -163,7 +160,7 @@ export const Nav = () => {
           </label>
 
           <div className="border shadow-md hidden peer-checked/search:block flex-col items-center justify-center top-12 rounded-md min-h-12 w-full absolute bg-white">
-            {results.length === 0 && (
+            {search && results.length === 0 && (
               <p className="text-gray-500 text-sm font-bold">
                 Start Typing To Search
               </p>
