@@ -40,3 +40,28 @@ export const Gallery = ({ images }) => {
     </section>
   );
 };
+
+export function CardSlider() {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="relative w-full">
+        {/* Radio Inputs for Navigation (Hidden) */}
+
+
+        {/* Cards Container (Same parent as radio inputs) */}
+        <div className="w-full flex-shrink-0 absolute inset-0 flex items-center justify-center p-6 bg-white rounded-lg shadow-md transition-opacity duration-500 opacity-100 peer-checked/slide1:opacity-100 peer-checked/slide2:opacity-0 peer-checked/slide3:opacity-0">
+          <h2 className="text-xl font-semibold text-gray-800">Card 1</h2>
+        </div>
+        <div className="w-full flex-shrink-0 absolute inset-0 flex items-center justify-center p-6 bg-white rounded-lg shadow-md transition-opacity duration-500 opacity-0 peer-checked/slide2:opacity-100 peer-checked/slide1:opacity-0 peer-checked/slide3:opacity-0">
+          <h2 className="text-xl font-semibold text-gray-800">Card 2</h2>
+        </div>
+        <div className="w-full flex-shrink-0 absolute inset-0 flex items-center justify-center p-6 bg-white rounded-lg shadow-md transition-opacity duration-500 opacity-0 peer-checked/slide3:opacity-100 peer-checked/slide1:opacity-0 peer-checked/slide2:opacity-0">
+          <h2 className="text-xl font-semibold text-gray-800">Card 3</h2>
+        </div>
+
+
+        {/* Pagination Dots */}
+      </div>
+    </div>
+  );
+}

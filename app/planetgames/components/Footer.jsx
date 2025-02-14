@@ -221,7 +221,7 @@ export const Footer = () => {
           </a>
         </div>
       </div>
-      <div className="py-[1px] my-6 w-[100vw] bg-gray-600"></div>
+      <div className="py-[1px] my-6 w-full bg-gray-600"></div>
       <div className="w-full text-center">
         © 2025 comercify.shop All Rights Reserved
       </div>

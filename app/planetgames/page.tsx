@@ -19,11 +19,11 @@ const Title = ({ text, subtext }: any) => (
 );
 
 const Category = ({ name, slug, children, p = "p-7" }) => (
-  <Link href={`/products/${slug}`}>
-    <div className={`rounded-full bg-gray-200 hover:shadow-md ${p}`}>
+  <Link href={`/products/${slug}`} className="flex flex-col items-center justify-center">
+    <div className={`rounded-full bg-gray-200 hover:shadow-md ${p} max-md:p-4`}>
       {children}
     </div>
-    <p className="font-bold text-center mt-2 text-xl">{name}</p>
+    <p className="font-bold text-center mt-2 text-xl max-md:text-lg">{name}</p>
   </Link>
 )
 
@@ -40,25 +40,36 @@ export default function Home() {
             text="Featured Categories"
             subtext="Explore our selected categories."
           />
-          <div className="flex mt-4 space-x-20 p-12">
-
+          <div className="flex mt-4 space-x-20 p-12 max-md:space-x-8">
             <Category name="Xbox" slug="xbox"><XboxIcon /></Category>
             <Category name="Playstation" slug="playstation"><PlaystationIcon /></Category>
-            <Category p="p-[20px]" name="PC" slug="pc"><Image src={PCIcon} width={200} height={200} alt="pc-games" className="w-16 h-16" /></Category>
+            <Category p="p-[20px]" name="PC" slug="pc"><Image src={PCIcon} width={200} height={200} alt="pc-games" className="w-16 h-16 max-md:w-8 max-md:h-8" /></Category>
           </div>
         </section>
-        <section className="flex flex-col items-center my-16 justify-center">
+        <section className="flex flex-col items-center my-16 justify-center overflow-hidden">
           <Title
             text="New arrival"
             subtext="Check the latest products in our collection."
           />
-          <div className="flex overflow-auto py-4 px-24 space-x-8">
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
+          <div className="flex max-sm:flex-col overflow-auto py-4 px-24 space-x-8">
+            <input type="radio" name="slider" id="slide1" className="hidden peer/slide1" defaultChecked />
+            <input type="radio" name="slider" id="slide2" className="hidden peer/slide2" />
+            <input type="radio" name="slider" id="slide3" className="hidden peer/slide3" />
+
+            <div className="max-sm:peer-checked/slide1:opacity-100 max-sm:peer-checked/slide2:hidden max-sm:peer-checked/slide3:hidden">
+              <Product category="category" productName="product1" price={200} />
+            </div>
+            <div className="max-sm:peer-checked/slide1:hidden max-sm:peer-checked/slide2:opacity-100 max-sm:peer-checked/slide3:hidden">
+              <Product category="category" productName="product2" price={200} />
+            </div>
+            <div className="peer-checked/slide1:hidden peer-checked/slide2:hidden peer-checked/slide3:opacity-100">
+              <Product category="category" productName="product3" price={200} />
+            </div>
+            <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
+              <label htmlFor="slide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/slide1:bg-blue-500"></label>
+              <label htmlFor="slide2" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/slide2:bg-blue-500"></label>
+              <label htmlFor="slide3" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/slide3:bg-blue-500"></label>
+            </div>
           </div>
         </section>
         <section className="flex flex-col items-center my-16 justify-center">
@@ -66,13 +77,25 @@ export default function Home() {
             text="Featured products"
             subtext="We selected these for you."
           />
-          <div className="flex overflow-auto py-4 px-24 space-x-8">
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
+          <div className="flex max-sm:flex-col overflow-auto py-4 px-24 space-x-8">
+            <input type="radio" name="Fslider" id="Fslide1" className="hidden peer/Fslide1" defaultChecked />
+            <input type="radio" name="Fslider" id="Fslide2" className="hidden peer/Fslide2" />
+            <input type="radio" name="Fslider" id="Fslide3" className="hidden peer/Fslide3" />
+
+            <div className="max-sm:peer-checked/Fslide1:opacity-100 max-sm:peer-checked/Fslide2:hidden max-sm:peer-checked/Fslide3:hidden">
+              <Product category="category" productName="product1" price={200} />
+            </div>
+            <div className="max-sm:peer-checked/Fslide1:hidden max-sm:peer-checked/Fslide2:opacity-100 max-sm:peer-checked/Fslide3:hidden">
+              <Product category="category" productName="product2" price={200} />
+            </div>
+            <div className="peer-checked/Fslide1:hidden peer-checked/Fslide2:hidden peer-checked/Fslide3:opacity-100">
+              <Product category="category" productName="product3" price={200} />
+            </div>
+            <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
+              <label htmlFor="Fslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Fslide1:bg-blue-500"></label>
+              <label htmlFor="Fslide2" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Fslide2:bg-blue-500"></label>
+              <label htmlFor="Fslide3" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Fslide3:bg-blue-500"></label>
+            </div>
           </div>
         </section>
         <section className="flex flex-col items-center my-16 justify-center">
@@ -80,13 +103,25 @@ export default function Home() {
             text="Hot deals"
             subtext="Check the latest products in our collection."
           />
-          <div className="flex overflow-auto py-4 px-24 space-x-8">
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
+          <div className="flex max-sm:flex-col overflow-auto py-4 px-24 space-x-8">
+            <input type="radio" name="Hslider" id="Hslide1" className="hidden peer/Hslide1" defaultChecked />
+            <input type="radio" name="Hslider" id="Hslide2" className="hidden peer/Hslide2" />
+            <input type="radio" name="Hslider" id="Hslide3" className="hidden peer/Hslide3" />
+
+            <div className="max-sm:peer-checked/Hslide1:opacity-100 max-sm:peer-checked/Hslide2:hidden max-sm:peer-checked/Hslide3:hidden">
+              <Product category="category" productName="product1" price={200} />
+            </div>
+            <div className="max-sm:peer-checked/Hslide1:hidden max-sm:peer-checked/Hslide2:opacity-100 max-sm:peer-checked/Hslide3:hidden">
+              <Product category="category" productName="product2" price={200} />
+            </div>
+            <div className="peer-checked/Hslide1:hidden peer-checked/Hslide2:hidden peer-checked/Hslide3:opacity-100">
+              <Product category="category" productName="product3" price={200} />
+            </div>
+            <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
+              <label htmlFor="Hslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide1:bg-blue-500"></label>
+              <label htmlFor="Hslide2" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide2:bg-blue-500"></label>
+              <label htmlFor="Hslide3" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide3:bg-blue-500"></label>
+            </div>
           </div>
         </section>
         <section className="flex flex-col items-center my-16 justify-center">
@@ -94,16 +129,28 @@ export default function Home() {
             text="Best Sellers"
             subtext="Explore products that our customers loves most."
           />
-          <div className="flex overflow-auto py-4 px-24 space-x-8">
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
-            <Product category="category" productName="product" price={200} />
+          <div className="flex max-sm:flex-col overflow-auto py-4 px-24 space-x-8">
+            <input type="radio" name="Bslider" id="Bslide1" className="hidden peer/Bslide1" defaultChecked />
+            <input type="radio" name="Bslider" id="Bslide2" className="hidden peer/Bslide2" />
+            <input type="radio" name="Bslider" id="Bslide3" className="hidden peer/Bslide3" />
+
+            <div className="max-sm:peer-checked/Bslide1:opacity-100 max-sm:peer-checked/Bslide2:hidden max-sm:peer-checked/Bslide3:hidden">
+              <Product category="category" productName="product1" price={200} />
+            </div>
+            <div className="max-sm:peer-checked/Bslide1:hidden max-sm:peer-checked/Bslide2:opacity-100 max-sm:peer-checked/Bslide3:hidden">
+              <Product category="category" productName="product2" price={200} />
+            </div>
+            <div className="peer-checked/Bslide1:hidden peer-checked/Bslide2:hidden peer-checked/Bslide3:opacity-100">
+              <Product category="category" productName="product3" price={200} />
+            </div>
+            <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
+              <label htmlFor="Bslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Bslide1:bg-blue-500"></label>
+              <label htmlFor="Bslide2" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Bslide2:bg-blue-500"></label>
+              <label htmlFor="Bslide3" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Bslide3:bg-blue-500"></label>
+            </div>
           </div>
         </section>
-        <section className="flex flex-col items-center justify-center inset-0 bg-gradient-to-br from-gray-50 to-gray-100 py-24">
+        <section className="flex flex-col px-10 items-center justify-center inset-0 bg-gradient-to-br from-gray-50 to-gray-100 py-24">
           <p className="text-purple-500 font-bold text-lg">Simple Process</p>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 mt-4">
             Get Started in Minutes

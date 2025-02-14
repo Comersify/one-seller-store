@@ -9,7 +9,7 @@ import Image from "next/image";
 
 const MiniCard = ({ children, text, float }) => (
   <div
-    className={`gap-3 bg-white bg-opacity-[0.7] rounded-full animate-bounce w-24 scale-x-[-1] shadow-md absolute px-2 py-4 flex flex-col items-center justify-center ${float}`}
+    className={`gap-3 max-md:hidden bg-white bg-opacity-[0.7] rounded-full animate-bounce w-24 scale-x-[-1] shadow-md absolute px-2 py-4 flex flex-col items-center justify-center ${float}`}
   >
     {children}
     <p className="text-gray-600 hidden hover:visible text-wrap text-center font-bold text-lg">
@@ -27,7 +27,7 @@ export const XboxIcon = () => (
     imageRendering="optimizeQuality"
     fillRule="evenodd"
     clipRule="evenodd"
-    className="w-12 h-12"
+    className="w-12 h-12 max-md:w-8 max-md:h-8"
   >
     <path
       d="M665.83 534.66s1.66 0 0 0c200.91 152.76 541.3 528.02 438.35 634.29-117.89 102.95-270.65 164.39-438.35 164.39-167.7 0-322.13-61.44-438.35-164.39-104.61-106.27 237.44-481.53 436.69-632.63 0-1.66 1.66-1.66 1.66-1.66zm347.03-436.7C911.57 36.52 800.32-.01 665.83-.01c-134.5 0-245.74 36.53-347.03 97.97-1.66 0-1.66 1.66-1.66 3.32s1.66 1.66 3.32 1.66c129.51-28.23 325.44 83.02 343.71 94.65h3.32c18.26-11.62 214.2-122.87 343.71-94.65 1.66 0 3.32 0 3.32-1.66s0-3.32-1.66-3.32zm-813.61 92.98c-1.66 0-1.66 1.66-3.32 1.66C74.72 313.81 0 481.52 0 665.82c0 151.1 51.48 292.24 136.16 403.49 0 1.66 1.66 1.66 3.32 1.66s1.66-1.66 0-3.32C88 909.91 348.69 529.67 483.19 370.26l1.66-1.66c0-1.66 0-1.66-1.66-1.66-204.23-202.57-272.31-180.99-283.93-176.01zm649.23 174.35l-1.66 1.66s0 1.66 1.66 1.66C982.98 528.01 1242 908.26 1192.19 1066v3.32c1.66 0 3.32 0 3.32-1.66 84.68-111.25 136.16-252.39 136.16-403.49 0-184.31-74.72-352.01-197.59-473.22-1.66-1.66-1.66-1.66-3.32-1.66-9.96-3.32-78.04-24.91-282.27 176.01z"
@@ -62,7 +62,7 @@ export const PlaystationIcon = () => (
     xmlns="http://www.w3.org/2000/svg"
     x="0px"
     y="0px"
-    className="w-12 h-12 "
+    className="w-12 h-12 max-md:w-8 max-md:h-8"
     viewBox="0 0 122.88 95.18"
   >
     <g>
@@ -82,7 +82,7 @@ const PlaystationCard = ({ text, float }) => (
 
 export const Banners = () => {
   return (
-    <div className="relative inset-0 bg-gradient-to-br from-indigo-50 to-indigo-100 opacity-90 overflow-hidden w-full h-[75vh] flex">
+    <div className="relative inset-0 bg-gradient-to-br from-indigo-50 to-indigo-100 opacity-90 overflow-hidden w-full h-[75vh] max-sm:h-[47vh] sm:h-[60vh] max-sm:px-4 flex">
       <div className="flex flex-col w-full items-center justify-end">
         <div className="text-4xl animate-fadeInTopToBottom flex flex-row text-gray-900 font-bold">
           <h2
@@ -91,37 +91,32 @@ export const Banners = () => {
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
-            className="text-6xl mb-12 ml-3 font-bold"
+            className="text-6xl max-sm:text-5xl mb-12 ml-3 font-bold"
           >
             Planet Games
           </h2>
         </div>
 
         <div className="scale-x-[-1]">
-          <div className="bg-purple-600 rounded-full px-[100px]">
+          <div className="bg-purple-600 rounded-full lg:px-[100px] md:px-[50px] sm:px-[0px]">
 
             <Image
               src={Banner}
               width={6000}
               height={6000}
-              className="w-[900px] animate-fadeInBottomToTop -mb-14 h-[600px]"
+              className="lg:w-[700px] md:w-[600px] sm:w-[200px]  animate-fadeInBottomToTop -mb-14 lg:h-[480px] max-md:h-[350px] sm:h-[450px]"
             />
           </div>
-          <div className="w-full  absolute top-1 flex space-y-6 flex-col">
+          <div className="w-full  absolute top-1 flex space-y-6 flex-col max-md:hidden">
             <XBoxCard float='top-[30px] delay-[0.3s] left-[13%]' />
             <PlaystationCard float='top-[150px] left-[23%]' />
 
             <ImageCard
               className="w-12 h-12"
               src={Ninetendo}
-              float='top-[390px] right-[11%]'
+              float='top-[140px] right-[4%]'
             />
             <ImageCard float='top-[300px] left-[9%]' className="w-16 h-16" src={Pubg} />
-            <ImageCard
-              float='top-[60px] right-[11%]'
-              className="w-16 h-16"
-              src={Steam}
-            />
             <ImageCard
               float='top-[60px] right-[11%]'
               className="w-16 h-16"

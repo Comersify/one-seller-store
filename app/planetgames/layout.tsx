@@ -15,7 +15,7 @@ type LayoutProps = {
 export default function RootLayout({ children }: LayoutProps) {
   return (
     <html lang="en">
-      <body className="bg-white relative">
+      <body className="bg-white relative w-[100vw] overflow-x-hidden">
         <ContextProvider>
           <Nav />
           <main className="min-h-[77vh]">{children}</main>
