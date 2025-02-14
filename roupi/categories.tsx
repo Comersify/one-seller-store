@@ -8,10 +8,8 @@ export const useGetcategories = () => {
     const [loading, setLoading] = useState(true);
     useEffect(() => {
         setLoading(true);
-        useGET(`categories/`, {}).then((res) => {
-            if (res?.type == "success") {
-                setcategories(res?.data);
-            }
+        useGET(`v2/categories/`, {}).then((res) => {
+            setcategories(res);
             setLoading(false);
         });
     }, []);

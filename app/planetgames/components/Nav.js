@@ -146,20 +146,17 @@ export const Nav = () => {
             name="search"
             id="search"
           />
-          <label
-            htmlFor="search"
-            className="border relative flex items-center justify-center px-2 py-1 rounded-md w-[min(100%,400px)]"
+          <div
+            className="border relative flex items-center justify-center px-2 py-1 rounded-md w-[min(100%,400px)] cursor-pointer"
           >
             <SearchIcon />
-            <input className="ml-2 bg-gray-50 border-none py-1 focus:outline-none focus:ring-0 w-full" />
-          </label>
-
-          <div className="border shadow-md hidden peer-checked/search:block flex-col items-center justify-center top-12 rounded-md min-h-12 w-full absolute bg-white">
-            {search && results.length === 0 && (
-              <p className="text-gray-500 text-sm font-bold">
+            <input
+              className="ml-2 peer/search bg-gray-50 border-none py-1 focus:outline-none focus:ring-0 w-full" />
+            <div className="border peer-focus/search:block hidden shadow-md flex-col items-center justify-center top-12 rounded-md min-h-12 w-[min(100%,400px)] px-2 py-2 absolute bg-white">
+              <p className="text-gray-500 text-sm font-bold px-4 py-4">
                 Start Typing To Search
               </p>
-            )}
+            </div>
           </div>
         </div>
       </div>
