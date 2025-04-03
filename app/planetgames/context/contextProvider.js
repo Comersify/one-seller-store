@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import { PushNotification } from "../comps/PushNotification";
+import { PushNotification } from "../components/PushNotification";
 export const StateContext = createContext();
 
 export const ContextProvider = ({ children }) => {
