@@ -5,7 +5,7 @@ import { usePOST } from "./utils";
 import { useState } from "react";
 
 export const useCreateOrder = (id) => {
-  const { handleNotification, trackID } = useStateContext();
+  const { handleNotification } = useStateContext();
   const [order, setOrder] = useState({
     packID: null,
     shippingID: null,
@@ -58,9 +58,6 @@ export const useCreateOrder = (id) => {
     }
     usePOST("one-seller/order/create/", {
       data: { ...data, ...order },
-      headers: {
-        "X-Comercify-Visitor": trackID,
-      },
     }).then((res) => {
       if (res?.type == "success") handleNotification(res);
       if (res?.type == "error") handleNotification(res);
