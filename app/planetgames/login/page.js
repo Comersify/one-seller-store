@@ -1,5 +1,5 @@
 "use client";
-import { useStateContext } from "./context/contextProvider";
+import { useStateContext } from "../context/contextProvider";
 import { LoginForm } from "./forms/LoginForm";
 import { useRouter } from "next/navigation";
 

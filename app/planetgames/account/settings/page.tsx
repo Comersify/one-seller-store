@@ -1,9 +1,9 @@
 "use client";
-import { useSettings } from "./roupi/auth";
-import { Button } from "./components/shared/Buttons";
-import { Title } from "./components/shared/Title";
+import { useSettings } from "../../../../roupi/auth";
+import { Button } from "../../components/shared/Buttons";
+import { Title } from "../../components/shared/Title";
 import { Input } from "./forms/Input";
-import useWithAuth from "./app/_authRouter";
+import useWithAuth from "../../_authRouter";
 import Head from "next/head";
 import { useEffect } from "react";
 
