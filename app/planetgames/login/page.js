@@ -1,8 +1,8 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import Link from "next/link";
 
-const LoginForm = () => {
+const AuthenticationForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: false, password: false });
 
@@ -14,7 +14,6 @@ const LoginForm = () => {
     setErrors({ ...errors, [e.target.id]: e.target.value.trim() === "" });
   };
 
-  // التحقق مما إذا كانت الحقول فارغة لتعطيل الزر
   const isDisabled = formData.email.trim() === "" || formData.password.trim() === "";
 
   return (
@@ -90,12 +89,12 @@ const LoginForm = () => {
   );
 };
 
-const PromoSection1 = () => {
+const FeatureHighlightSection = () => {
   return (
     <div className="flex-1 text-center lg:text-left flex flex-col justify-center relative">
       {/* العنوان الرئيسي */}
       <h1 className="text-4xl lg:text-5xl font-bold mb-4 text-[rgb(90,71,251)] inline-flex items-center whitespace-nowrap">
-        Odigix Store ✨
+        Planetgames ✨
       </h1>
 
       {/* الفقرة التوضيحية */}
@@ -133,23 +132,20 @@ const PromoSection1 = () => {
   );
 };
 
-
-const Container = () => {
+const AuthenticationContainer = () => {
   return (
     <div className="flex w-full flex-col lg:flex-row bg-gradient-to-br min-h-[77vh] from-indigo-50 to-indigo-100 items-center justify-center gap-12 p-8">
-
-
-      {/* نموذج التسجيل */}
-      <div >
-        <PromoSection1 />
-      </div>
       {/* القسم الترويجي */}
-      <div className="w-full max-w-lg">
-        <LoginForm />
+      <div>
+        <FeatureHighlightSection />
       </div>
 
+      {/* نموذج التحقق */}
+      <div className="w-full max-w-lg">
+        <AuthenticationForm />
+      </div>
     </div>
   );
 };
 
-export default Container;
+export default AuthenticationContainer;
