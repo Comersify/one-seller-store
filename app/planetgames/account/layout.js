@@ -10,9 +10,12 @@ export const metadata = {
 
 export default function Layout({ children }) {
   return (
-    <div className="flex flex-col lg:flex-row bg-gradient-to-br from-indigo-50 to-indigo-100 p-4 gap-6">
+    <>
+     
+    <div className="p-2 lg:flex-row bg-gradient-to-br from-indigo-50 to-indigo-100  ">
+    <div className="flex flex-col lg:flex-row bg-gradient-to-br from-indigo-50 to-indigo-100 pr-4  gap-6">
       {/* ✅ Sidebar */}
-      <div className="left-0 bottom-0 w-full sm:w-96 bg-white shadow-xl rounded-2xl p-6 flex flex-col gap-4 mt-4 mb-6 relative">
+      <div className="left-0 bottom-0 w-full sm:w-80 bg-white shadow-xl rounded-2xl p-6 flex flex-col gap-4 mt-4 mb-6 relative">
         <Link
           href="/logout"
           className="absolute top-4 right-4 p-2 rounded-full bg-white shadow-md hover:bg-gray-100 transition duration-200"
@@ -43,7 +46,7 @@ export default function Layout({ children }) {
               alt="houssine"
             />
             <Link
-              href="/my-account/settings"
+              href="settings"
               className="absolute bottom-2 right-2 p-2 rounded-full bg-white shadow-md hover:bg-gray-100 transition duration-200"
             >
               <svg
@@ -71,7 +74,7 @@ export default function Layout({ children }) {
 
         <div className="flex flex-col gap-3 mt-4">
           <Link
-            href="/my-account/orders"
+            href="/account/orders"
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
           >
             <svg
@@ -95,7 +98,7 @@ export default function Layout({ children }) {
           </Link>
 
           <Link
-            href="/my-account/settings"
+            href="/account/settings"
             className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition"
           >
             <svg
@@ -119,7 +122,10 @@ export default function Layout({ children }) {
       </div>
 
       {/* ✅ Content (children) */}
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 overflow-auto flex flex-col  md:flex-row">{children}</div>
     </div>
+    </div>
+  
+    </>
   );
 }

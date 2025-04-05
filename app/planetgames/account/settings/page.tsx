@@ -9,8 +9,8 @@ const UserProfileForm = () => {
   };
   return (
       <>
-          <section className="flex pt-16 min-h-[70vh] w-full flex-col  text-gray-900 items-center justify-center">   
-            <div className="flex flex-col items-center justify-start min-h-screen mt-4 w-full ">
+          <section className="flex pt-4 min-h-[70vh] w-full flex-col  text-gray-900 items-center justify-center ">   
+            <div className="container flex flex-col items-center justify-start min-h-screen  w-full ">
              <div className="w-full max-w-4xl p-4 bg-white rounded-2xl shadow-md">
   
         {/* عنوان الإعدادات */}

@@ -83,7 +83,8 @@ const SignupForm = () => {
     
 
   return (
-    <div className="relative bg-white shadow-lg rounded-2xl flex flex-col overflow-hidden">
+   
+    <div className="relative bg-white shadow-lg rounded-2xl flex flex-col overflow-hidden ">
       <div className="p-8">
         <h2 className="text-2xl font-bold text-indigo-800 text-center">Create Account 🎉</h2>
         <p className="text-indigo-600 mt-2 text-center">Join the largest digital store in Algeria</p>
@@ -163,11 +164,12 @@ const SignupForm = () => {
         <Link href="/login" className="font-bold text-white">Already have an account? Login 🔑</Link>
       </button>
     </div>
+    
   );
 };
 const PromoSection = () => {
   return (
-    <div className="flex-1 text-center lg:text-left flex flex-col justify-center relative">
+    <div className="flex-1 text-center lg:text-left flex flex-col justify-center relative ">
       {/* العنوان الرئيسي */}
       <h1 className="text-4xl lg:text-4xl font-bold mb-4 text-[rgb(90,71,251)] inline-flex items-center whitespace-nowrap">
         Join Planetgames Today ✨
@@ -205,23 +207,27 @@ const PromoSection = () => {
         </div>
       </div>
     </div>
+    
   );
 };
 
 
 const Container = () => {
   return (
-    <div className="flex flex-col lg:flex-row items-center justify-center gap-12 max-w-5xl mx-auto p-8">
+    <div className="bg-gradient-to-br from-indigo-50 to-indigo-100">
+    <div className="flex flex-col lg:flex-row items-center justify-center gap-12 max-w-5xl mx-auto  p-8">
 
-        
+
       {/* نموذج التسجيل */}
       <div className="w-full max-w-lg">
       <SignupForm />
       </div>
       {/* القسم الترويجي */}
+      <div>
       <PromoSection />
-
+      </div>
     </div>
+    </div> 
   );
 };
 

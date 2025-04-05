@@ -7,9 +7,7 @@ const nextConfig = {
   images: {
     domains: ["127.0.0.1"],
   },
-  experimental: {
-    middleware: true,
-  },
+ 
 };
 
 module.exports = nextConfig;
