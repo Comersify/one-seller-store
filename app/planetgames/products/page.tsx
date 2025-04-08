@@ -1,9 +1,10 @@
+/* eslint-disable react/jsx-key */
 "use client";
 
 import { useGetProducts } from "../../../roupi/product";
 import { useGetcategories } from "../../../roupi/categories";
 import Link from "next/link";
-import Image from "next/image";
+
 import { Product } from "../components/Product";
 
 
