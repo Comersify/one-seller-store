@@ -1,5 +1,5 @@
 "use client";
-import { Gallery } from "@/comps/Gallery";
+import { Gallery } from "../../../../comps/Gallery";
 import { ProductDetailsCard } from "@/comps/ProductDetailsCard";
 import { useGetProducts } from "@/roupi/product";
 

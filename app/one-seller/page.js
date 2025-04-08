@@ -1,6 +1,6 @@
 "use client";
-import { Banner, ProductCard } from "@/comps";
-import { useGetProducts } from "@/roupi/product";
+import { Banner, ProductCard } from "../../comps";
+import { useGetProducts } from "../../roupi/product";
 
 export default function Home() {
   const { products } = useGetProducts({});
