@@ -1,5 +1,5 @@
-import { AppBanner, Footer, Nav } from "@/comps";
-import { ContextProvider } from "@/context/contextProvider";
+import { AppBanner, Footer, Nav } from "../../comps";
+import { ContextProvider } from "../../context/contextProvider";
 import { Inter } from "next/font/google";
 import "./global.css";
 

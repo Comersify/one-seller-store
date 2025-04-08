@@ -19,7 +19,7 @@ interface Profile {
 
 export const useSettings = () => {
   const { setProfile } = useStateContext()
-  const [settings, setSettings] = useState<Profile>({});
+  const [settings, setSettings] = useState<Profile | null>(null); 
   const [refresh, setRefresh] = useState<boolean>(false);
 
   const handleSubmit = (e: any) => {
@@ -83,7 +83,7 @@ export const useLogin = () => {
 
 export const useSignup = () => {
   const router = useRouter();
-  const [form, setForm] = useState<Profile>({});
+  const [form, setForm] = useState<Partial<Profile>>({});
   const handleSubmit = (e: Event) => {
     e.preventDefault();
     const res = usePOST("signup/", {
