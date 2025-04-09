@@ -1,11 +1,11 @@
 "use client";
 
-import { MEDIA_URL } from "@/urls";
-import Image from "next/image";
+import { MEDIA_URL } from "../urls";
+
 import { ShippingCard } from "./ShippingCard";
-import { useCreateOrder } from "@/roupi/order";
+import { useCreateOrder } from "../roupi/order";
 import { CheckoutForm } from "./CheckoutForm";
-import { useState } from "react";
+
 
 const ProductDescription = ({ description }) => {
   return (

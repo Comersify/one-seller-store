@@ -1,7 +1,7 @@
 "use client";
-import { MEDIA_URL } from "@/urls";
+import { MEDIA_URL } from "../urls";
 import { useState } from "react";
-import Image from "next/image";
+
 
 export const Gallery = ({ images }) => {
   if (!images) return;

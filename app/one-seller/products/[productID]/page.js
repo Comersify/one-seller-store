@@ -1,16 +1,20 @@
 "use client";
-import { Gallery } from "@/comps/Gallery";
-import { ProductDetailsCard } from "@/comps/ProductDetailsCard";
-import { useGetProducts } from "@/roupi/product";
+import { Gallery } from "../../../../comps/Gallery";
+import { ProductDetailsCard } from "../../../../comps/ProductDetailsCard";
+import { useGetProducts } from "../../../../roupi/product";
 
 export default function ProductDetails({ params }) {
   const { productID } = params;
-  if (!productID) return <p>Loading</p>;
-  const { products: product } = useGetProducts({ filter: `id/${productID}/` });
+
+  const { products: product, loading } = useGetProducts({ filter: `id/${productID}/` });
+
+  if (loading) return <p>Loading...</p>;
+
+  if (!productID || !product) return <p>No product found</p>;
 
   return (
     <section className="px-6 md:px-20 lg:px-34">
-      <div className="px-6 flex flex-wrap py-8 mb-4  w-full justify-center">
+      <div className="px-6 flex flex-wrap py-8 mb-4 w-full justify-center">
         <Gallery images={product?.images} />
         <ProductDetailsCard
           id={product?.id}
