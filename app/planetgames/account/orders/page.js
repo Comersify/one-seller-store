@@ -11,7 +11,7 @@ function Orders() {
 
   return (
     <>
-      <section className="flex pt-16 min-h-[70vh] w-full flex-col  text-gray-900 items-center justify-center">
+      <section className="flex w-full flex-col  text-gray-900 items-center justify-center">
        
        
           <div className="container mx-auto p-4">
