@@ -108,6 +108,7 @@ const products = [
     category: "Electronics",
     price: "$79.99"
   }
+  
 ];
 
   return (

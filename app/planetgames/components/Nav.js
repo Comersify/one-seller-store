@@ -98,6 +98,7 @@ export const Nav = () => {
             onclick={() => setOpenMenu(!openMenu)}
             open={openMenu}
           />
+          
           <div className="flex flex-1 justify-center sm:items-stretch sm:justify-start">
             <Logo />
             <p className="font-bold text-lg text-gray-900 pt-[12px]">
@@ -116,7 +117,7 @@ export const Nav = () => {
                   </p>
                 </div>
               </div>
-
+              
               {/* Dropdown that appears when checkbox is checked */}
             </div>
 
@@ -132,12 +133,17 @@ export const Nav = () => {
               <DropDownMenu Icon={ProfileButoon}>
                 <DropDownLink href="/account/orders" title="Orders" />
                 <DropDownLink href="/account/settings" title="Settings" />
+                
               </DropDownMenu>
+              
             </div>
+            
           )}
+          
         </div>
       </div>
       <div className="border-t sm:hidden">
+        
         <div className="flex w-full items-center justify-center relative">
           <input
             ref={openSearchRef}
@@ -172,6 +178,7 @@ export const Nav = () => {
           <Navigation />
         </div>
       )}
+      
     </nav>
   );
 };

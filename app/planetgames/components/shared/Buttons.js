@@ -9,7 +9,9 @@ import {
 } from "./Icons";
 import { useStateContext } from "../../context/contextProvider";
 import Image from "next/image";
-import AvatarImage from '../../resources/avatar.png'
+import AvatarImage from "../../resources/avatar.png";
+import { useState } from "react";
+import EmptyCart from "../EmptyCart.jsx"; // عدّل المسار حسب مكان حفظ المكون
 
 export const Button = ({ children, onClick, px }) => {
   return (
@@ -121,10 +123,39 @@ export const MobileMenuButtons = ({ onclick, open }) => {
     </div>
   );
 };
-
 export const AuthButtons = () => {
+  const [showCart, setShowCart] = useState(false);
+
   return (
     <>
+      {/* Cart Button */}
+      <button
+        onClick={() => setShowCart(true)}
+        className="relative bg-[rgb(90,71,251)] mr-4 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="w-6 h-6"
+        >
+          <circle cx="8" cy="21" r="1"></circle>
+          <circle cx="19" cy="21" r="1"></circle>
+          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+        </svg>
+        <span className="hidden sm:inline text-sm font-medium">200 DZD</span>
+      </button>
+
+      {/* Cart Component */}
+      {showCart && <EmptyCart onClose={() => setShowCart(false)} />}
+
+        
+      {/* Login and Signup */}
       <Link
         href="/login"
         className="hover:bg-gradient-to-r from-[#ff80b5] to-[#9089fc]  hover:text-white text-indigo-400 border border-indigo-400 mr-4 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -133,7 +164,7 @@ export const AuthButtons = () => {
       </Link>
       <Link
         href="/signup"
-        className="bg-gradient-to-r from-[#ff80b5] to-[#9089fc]  text-white font-bold py-2 px-4 rounded focus:outline-none border border-indigo-400 focus:shadow-outline"
+        className="bg-gradient-to-r from-[#ff80b5] to-[#9089fc] text-white font-bold py-2 px-4 rounded focus:outline-none border border-indigo-400 focus:shadow-outline"
       >
         Sign Up
       </Link>
