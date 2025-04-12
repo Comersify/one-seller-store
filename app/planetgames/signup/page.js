@@ -48,8 +48,8 @@ const SignupForm = () => {
   const isFormValid =
     Object.values(errors).every((error) => error === "") &&
     Object.values(formData).every((value) => value !== "") &&
-    formData.password === formData.confirmPassword &&
-    formData.termsAccepted;
+    formData.password === formData.confirmPassword ;
+    
 
   // Handle phone number formatting
   const handlePhoneChange = (e) => {
@@ -145,15 +145,7 @@ const SignupForm = () => {
 ))}
 
 
-          <div className="flex items-center space-x-2">
-            <input type="checkbox" id="termsAccepted" className="peer hidden" checked={formData.termsAccepted} onChange={handleChange} />
-            <label htmlFor="termsAccepted" className="relative w-6 h-6 border-2 border-gray-400 rounded-md cursor-pointer flex items-center justify-center transition-all duration-200 peer-checked:bg-indigo-600 peer-checked:border-transparent">
-              <svg className="absolute w-4 h-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity duration-200" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12l5 5L20 7" />
-              </svg>
-            </label>
-            <span className="text-sm text-gray-600">I have read and agree to <button type="button" className="font-medium text-indigo-600 hover:opacity-80">terms and conditions</button></span>
-          </div>
+          
 
           <button type="submit" disabled={!isFormValid} className={`w-full p-3 text-white font-medium rounded-lg transition-all ${isFormValid ? "bg-indigo-600 hover:bg-indigo-700" : "bg-indigo-400 cursor-not-allowed"}`}>
             Create Account
@@ -172,7 +164,7 @@ const PromoSection = () => {
     <div className="flex-1 text-center lg:text-left flex flex-col justify-center relative ">
       {/* العنوان الرئيسي */}
       <h1 className="text-4xl lg:text-4xl font-bold mb-4 text-[rgb(90,71,251)] inline-flex items-center whitespace-nowrap">
-        Join Planetgames Today ✨
+        Join PlanetGames Today ✨
       </h1>
       
       {/* الفقرة التوضيحية */}
@@ -181,7 +173,7 @@ const PromoSection = () => {
       </p>
 
       {/* البطاقات */}
-      <div className="grid grid-cols-2 gap-4 relative z-10">
+      <div className="grid grid-cols-2 gap-4 relative ">
         <div className="bg-white/80 p-6 rounded-xl min-h-[160px] shadow-[0px_4px_10px_rgba(0,0,0,0.1)] transition-all duration-300 hover:shadow-lg hover:z-20">
           <i className="lucide-shield-check text-2xl mb-3 text-green-500"></i>
           <h3 className="font-bold text-indigo-800 text-lg">Secure Payment 🔒</h3>
