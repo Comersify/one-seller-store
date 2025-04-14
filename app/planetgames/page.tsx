@@ -160,7 +160,7 @@ export default function Home() {
             <input type="radio" name="Hslider" id="Hslide3" className="hidden peer/Hslide3" />
 
             <div className="max-sm:peer-checked/Hslide1:opacity-100 max-sm:peer-checked/Hslide2:hidden max-sm:peer-checked/Hslide3:hidden">
-            <Product category="Electronics" link="" productName="product1" price={200} image="image.jpg" />
+            <Product category="Electronics" link="" productName="product1" price={200} image="" />
             </div>
             <div className="max-sm:peer-checked/Hslide1:hidden max-sm:peer-checked/Hslide2:opacity-100 max-sm:peer-checked/Hslide3:hidden">
               <Product category="category" productName="product2" price={200} />
