@@ -129,7 +129,7 @@ export default function Home() {
           <p className="px-12 pb-4">Showing <b>48</b> of <b>438</b> products</p>
           <div className="w-full flex justify-center flex-wrap gap-4">
 
-            {Array(100).fill(0).map(() => <Product category="category" productName="product1" price={12.00} />)}
+            {Array(100).fill(0).map(() => <Product category="Electronics" link="" productName="product1" price={200} image="" />)}
           </div>
         </div>
       </div>

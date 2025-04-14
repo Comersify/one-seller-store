@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import "material-icons/iconfont/material-icons.css";
 import Tabs from "../../components/taps";
 import ProductCarousel from "../../components/ProductCarousel";
 

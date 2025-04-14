@@ -134,13 +134,13 @@ export default function Home() {
             <input type="radio" name="Fslider" id="Fslide3" className="hidden peer/Fslide3" />
 
             <div className="max-sm:peer-checked/Fslide1:opacity-100 max-sm:peer-checked/Fslide2:hidden max-sm:peer-checked/Fslide3:hidden">
-              <Product category="category" productName="product1" price={200} />
+            <Product category="Electronics" link="" productName="product1" price={200} image="" />
             </div>
             <div className="max-sm:peer-checked/Fslide1:hidden max-sm:peer-checked/Fslide2:opacity-100 max-sm:peer-checked/Fslide3:hidden">
-              <Product category="category" productName="product2" price={200} />
+            <Product category="Electronics" link="" productName="product1" price={200} image="" />
             </div>
             <div className="peer-checked/Fslide1:hidden peer-checked/Fslide2:hidden peer-checked/Fslide3:opacity-100">
-              <Product category="category" productName="product3" price={200} />
+            <Product category="Electronics" link="" productName="product1" price={200} image="" />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Fslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Fslide1:bg-blue-500"></label>
@@ -163,10 +163,10 @@ export default function Home() {
             <Product category="Electronics" link="" productName="product1" price={200} image="" />
             </div>
             <div className="max-sm:peer-checked/Hslide1:hidden max-sm:peer-checked/Hslide2:opacity-100 max-sm:peer-checked/Hslide3:hidden">
-              <Product category="category" productName="product2" price={200} />
+            <Product category="Electronics" link="" productName="product1" price={200} image="" />
             </div>
             <div className="peer-checked/Hslide1:hidden peer-checked/Hslide2:hidden peer-checked/Hslide3:opacity-100">
-              <Product category="category" productName="product3" price={200} />
+            <Product category="Electronics" link="" productName="product1" price={200} image="" />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Hslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide1:bg-blue-500"></label>
@@ -186,13 +186,13 @@ export default function Home() {
             <input type="radio" name="Bslider" id="Bslide3" className="hidden peer/Bslide3" />
 
             <div className="max-sm:peer-checked/Bslide1:opacity-100 max-sm:peer-checked/Bslide2:hidden max-sm:peer-checked/Bslide3:hidden">
-              <Product category="category" productName="product1" price={200} />
+            <Product category="Electronics" link="" productName="product1" price={200} image="" />
             </div>
             <div className="max-sm:peer-checked/Bslide1:hidden max-sm:peer-checked/Bslide2:opacity-100 max-sm:peer-checked/Bslide3:hidden">
-              <Product category="category" productName="product2" price={200} />
+            <Product category="Electronics" link="" productName="product1" price={200} image="" />
             </div>
             <div className="peer-checked/Bslide1:hidden peer-checked/Bslide2:hidden peer-checked/Bslide3:opacity-100">
-              <Product category="category" productName="product3" price={200} />
+            <Product category="Electronics" link="" productName="product1" price={200} image="" />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Bslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Bslide1:bg-blue-500"></label>
