@@ -79,7 +79,7 @@ const AuthenticationForm = () => {
 
         {/* زر إعادة تعيين كلمة المرور */}
         <div className="text-center">
-          <Link href="/forgot-password" className="text-indigo-600 font-bold">  Reset Password</Link>
+          <Link href="/ForgetPaswored" className="text-indigo-600 font-bold">  Reset Password</Link>
         </div>
         <p className="text-center text-gray-600">
           Don't have an account? <Link href="/signup" className="text-indigo-600 font-bold">Sign Up</Link>

@@ -9,7 +9,63 @@ import Link from "next/link";
 import PCIcon from "./resources/game.png";
 import Image from "next/image";
 import { Product } from "./components/Product";
+import ProductCarousel from"./components/ProductCarousel"
 
+
+const products = [
+  {
+    link: "#",
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
+    title: "Premium Watch",
+    category: "Accessories",
+    price: "$199.99",
+  },
+  {
+    link: "#",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
+    title: "Wireless Headphones",
+    category: "Electronics",
+    price: "$149.99",
+  },
+  {
+    link: "#",
+    image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f",
+    title: "Camera Lens",
+    category: "Photography",
+    price: "$299.99",
+    outOfStock: true,
+  },
+  {
+    link: "#",
+    image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f",
+    title: "Sunglasses",
+    category: "Fashion",
+    price: "$89.99",
+  },
+  {
+    link: "#",
+    image: "https://images.unsplash.com/photo-1507764923504-cd90bf7da772",
+    title: "Smart Watch",
+    category: "Electronics",
+    price: "$249.99",
+  },
+  {
+    link: "#",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+    title: "Running Shoes",
+    category: "Sports",
+    price: "$129.99",
+  },
+  {
+    link: "#",
+    image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad",
+    title: "Wireless Earbuds",
+    category: "Electronics",
+    price: "$159.99",
+  },
+ 
+  
+];
 
 const Title = ({ text, subtext }: any) => (
   <>
@@ -51,20 +107,15 @@ export default function Home() {
             text="New arrival"
             subtext="Check the latest products in our collection."
           />
-          <div className="flex max-sm:flex-col overflow-auto py-4 px-24 space-x-8">
+          <div className="flex max-sm:flex-col overflow-auto py-4   px-24 space-x-8">
             <input type="radio" name="slider" id="slide1" className="hidden peer/slide1" defaultChecked />
             <input type="radio" name="slider" id="slide2" className="hidden peer/slide2" />
             <input type="radio" name="slider" id="slide3" className="hidden peer/slide3" />
 
-            <div className="max-sm:peer-checked/slide1:opacity-100 max-sm:peer-checked/slide2:hidden max-sm:peer-checked/slide3:hidden">
-              <Product category="category" productName="product1" price={200} />
+            <div className=" w-full  max-sm:w-[300px]   ">
+              <ProductCarousel title="" products={products} />
             </div>
-            <div className="max-sm:peer-checked/slide1:hidden max-sm:peer-checked/slide2:opacity-100 max-sm:peer-checked/slide3:hidden">
-              <Product category="category" productName="product2" price={200} />
-            </div>
-            <div className="peer-checked/slide1:hidden peer-checked/slide2:hidden peer-checked/slide3:opacity-100">
-              <Product category="category" productName="product3" price={200} />
-            </div>
+              
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="slide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/slide1:bg-blue-500"></label>
               <label htmlFor="slide2" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/slide2:bg-blue-500"></label>
@@ -109,7 +160,7 @@ export default function Home() {
             <input type="radio" name="Hslider" id="Hslide3" className="hidden peer/Hslide3" />
 
             <div className="max-sm:peer-checked/Hslide1:opacity-100 max-sm:peer-checked/Hslide2:hidden max-sm:peer-checked/Hslide3:hidden">
-              <Product category="category" productName="product1" price={200} />
+            <Product category="Electronics" link="" productName="product1" price={200} image="image.jpg" />
             </div>
             <div className="max-sm:peer-checked/Hslide1:hidden max-sm:peer-checked/Hslide2:opacity-100 max-sm:peer-checked/Hslide3:hidden">
               <Product category="category" productName="product2" price={200} />
@@ -249,15 +300,14 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <a
-            href="/products"
-            className="bg-purple-600 hover:bg-purple-700 group flex items-center justify-center px-4 py-2 text-white rounded-md text-md font-bold"
-          >
-            Start Shopping{" "}
-            <div className="pl-2 transform group-hover:translate-x-1 transition-transform">
-              <RightArrow />
-            </div>
-          </a>
+          <Link href="/products">
+      <div className="bg-purple-600 hover:bg-purple-700 group flex items-center justify-center px-4 py-2 text-white rounded-md text-md font-bold cursor-pointer">
+        Start Shopping
+        <div className="pl-2 transform group-hover:translate-x-1 transition-transform">
+          <RightArrow />
+        </div>
+      </div>
+    </Link>
         </section>
       </main>
     </>

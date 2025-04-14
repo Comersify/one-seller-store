@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
+import { Product } from './Product'; // تأكد من المسار
 
 const ProductCarousel = ({ title, products }) => {
   const containerRef = useRef(null);
@@ -49,42 +50,20 @@ const ProductCarousel = ({ title, products }) => {
           <div
             key={index}
             className="px-2 snap-start 
-              min-w-[50%] max-w-[50%] 
-              sm:min-w-[25%] sm:max-w-[25%] 
-              lg:min-w-[16.66%] lg:max-w-[16.66%]"
+            min-w-[90%] 
+            sm:min-w-[50%] 
+            md:min-w-[33.33%] 
+            lg:min-w-[25%] 
+            xl:min-w-[20%]"
           >
-            <div className="bg-white rounded p-3">
-              <a href={product.link}>
-                <div className="relative aspect-[3/4] mb-4 overflow-hidden rounded">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-full object-cover"
-                  />
-                  {product.outOfStock && (
-                    <div className="absolute inset-0 bg-gray-500 bg-opacity-60 flex flex-col items-center justify-center">
-                      <img
-                        src="/assets/out-of-stock.258fd3e9.png"
-                        className="w-20 h-20 mb-2"
-                        alt="Out of Stock"
-                      />
-                      <span className="text-white text-md font-bold">
-                        Out of Stock
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </a>
-              <span className="block text-xs text-gray-500 mb-1">
-                {product.category}
-              </span>
-              <a href={product.link}>
-                <h3 className="text-sm font-bold truncate mb-1">
-                  {product.title}
-                </h3>
-              </a>
-              <div className="text-primary font-semibold">{product.price}</div>
-            </div>
+            <Product
+              category={product.category}
+              productName={product.title}
+              price={product.price}
+              tag={product.outOfStock ? "outOfStock" : undefined}
+              image={product.image}
+              link={product.link}
+            />
           </div>
         ))}
       </div>

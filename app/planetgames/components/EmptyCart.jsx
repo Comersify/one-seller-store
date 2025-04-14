@@ -4,12 +4,10 @@ const EmptyCart = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-   
     setIsVisible(true);
   }, []);
 
   const handleClose = () => {
-   
     setIsVisible(false);
     setTimeout(onClose, 300);
   };
@@ -22,7 +20,7 @@ const EmptyCart = ({ onClose }) => {
     >
       {/* Cart Modal */}
       <div
-        className={`fixed right-0 top-0 h-screen w-1/3  bg-white shadow-lg z-50 transition-all duration-300 transform ${
+        className={`fixed right-0 top-0 h-screen w-full sm:w-1/3 bg-white shadow-lg z-50 transition-all duration-300 transform ${
           isVisible ? 'translate-x-0' : 'translate-x-full'
         } flex flex-col`}
       >
@@ -54,7 +52,7 @@ const EmptyCart = ({ onClose }) => {
             </button>
           </div>
         </div>
-  
+
         {/* Content */}
         <div className="flex-1 overflow-y-auto px-4 w-full">
           <div className="h-full flex flex-col items-center justify-center p-8 text-center">

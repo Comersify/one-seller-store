@@ -3,20 +3,41 @@ export const Product = ({
     productName,
     price,
     tag,
-}: {
+    image,
+    link,
+  }: {
     category: string;
     productName: string;
     price: number;
     tag?: string;
-}) => {
+    image: string;
+    link: string;
+  }) => {
     return (
-        <div className="rounded-md hover:cursor-pointer">
-            <div className="bg-gray-400 w-[215px] h-[320px]"></div>
-            <div>
-                <p className="text-gray-300">{category}</p>
-                <p className="text-gray-900 font-bold">{productName}</p>
-            </div>
-            <p className="text-purple-600 font-bold">{price}</p>
+      <a href={link}>
+        <div className="rounded-md hover:cursor-pointer bg-white p-2"> {/* قللنا الـ padding */}
+          <div className="relative  mb-2 overflow-hidden rounded bg-gray-200 h-[280px]"> {/* صغرنا الطول */}
+            <img
+              src={image}
+              alt={productName}
+              className="w-full h-full object-cover"
+            />
+            {tag === "outOfStock" && (
+              <div className="absolute inset-0 bg-gray-500 bg-opacity-60 flex flex-col items-center justify-center">
+                <img
+                  src="/assets/out-of-stock.258fd3e9.png"
+                  className="w-12 h-12 mb-1"  // صغرنا الأيقونة
+                  alt="Out of Stock"
+                />
+                <span className="text-white text-sm font-bold">Out of Stock</span> {/* قللنا حجم الخط */}
+              </div>
+            )}
+          </div>
+          <p className="text-[10px] text-gray-500 mb-1">{category}</p> {/* خط أصغر */}
+          <p className="text-xs font-semibold truncate mb-1 text-gray-900">{productName}</p>
+          <p className="text-sm text-purple-600 font-bold">{price}</p>
         </div>
+      </a>
     );
-};
+  };
+  

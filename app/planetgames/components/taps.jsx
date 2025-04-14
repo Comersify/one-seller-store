@@ -8,7 +8,9 @@ const Tabs = () => {
   };
 
   return (
-    <div className="mt-8 bg-white rounded-xl shadow-sm overflow-hidden p-4">
+ <div className="mt-8 bg-white rounded-xl shadow-sm overflow-hidden p-8 ">
+
+
       {/* Tabs navigation */}
       <div className="flex border-b text-gray-400">
         {/* Description Tab */}
