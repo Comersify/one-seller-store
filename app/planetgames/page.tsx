@@ -133,14 +133,8 @@ export default function Home() {
             <input type="radio" name="Fslider" id="Fslide2" className="hidden peer/Fslide2" />
             <input type="radio" name="Fslider" id="Fslide3" className="hidden peer/Fslide3" />
 
-            <div className="max-sm:peer-checked/Fslide1:opacity-100 max-sm:peer-checked/Fslide2:hidden max-sm:peer-checked/Fslide3:hidden">
-            <Product category="Electronics" link="" productName="product1" price={200} image="" />
-            </div>
-            <div className="max-sm:peer-checked/Fslide1:hidden max-sm:peer-checked/Fslide2:opacity-100 max-sm:peer-checked/Fslide3:hidden">
-            <Product category="Electronics" link="" productName="product1" price={200} image="" />
-            </div>
-            <div className="peer-checked/Fslide1:hidden peer-checked/Fslide2:hidden peer-checked/Fslide3:opacity-100">
-            <Product category="Electronics" link="" productName="product1" price={200} image="" />
+            <div className=" w-full  max-sm:w-[300px]   ">
+              <ProductCarousel title="" products={products} />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Fslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Fslide1:bg-blue-500"></label>
@@ -160,19 +154,15 @@ export default function Home() {
             <input type="radio" name="Hslider" id="Hslide3" className="hidden peer/Hslide3" />
 
             <div className="max-sm:peer-checked/Hslide1:opacity-100 max-sm:peer-checked/Hslide2:hidden max-sm:peer-checked/Hslide3:hidden">
-            <Product category="Electronics" link="" productName="product1" price={200} image="" />
-            </div>
-            <div className="max-sm:peer-checked/Hslide1:hidden max-sm:peer-checked/Hslide2:opacity-100 max-sm:peer-checked/Hslide3:hidden">
-            <Product category="Electronics" link="" productName="product1" price={200} image="" />
-            </div>
-            <div className="peer-checked/Hslide1:hidden peer-checked/Hslide2:hidden peer-checked/Hslide3:opacity-100">
-            <Product category="Electronics" link="" productName="product1" price={200} image="" />
+            <div className=" w-full  max-sm:w-[300px]   ">
+              <ProductCarousel title="" products={products} />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Hslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide1:bg-blue-500"></label>
               <label htmlFor="Hslide2" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide2:bg-blue-500"></label>
               <label htmlFor="Hslide3" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide3:bg-blue-500"></label>
             </div>
+          </div>
           </div>
         </section>
         <section className="flex flex-col items-center my-16 justify-center">
@@ -185,14 +175,8 @@ export default function Home() {
             <input type="radio" name="Bslider" id="Bslide2" className="hidden peer/Bslide2" />
             <input type="radio" name="Bslider" id="Bslide3" className="hidden peer/Bslide3" />
 
-            <div className="max-sm:peer-checked/Bslide1:opacity-100 max-sm:peer-checked/Bslide2:hidden max-sm:peer-checked/Bslide3:hidden">
-            <Product category="Electronics" link="" productName="product1" price={200} image="" />
-            </div>
-            <div className="max-sm:peer-checked/Bslide1:hidden max-sm:peer-checked/Bslide2:opacity-100 max-sm:peer-checked/Bslide3:hidden">
-            <Product category="Electronics" link="" productName="product1" price={200} image="" />
-            </div>
-            <div className="peer-checked/Bslide1:hidden peer-checked/Bslide2:hidden peer-checked/Bslide3:opacity-100">
-            <Product category="Electronics" link="" productName="product1" price={200} image="" />
+            <div className=" w-full  max-sm:w-[300px]   ">
+              <ProductCarousel title="" products={products} />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Bslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Bslide1:bg-blue-500"></label>
@@ -200,6 +184,7 @@ export default function Home() {
               <label htmlFor="Bslide3" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Bslide3:bg-blue-500"></label>
             </div>
           </div>
+          <div/>
         </section>
         <section className="flex flex-col px-10 items-center justify-center inset-0 bg-gradient-to-br from-gray-50 to-gray-100 py-24">
           <p className="text-purple-500 font-bold text-lg">Simple Process</p>
