@@ -4,7 +4,6 @@ import {
   RightArrow,
   ShoppingCartIcon,
 } from "./components/shared/Icons";
-import { useGetProducts } from "../../roupi/product";
 import Link from "next/link";
 import PCIcon from "./resources/game.png";
 import Image from "next/image";
@@ -31,11 +30,11 @@ const Category = ({ name, slug, children, p = "p-7" }) => (
 )
 
 
-export default function Home() {
-  
-  const { products: hotDeals } = useProducts({ filter: 'hot-deals' });
-  const { products: featured } = useProducts({ filter: 'featured' });
-  const { products: bestSellers } = useProducts({ filter: 'best-sellers' });
+export default function Home(){
+  const { products: hotDeals } = useProducts({ filter: 'hot-deals', search: '', page: 1 });
+const { products: featured } = useProducts({ filter: 'featured', search: '', page: 1 });
+const { products: bestSellers } = useProducts({ filter: 'best-sellers', search: '', page: 1 });
+
 
   console.log(hotDeals)
   return (

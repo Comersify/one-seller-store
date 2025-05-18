@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetProducts } from "../../../../roupi/product";
+import { useProducts } from "../../../../roupi/product";
 import { useGetcategories } from "../../../../roupi/categories";
 import Link from "next/link";
 import Image from "next/image";
@@ -58,8 +58,12 @@ const Categories = () => {
 }
 
 
-export default function Home() {
-  const { product: hotDeals } = useGetProducts({ filter: 'super-deals/' })
+export default function Home() {const { product: hotDeals } = useProducts({
+  filter: 'super-deals/',
+  search: '',
+  page: 1, // optional
+});
+
   console.log(hotDeals)
   return (
     <div className="max-w-[1800px] gap-24 px-8 flex flex-col my-16 items-center justify-center">

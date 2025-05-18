@@ -60,18 +60,24 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    fetchProducts({ signal: controller.signal })
-      .then((data) => {
-        setProducts(data.results || []); // حسب شكل استجابتك من API
-        setLoading(false);
-      })
-      .catch((err) => {
-        if (err.name !== "AbortError") console.error(err);
-      });
-    return () => controller.abort();
-  }, []);
+ useEffect(() => {
+  const controller = new AbortController();
+  fetchProducts({
+    signal: controller.signal,
+    category: '', // أو null حسب ما يتوقعه الـ API
+    search: '',   // أو null حسب ما يتوقعه الـ API
+    page: 1       // اختياري حسب الحاجة
+  })
+    .then((data) => {
+      setProducts(data.results || []);
+      setLoading(false);
+    })
+    .catch((err) => {
+      if (err.name !== "AbortError") console.error(err);
+    });
+  return () => controller.abort();
+}, []);
+
 
   return (
     <div className="max-w-[1800px] gap-24 px-8 flex flex-col my-16 items-center justify-center">
