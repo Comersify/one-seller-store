@@ -1,12 +1,12 @@
 "use client";
 import { Gallery } from "../../../../comps/Gallery";
 import { ProductDetailsCard } from "../../../../comps/ProductDetailsCard";
-import { useGetProducts } from "../../../../roupi/product";
+import { useProducts } from "../../../../roupi/product";
 
 export default function ProductDetails({ params }) {
   const { productID } = params;
 
-  const { products: product, loading } = useGetProducts({ filter: `id/${productID}/` });
+  const { products: product, loading } = useProducts({ filter: `id/${productID}/` });
 
   if (loading) return <p>Loading...</p>;
 

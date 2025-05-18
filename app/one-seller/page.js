@@ -1,15 +1,16 @@
 "use client";
 import { Banner, ProductCard } from "../../comps";
-import { useGetProducts } from "../../roupi/product";
+import { useProducts } from "../../roupi/product";
 
 export default function Home() {
-  const { products } = useGetProducts({});
+  const { products } = useProducts({});
   return (
     <main>
       <Banner />
       <section className="flex flex-wrap my-24 gap-4 items-center justify-center">
         {products?.map((product) => (
           <ProductCard
+            key={0}
             id={product.id}
             image={product.image}
             title={product.title}
