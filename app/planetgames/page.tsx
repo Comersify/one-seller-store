@@ -10,62 +10,9 @@ import PCIcon from "./resources/game.png";
 import Image from "next/image";
 import { Product } from "./components/Product";
 import ProductCarousel from"./components/ProductCarousel"
+import { useProducts }from "../../roupi/product"
 
 
-const products = [
-  {
-    link: "#",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
-    title: "Premium Watch",
-    category: "Accessories",
-    price: "$199.99",
-  },
-  {
-    link: "#",
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
-    title: "Wireless Headphones",
-    category: "Electronics",
-    price: "$149.99",
-  },
-  {
-    link: "#",
-    image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f",
-    title: "Camera Lens",
-    category: "Photography",
-    price: "$299.99",
-    outOfStock: true,
-  },
-  {
-    link: "#",
-    image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f",
-    title: "Sunglasses",
-    category: "Fashion",
-    price: "$89.99",
-  },
-  {
-    link: "#",
-    image: "https://images.unsplash.com/photo-1507764923504-cd90bf7da772",
-    title: "Smart Watch",
-    category: "Electronics",
-    price: "$249.99",
-  },
-  {
-    link: "#",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-    title: "Running Shoes",
-    category: "Sports",
-    price: "$129.99",
-  },
-  {
-    link: "#",
-    image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad",
-    title: "Wireless Earbuds",
-    category: "Electronics",
-    price: "$159.99",
-  },
- 
-  
-];
 
 const Title = ({ text, subtext }: any) => (
   <>
@@ -85,7 +32,11 @@ const Category = ({ name, slug, children, p = "p-7" }) => (
 
 
 export default function Home() {
-  const { product: hotDeals } = useGetProducts({ filter: 'super-deals/' })
+  
+  const { products: hotDeals } = useProducts({ filter: 'hot-deals' });
+  const { products: featured } = useProducts({ filter: 'featured' });
+  const { products: bestSellers } = useProducts({ filter: 'best-sellers' });
+
   console.log(hotDeals)
   return (
     <>
@@ -104,7 +55,7 @@ export default function Home() {
         </section>
         <section className="flex flex-col items-center my-16 justify-center overflow-hidden">
           <Title
-            text="New arrival"
+            text="Hot Deals"
             subtext="Check the latest products in our collection."
           />
           <div className="flex max-sm:flex-col overflow-auto py-4   px-24 space-x-8">
@@ -113,7 +64,7 @@ export default function Home() {
             <input type="radio" name="slider" id="slide3" className="hidden peer/slide3" />
 
             <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title="" products={products} />
+             <ProductCarousel title="Hot Deals" products={hotDeals} />
             </div>
               
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
@@ -134,7 +85,7 @@ export default function Home() {
             <input type="radio" name="Fslider" id="Fslide3" className="hidden peer/Fslide3" />
 
             <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title="" products={products} />
+              <ProductCarousel title="Featured" products={featured} />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Fslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Fslide1:bg-blue-500"></label>
@@ -155,7 +106,7 @@ export default function Home() {
 
             <div className="max-sm:peer-checked/Hslide1:opacity-100 max-sm:peer-checked/Hslide2:hidden max-sm:peer-checked/Hslide3:hidden">
             <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title="" products={products} />
+              <ProductCarousel title="Best Sellers" products={bestSellers} />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Hslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide1:bg-blue-500"></label>
@@ -176,7 +127,7 @@ export default function Home() {
             <input type="radio" name="Bslider" id="Bslide3" className="hidden peer/Bslide3" />
 
             <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title="" products={products} />
+              <ProductCarousel title="" products={featured} />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Bslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Bslide1:bg-blue-500"></label>

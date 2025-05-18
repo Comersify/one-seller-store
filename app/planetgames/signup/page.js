@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import { signup } from "../services/api/auth"; // ← تأكد من مسار الدالة صحيح
+
 const SignupForm = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -13,8 +15,10 @@ const SignupForm = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  // Validate input fields
   const validateField = (id, value) => {
     if (id === "email" && value.trim() !== "") {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,7 +32,6 @@ const SignupForm = () => {
     return value.trim() === "" ? "This field is required." : "";
   };
 
-  // Handle input changes
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
     setFormData({ ...formData, [id]: type === "checkbox" ? checked : value });
@@ -38,74 +41,93 @@ const SignupForm = () => {
     }
   };
 
-  // Handle input blur (validation on leaving field)
   const handleBlur = (e) => {
     const { id, value } = e.target;
     setErrors({ ...errors, [id]: validateField(id, value) });
   };
 
-  // Check if the form is valid
   const isFormValid =
     Object.values(errors).every((error) => error === "") &&
     Object.values(formData).every((value) => value !== "") &&
     formData.password === formData.confirmPassword;
 
-  // Handle phone number formatting
   const handlePhoneChange = (e) => {
     let value = e.target.value;
-
-    // التأكد من أن الرقم يبدأ بـ +213
     if (!value.startsWith("+213")) {
       value = "+213";
     }
-
-    // استخراج الأرقام بعد +213 فقط
     const digitsOnly = value.replace(/\D/g, "").slice(3);
-
-    // التأكد من أن الرقم يتكون من 9 أرقام بعد +213
-    if (digitsOnly.length > 9) {
-      return;
-    }
-
-    // تحديث قيمة الهاتف
+    if (digitsOnly.length > 9) return;
     const formattedPhone = "+213" + digitsOnly;
     setFormData({ ...formData, phone: formattedPhone });
   };
+
   const handlePhoneBlur = () => {
     const phoneNumber = formData.phone.replace(/\D/g, "").slice(3);
-
     setErrors({
       ...errors,
-      phone:
-        phoneNumber.length === 9 ? "" : "You must enter 9 digits after +213",
+      phone: phoneNumber.length === 9 ? "" : "You must enter 9 digits after +213",
     });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    const newErrors = {};
+    Object.keys(formData).forEach((key) => {
+      const error = validateField(key, formData[key]);
+      if (error) newErrors[key] = error;
+    });
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const result = await signup({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+      });
+      setSuccessMessage("Account created successfully! 🎉");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "+213",
+        password: "",
+        confirmPassword: "",
+        termsAccepted: false,
+      });
+    } catch (error) {
+      setErrorMessage(error.message || "Signup failed.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="relative bg-white shadow-lg rounded-2xl flex flex-col overflow-hidden ">
       <div className="p-8">
-        <h2 className="text-2xl font-bold text-indigo-800 text-center">
-          Create Account 🎉
-        </h2>
-        <p className="text-indigo-600 mt-2 text-center">
-          Join the largest digital store in Algeria
-        </p>
+        <h2 className="text-2xl font-bold text-indigo-800 text-center">Create Account 🎉</h2>
+        <p className="text-indigo-600 mt-2 text-center">Join the largest digital store in Algeria</p>
 
-        <form className="space-y-6 mt-6">
+        <form className="space-y-6 mt-6" onSubmit={handleSubmit}>
+          {/* الاسم الأول واسم العائلة */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { id: "firstName", placeholder: "First Name", icon: "👤" },
-              { id: "lastName", placeholder: "Last Name", icon: "👤" },
-            ].map(({ id, placeholder, icon }) => (
+            {[{ id: "firstName", placeholder: "First Name", icon: "👤" },
+              { id: "lastName", placeholder: "Last Name", icon: "👤" }].map(({ id, placeholder, icon }) => (
               <div key={id} className="relative w-full">
-                <span className="absolute left-3 top-3 text-lg opacity-70">
-                  {icon}
-                </span>
+                <span className="absolute left-3 top-3 text-lg opacity-70">{icon}</span>
                 <input
                   className={`w-full pl-10 p-3 border rounded-lg outline-none transition-all duration-300 ${
-                    errors[id]
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-indigo-600"
+                    errors[id] ? "border-red-500" : "border-gray-300 focus:border-indigo-600"
                   }`}
                   id={id}
                   type="text"
@@ -114,33 +136,19 @@ const SignupForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors[id] && (
-                  <p className="text-red-500 text-sm mt-1">{errors[id]}</p>
-                )}
+                {errors[id] && <p className="text-red-500 text-sm mt-1">{errors[id]}</p>}
               </div>
             ))}
           </div>
 
-          {[
-            { id: "email", type: "text", placeholder: "Email", icon: "📧" },
+          {/* باقي الحقول */}
+          {[{ id: "email", type: "text", placeholder: "Email", icon: "📧" },
             { id: "phone", type: "tel", placeholder: "Phone", icon: "📱" },
-            {
-              id: "password",
-              type: "password",
-              placeholder: "Password",
-              icon: "🔒",
-            },
-            {
-              id: "confirmPassword",
-              type: "password",
-              placeholder: "Confirm Password",
-              icon: "🔒",
-            },
+            { id: "password", type: "password", placeholder: "Password", icon: "🔒" },
+            { id: "confirmPassword", type: "password", placeholder: "Confirm Password", icon: "🔒" },
           ].map(({ id, type, placeholder, icon }) => (
             <div key={id} className="relative w-full">
-              <span className="absolute left-3 top-3 text-lg opacity-70">
-                {icon}
-              </span>
+              <span className="absolute left-3 top-3 text-lg opacity-70">{icon}</span>
               <input
                 className={`w-full pl-10 p-3 border rounded-lg outline-none transition-all duration-300 ${
                   id === "confirmPassword" && formData.password
@@ -156,33 +164,36 @@ const SignupForm = () => {
                 placeholder={placeholder}
                 value={formData[id]}
                 onChange={id === "phone" ? handlePhoneChange : handleChange}
-                onBlur={id === "phone" ? handlePhoneBlur : handleBlur} // ← يتم التحقق فقط عند الخروج من الحقل
+                onBlur={id === "phone" ? handlePhoneBlur : handleBlur}
                 {...(id === "phone" && {
                   pattern: "^\\+213[5-7][0-9]{8}$",
                   inputMode: "numeric",
                   maxLength: 13,
                 })}
               />
-
-              {errors[id] && (
-                <p className="text-red-500 text-sm mt-1">{errors[id]}</p>
-              )}
+              {errors[id] && <p className="text-red-500 text-sm mt-1">{errors[id]}</p>}
             </div>
           ))}
 
+          {/* رسائل النجاح / الفشل */}
+          {successMessage && <p className="text-green-600 text-center">{successMessage}</p>}
+          {errorMessage && <p className="text-red-600 text-center">{errorMessage}</p>}
+
+          {/* زر إنشاء الحساب */}
           <button
             type="submit"
-            disabled={!isFormValid}
+            disabled={!isFormValid || loading}
             className={`w-full p-3 text-white font-medium rounded-lg transition-all ${
-              isFormValid
+              isFormValid && !loading
                 ? "bg-indigo-600 hover:bg-indigo-700"
                 : "bg-indigo-400 cursor-not-allowed"
             }`}
           >
-            Create Account
+            {loading ? "Creating..." : "Create Account"}
           </button>
         </form>
       </div>
+
       <button className="w-full block text-center bg-indigo-600 font-bold text-lg py-4 transition-all duration-300">
         <Link href="/login" className="font-bold text-white">
           Already have an account? Login 🔑
@@ -191,6 +202,8 @@ const SignupForm = () => {
     </div>
   );
 };
+
+
 const PromoSection = () => {
   return (
     <div className="flex-1 text-center lg:text-left flex flex-col justify-center relative ">

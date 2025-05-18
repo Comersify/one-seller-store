@@ -2,8 +2,9 @@
 import { useState } from "react";
 import Tabs from "../../components/taps";
 import ProductCarousel from "../../components/ProductCarousel";
-
+import { useProducts }from "../../../../roupi/product"
 export default function DetailsOfProducts() {
+  const { products: hotDeals } = useProducts({ filter: 'hot-deals' });
   const images = [
     "https://backend.odigix.com/storage/1754/conversions/psn100chf-large.jpg",
     "https://backend.odigix.com/storage/1755/conversions/psnswmain-large.jpg",
@@ -47,69 +48,11 @@ export default function DetailsOfProducts() {
     setShowDenominationOptions(false);
   };
 
-  // Sample products data
-  const products = [
-    {
-      link: "#",
-      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
-      title: "Premium Watch",
-      category: "Accessories",
-      price: "$199.99",
-    },
-    {
-      link: "#",
-      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
-      title: "Wireless Headphones",
-      category: "Electronics",
-      price: "$149.99",
-    },
-    {
-      link: "#",
-      image: "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f",
-      title: "Camera Lens",
-      category: "Photography",
-      price: "$299.99",
-      outOfStock: true,
-    },
-    {
-      link: "#",
-      image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f",
-      title: "Sunglasses",
-      category: "Fashion",
-      price: "$89.99",
-    },
-    {
-      link: "#",
-      image: "https://images.unsplash.com/photo-1507764923504-cd90bf7da772",
-      title: "Smart Watch",
-      category: "Electronics",
-      price: "$249.99",
-    },
-    {
-      link: "#",
-      image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-      title: "Running Shoes",
-      category: "Sports",
-      price: "$129.99",
-    },
-    {
-      link: "#",
-      image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad",
-      title: "Wireless Earbuds",
-      category: "Electronics",
-      price: "$159.99",
-    },
-    {
-      link: "#",
-      image: "https://images.unsplash.com/photo-1546868871-7041f2a55e12",
-      title: "Smart Speaker",
-      category: "Electronics",
-      price: "$79.99",
-    },
-  ];
-
+  
   return (
     <>
+    
+      
       <div className=" bg-gray-100  ">
         <div className="mx-auto  max-w-[75%]">
           <div className="w-full bg-gray-100 p-4 flex flex-col lg:flex-row gap-8">
@@ -262,7 +205,6 @@ export default function DetailsOfProducts() {
                     </div>
                   </div>
                 </div>
-
                 <div className="w-full mt-4">
                   <div className="grid grid-cols-1">
                     <button className="q-btn q-btn-item non-selectable no-outline q-btn--unelevated q-btn--rectangle bg-primary text-white q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase w-full py-3 rounded-lg hover:bg-primary-dark transition-colors duration-200">
@@ -386,7 +328,7 @@ export default function DetailsOfProducts() {
               <Tabs />
             </div>
             <div className="p-2">
-              <ProductCarousel title="You may also like" products={products} />
+            <ProductCarousel title="Hot Deals" products={hotDeals} />
             </div>
           </div>
         </div>

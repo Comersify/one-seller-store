@@ -1,13 +1,11 @@
 /* eslint-disable react/jsx-key */
 "use client";
 
-import { useGetProducts } from "../../../roupi/product";
+import { useEffect, useState } from "react";
+import { fetchProducts } from "../services/api/products";
 import { useGetcategories } from "../../../roupi/categories";
 import Link from "next/link";
-
 import { Product } from "../components/Product";
-
-
 
 const Banner = ({ text, subtext }: any) => (
   <>
@@ -16,14 +14,12 @@ const Banner = ({ text, subtext }: any) => (
   </>
 );
 
-const Category = ({ name, slug }) => (<Link href={`/products/${slug}`}>{name}</Link>)
-
 const Title = ({ icon, name }) => (
   <div className="flex gap-2 items-center justify-start my-2">
     <span className="emoji">{icon}</span>
     <h3 className="font-bold text-xl">{name}</h3>
   </div>
-)
+);
 
 const PriceFilter = () => {
   return (
@@ -41,27 +37,42 @@ const PriceFilter = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Categories = () => {
-  const { categories } = useGetcategories()
-  console.log(categories)
+  const { categories } = useGetcategories();
   return (
     <>
       <Title icon="📂" name="Categories" />
       <div className="mx-8 my-4 space-y-2">
-        {categories.map(({ parent_id, name, id }) => <p className="text-gray-700 cursor-pointer w-full hover:bg-gray-200 px-2 py-1 rounded-md font-semibold">{name}</p>)}
-
+        {categories.map(({ parent_id, name, id }) => (
+          <p key={id} className="text-gray-700 cursor-pointer w-full hover:bg-gray-200 px-2 py-1 rounded-md font-semibold">
+            {name}
+          </p>
+        ))}
       </div>
     </>
-  )
-
-}
-
+  );
+};
 
 export default function Home() {
-  const { product: hotDeals } = useGetProducts({ filter: 'super-deals/' })
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchProducts({ signal: controller.signal })
+      .then((data) => {
+        setProducts(data.results || []); // حسب شكل استجابتك من API
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (err.name !== "AbortError") console.error(err);
+      });
+    return () => controller.abort();
+  }, []);
+
   return (
     <div className="max-w-[1800px] gap-24 px-8 flex flex-col my-16 items-center justify-center">
       <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-r from-purple-600/10 to-purple-600/10">
@@ -82,7 +93,8 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-3 bg-purple-500/25 hover:bg-purple-500/50 transition-all duration-300 backdrop-blur rounded-lg px-4 py-3">
                   <span className="text-2xl">🎁</span>
-                  <div><h3 className="font-medium text-white">Gift Cards</h3>
+                  <div>
+                    <h3 className="font-medium text-white">Gift Cards</h3>
                     <p className="text-sm text-gray-300">For all major platforms</p>
                   </div>
                 </div>
@@ -113,23 +125,37 @@ export default function Home() {
           </div>
         </div>
       </div>
+
       <div className="flex items-start relative max-w-[1400px] justify-start w-full">
         <div className="w-[400px] sticky top-[160px]">
           <div className="rounded-t-md border px-4 py-5 shadow-md">
             <p className="text-xl font-bold">Filter Products</p>
           </div>
           <div className="border px-2">
-
             <PriceFilter />
             <div className="w-full bg-gray-300 py-[0.5px]"></div>
             <Categories />
           </div>
         </div>
         <div className="w-full">
-          <p className="px-12 pb-4">Showing <b>48</b> of <b>438</b> products</p>
+          <p className="px-12 pb-4">Showing <b>{products.length}</b> products</p>
           <div className="w-full flex justify-center flex-wrap gap-4">
-
-            {Array(100).fill(0).map(() => <Product category="Electronics" link="" productName="product1" price={200} image="" />)}
+            {loading ? (
+              <p className="text-center text-gray-500">Loading products...</p>
+            ) : products.length === 0 ? (
+              <p className="text-center text-gray-500">No products found.</p>
+            ) : (
+              products.map((product) => (
+                <Product
+                  key={product.id}
+                  category={product.category?.name}
+                  productName={product.name}
+                  price={product.price}
+                  image={product.image}
+                  link={`/product/${product.slug}`}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>

@@ -20,7 +20,7 @@ const ProductCarousel = ({ title, products }) => {
       setActiveIndex(index);
     }
   };
-
+  
   const handleScroll = () => {
     const container = containerRef.current;
     const scrollLeft = container.scrollLeft;
@@ -40,7 +40,6 @@ const ProductCarousel = ({ title, products }) => {
   return (
     <div className="mt-16 p-2">
       <h2 className="text-3xl font-bold text-gray-900 mb-6">{title}</h2>
-
       {/* المنتجات */}
       <div
         ref={containerRef}
@@ -67,7 +66,6 @@ const ProductCarousel = ({ title, products }) => {
           </div>
         ))}
       </div>
-
       {/* النقاط */}
       <div className="flex justify-center mt-6 flex-wrap gap-2">
         {products.map((_, index) => (
@@ -82,7 +80,6 @@ const ProductCarousel = ({ title, products }) => {
           ></button>
         ))}
       </div>
-
       {/* إخفاء Scrollbar */}
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {

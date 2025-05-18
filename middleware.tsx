@@ -13,6 +13,7 @@ export function middleware(request: NextRequest) {
     "admin.localhost": "/admin",
     "demo.localhost": "/one-seller",
     localhost: "/default",
+    "planet.up.railway.app": "/planetgames", 
     "planetgames.localhost": "/planetgames",
     "planetgames.comercify.shop": "/planetgames",
   };

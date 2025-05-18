@@ -1,10 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import { login } from "../services/api/auth"; // تأكد أن المسار صحيح حسب مجلدك
+import { useRouter } from "next/navigation";
 
 const AuthenticationForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: false, password: false });
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const router = useRouter();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -14,14 +19,48 @@ const AuthenticationForm = () => {
     setErrors({ ...errors, [e.target.id]: e.target.value.trim() === "" });
   };
 
-  const isDisabled = formData.email.trim() === "" || formData.password.trim() === "";
+  const isDisabled =
+    formData.email.trim() === "" || formData.password.trim() === "" || loading;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrorMessage("");
+
+    // تحقق من أن الحقول غير فارغة قبل الإرسال
+    if (formData.email.trim() === "") {
+      setErrors((prev) => ({ ...prev, email: true }));
+      setLoading(false);
+      return;
+    }
+    if (formData.password.trim() === "") {
+      setErrors((prev) => ({ ...prev, password: true }));
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const data = await login(formData.email, formData.password);
+
+      // localStorage 
+      localStorage.setItem("accessToken", data.access);
+      localStorage.setItem("refreshToken", data.refresh);
+
+      
+      router.push("/dashboard");
+    } catch (error) {
+      setErrorMessage(error.message || "Login failed");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="relative bg-white shadow-lg rounded-2xl flex flex-col overflow-hidden p-8">
       <h2 className="text-2xl font-bold text-indigo-800 text-center">Welcome Back! 🔑</h2>
       <p className="text-indigo-600 mt-2 text-center">Sign in to your account</p>
 
-      <form className="space-y-6 mt-6">
+      <form className="space-y-6 mt-6" onSubmit={handleSubmit}>
         {/* حقل البريد الإلكتروني */}
         <div className="relative w-full">
           <span className="absolute left-3 top-3 text-lg opacity-70">📧</span>
@@ -34,6 +73,7 @@ const AuthenticationForm = () => {
             value={formData.email}
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={loading}
           />
           {errors.email && <p className="text-red-500 text-sm mt-1">Email is required!</p>}
         </div>
@@ -50,18 +90,24 @@ const AuthenticationForm = () => {
             value={formData.password}
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={loading}
           />
           {errors.password && <p className="text-red-500 text-sm mt-1">Password is required!</p>}
         </div>
+
+        {/* رسالة الخطأ */}
+        {errorMessage && (
+          <p className="text-red-500 text-sm text-center">{errorMessage}</p>
+        )}
 
         {/* زر تسجيل الدخول */}
         <button
           type="submit"
           className={`w-full p-3 rounded-lg font-medium text-white transition-all 
-    ${isDisabled ? "bg-indigo-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"}`}
+            ${isDisabled ? "bg-indigo-400 cursor-not-allowed" : "bg-indigo-600 hover:bg-indigo-700"}`}
           disabled={isDisabled}
         >
-          Sign In
+          {loading ? "Signing In..." : "Sign In"}
         </button>
 
         {/* خط مع "or" */}
@@ -72,22 +118,34 @@ const AuthenticationForm = () => {
         </div>
 
         {/* زر تسجيل الدخول بجوجل */}
-        <button className="w-full flex items-center justify-center gap-2 p-3 border-2 border-gray-300 rounded-lg transition-all hover:bg-gray-100">
+        <button
+          className="w-full flex items-center justify-center gap-2 p-3 border-2 border-gray-300 rounded-lg transition-all hover:bg-gray-100"
+          disabled={loading}
+        >
           <i className="fa-brands fa-google text-red-500"></i>
           <span className="text-gray-700 font-medium">Sign up with Google</span>
         </button>
 
         {/* زر إعادة تعيين كلمة المرور */}
         <div className="text-center">
-          <Link href="/ForgetPaswored" className="text-indigo-600 font-bold">  Reset Password</Link>
+          <Link href="/ForgetPaswored" className="text-indigo-600 font-bold">
+            Reset Password
+          </Link>
         </div>
+
         <p className="text-center text-gray-600">
-          Don't have an account? <Link href="/signup" className="text-indigo-600 font-bold">Sign Up</Link>
+          Don't have an account?{" "}
+          <Link href="/signup" className="text-indigo-600 font-bold">
+            Sign Up
+          </Link>
         </p>
       </form>
     </div>
   );
 };
+
+
+
 
 const FeatureHighlightSection = () => {
   return (
