@@ -1,9 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { signup } from "../services/api/auth"; // ← تأكد من مسار الدالة صحيح
-
+import { signup } from "../services/api/auth"; 
+import { useRouter } from "next/navigation"; // استيراد useRouter
 const SignupForm = () => {
+  const router = useRouter(); // تهيئة useRouter
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -18,19 +19,12 @@ const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+function validateField(value) {
+  const val = typeof value === 'string' ? value.trim() : '';
+  return val === '' ? 'This field is required' : '';
+}
 
-  const validateField = (id, value) => {
-    if (id === "email" && value.trim() !== "") {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      return emailRegex.test(value) ? "" : "Invalid email format.";
-    }
 
-    if (id === "confirmPassword" && formData.password !== value) {
-      return "Passwords do not match.";
-    }
-
-    return value.trim() === "" ? "This field is required." : "";
-  };
 
   const handleChange = (e) => {
     const { id, value, type, checked } = e.target;
@@ -96,6 +90,7 @@ const SignupForm = () => {
         password: formData.password,
       });
       setSuccessMessage("Account created successfully! 🎉");
+        router.push(`/account?email=${encodeURIComponent(formData.email)}&firstName=${encodeURIComponent(formData.firstName)}&lastName=${encodeURIComponent(formData.lastName)}`);
       setFormData({
         firstName: "",
         lastName: "",

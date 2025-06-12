@@ -1,4 +1,4 @@
-const API_BASE_URL = ''; 
+const API_BASE_URL = 'https://comercifyapi.up.railway.app'; 
 
 // تسجيل الدخول
 export const login = async (username, password) => {
@@ -7,6 +7,7 @@ export const login = async (username, password) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-Client-Domain': 'https://planet.up.railway.app' // ✅ أضف هذا الهيدر
       },
       body: JSON.stringify({ username, password }),
     });
@@ -16,32 +17,40 @@ export const login = async (username, password) => {
       throw error;
     }
 
-    return await res.json();
+    return await res.json(); // يحتوي على: type, name, image (اختياري)
   } catch (error) {
     throw error.message ? error : { message: 'Login failed' };
   }
 };
-// التسجيل
 export const signup = async ({ firstName, lastName, email, phone, password }) => {
   try {
     const res = await fetch(`${API_BASE_URL}/signup/`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+     headers: {
+        'Content-Type': 'application/json',
+        'X-Client-Domain': 'https://planet.up.railway.app' // ✅ أضف هذا الهيدر
+      },
       body: JSON.stringify({
         firstName,
         lastName,
         email,
-        phone,
+        phoneNumber: phone,
         password,
+        passwordConfermation: password,
       }),
     });
 
-    return await handleResponse(res, 'فشل التسجيل');
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.message || 'فشل التسجيل');
+    }
+
+    const data = await res.json();
+    return data;
   } catch (error) {
     throw error?.message ? error : { message: 'Signup failed' };
   }
 };
-
 
  //Google
 export const signupWithProvider = async (provider, token, userType) => {

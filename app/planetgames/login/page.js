@@ -39,18 +39,18 @@ const AuthenticationForm = () => {
       return;
     }
 
-    try {
-      const data = await login(formData.email, formData.password);
+  try {
+  const data = await login(formData.email, formData.password);
 
-      // localStorage 
-      localStorage.setItem("accessToken", data.access);
-      localStorage.setItem("refreshToken", data.refresh);
+  // احفظ اسم المستخدم وصورته مثلاً
+  localStorage.setItem("userName", data.name);
+  if (data.image) localStorage.setItem("userImage", data.image);
 
-      
-      router.push("/dashboard");
-    } catch (error) {
-      setErrorMessage(error.message || "Login failed");
-    } finally {
+  router.push("/account");
+} catch (error) {
+  setErrorMessage(error.message || "Login failed");
+}
+ finally {
       setLoading(false);
     }
   };

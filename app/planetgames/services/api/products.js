@@ -1,13 +1,35 @@
 // /services/api/products.js
-const API_BASE_URL = ''; 
+const API_BASE_URL = 'https://comercifyapi.up.railway.app'; 
 
-// 🟡 1. Get list of products with optional filters
-export const fetchProducts = async ({ page = 1, category, search, signal } = {}) => {
-  let url = `${API_BASE_URL}/v2/products/?page=${page}`;
-  if (category) url += `&category=${category}`;
-  if (search) url += `&search=${search}`;
+export const fetchProducts = async ({
+  page = 1,
+  category_id,
+  price_gte,
+  price_lte,
+  signal
+} = {}) => {
+  const queryParams = new URLSearchParams({
+    page: page.toString(),
+    ...(category_id && { category_id: category_id.toString() }),
+  ...(price_gte !== undefined && price_gte !== null ? { price_gte: price_gte.toString() } : {}),
+...(price_lte !== undefined && price_lte !== null ? { price_lte: price_lte.toString() } : {}),
 
-  const res = await fetch(url, { signal }); // ← signal
+  });
+console.log(queryParams.toString())
+  const res = await fetch(
+    `https://comercifyapi.up.railway.app/v2/products/?${queryParams.toString()}`,
+    {
+      method: 'GET',
+      signal,
+     headers: {
+        'Content-Type': 'application/json',
+        'X-Client-Domain': 'https://planet.up.railway.app' // ✅ أضف هذا الهيدر
+      },
+    }
+  );
+
+  if (!res.ok) throw new Error("Failed to fetch products");
+
   return await res.json();
 };
 
@@ -57,9 +79,19 @@ export const deleteProduct = async (id, token) => {
 
 // ✅ 6. List categories
 export const fetchCategories = async () => {
-  const res = await fetch(`${API_BASE_URL}/v2/categories/`);
+  const res = await fetch(`${API_BASE_URL}/v2/categories/`, {
+    headers: {
+      'X-Client-Domain': 'https://planet.up.railway.app',
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch categories');
+  }
+
   return await res.json();
 };
+
 
 // 🔥 7. Get hot categories
 export const fetchTopCategories = async () => {

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Product } from './Product'; // تأكد من المسار
+import { Product } from './Product'; // تأكد من المسار الصحيح
 
 const ProductCarousel = ({ title, products }) => {
   const containerRef = useRef(null);
@@ -7,20 +7,14 @@ const ProductCarousel = ({ title, products }) => {
 
   const scrollToIndex = (index) => {
     const container = containerRef.current;
-    if (!container) return;
-
-    const children = container.children;
-    const child = children[index];
+    const children = container?.children;
+    const child = children?.[index];
     if (child) {
-      child.scrollIntoView({
-        behavior: 'smooth',
-        inline: 'start',
-        block: 'nearest',
-      });
+      child.scrollIntoView({ behavior: 'smooth', inline: 'start' });
       setActiveIndex(index);
     }
   };
-  
+
   const handleScroll = () => {
     const container = containerRef.current;
     const scrollLeft = container.scrollLeft;
@@ -40,7 +34,6 @@ const ProductCarousel = ({ title, products }) => {
   return (
     <div className="mt-16 p-2">
       <h2 className="text-3xl font-bold text-gray-900 mb-6">{title}</h2>
-      {/* المنتجات */}
       <div
         ref={containerRef}
         className="flex overflow-x-auto scroll-smooth snap-x snap-mandatory scrollbar-hide"
@@ -49,14 +42,14 @@ const ProductCarousel = ({ title, products }) => {
           <div
             key={index}
             className="px-2 snap-start 
-            min-w-[90%] 
-            sm:min-w-[50%] 
-            md:min-w-[33.33%] 
-            lg:min-w-[25%] 
-            xl:min-w-[20%]"
+              min-w-[90%] 
+              sm:min-w-[50%] 
+              md:min-w-[33.33%] 
+              lg:min-w-[25%] 
+              xl:min-w-[20%]"
           >
             <Product
-              category={product.category}
+              category={product.category || "N/A"}
               productName={product.title}
               price={product.price}
               tag={product.outOfStock ? "outOfStock" : undefined}
@@ -66,7 +59,7 @@ const ProductCarousel = ({ title, products }) => {
           </div>
         ))}
       </div>
-      {/* النقاط */}
+
       <div className="flex justify-center mt-6 flex-wrap gap-2">
         {products.map((_, index) => (
           <button
@@ -80,7 +73,7 @@ const ProductCarousel = ({ title, products }) => {
           ></button>
         ))}
       </div>
-      {/* إخفاء Scrollbar */}
+
       <style jsx global>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;

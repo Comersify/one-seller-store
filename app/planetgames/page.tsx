@@ -10,7 +10,8 @@ import Image from "next/image";
 import { Product } from "./components/Product";
 import ProductCarousel from"./components/ProductCarousel"
 import { useProducts }from "../../roupi/product"
-
+import { fetchProducts } from "./services/api/products"; // ← استدعاء الدالة الصحيحة
+import { useEffect, useState } from "react";
 
 
 const Title = ({ text, subtext }: any) => (
@@ -31,12 +32,34 @@ const Category = ({ name, slug, children, p = "p-7" }) => (
 
 
 export default function Home(){
-  const { products: hotDeals } = useProducts({ filter: 'hot-deals', search: '', page: 1 });
-const { products: featured } = useProducts({ filter: 'featured', search: '', page: 1 });
-const { products: bestSellers } = useProducts({ filter: 'best-sellers', search: '', page: 1 });
+const [allProducts, setAllProducts] = useState([]);
+useEffect(() => {
+  const controller = new AbortController();
 
+  const loadProducts = async () => {
+    try {
+      const res = await fetch("https://comercifyapi.up.railway.app/v2/products/?page=1&category=1", {
+        method: "GET",
+        signal: controller.signal,
+        headers: {
+          "X-Client-Domain": "https://planet.up.railway.app"
+        }
+      });
 
-  console.log(hotDeals)
+      if (!res.ok) throw new Error("Failed to fetch products");
+
+      const data = await res.json();
+      console.log("Fetched data:", data); // مصفوفة مباشرة
+      setAllProducts(data || []); // <-- التصحيح هنا
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  loadProducts();
+  return () => controller.abort();
+}, []);
+
   return (
     <>
       <main>
@@ -63,7 +86,7 @@ const { products: bestSellers } = useProducts({ filter: 'best-sellers', search: 
             <input type="radio" name="slider" id="slide3" className="hidden peer/slide3" />
 
             <div className=" w-full  max-sm:w-[300px]   ">
-             <ProductCarousel title="Hot Deals" products={hotDeals} />
+             <ProductCarousel title=" " products={allProducts} />
             </div>
               
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
@@ -84,7 +107,7 @@ const { products: bestSellers } = useProducts({ filter: 'best-sellers', search: 
             <input type="radio" name="Fslider" id="Fslide3" className="hidden peer/Fslide3" />
 
             <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title="Featured" products={featured} />
+              <ProductCarousel title="" products={allProducts} />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Fslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Fslide1:bg-blue-500"></label>
@@ -105,7 +128,7 @@ const { products: bestSellers } = useProducts({ filter: 'best-sellers', search: 
 
             <div className="max-sm:peer-checked/Hslide1:opacity-100 max-sm:peer-checked/Hslide2:hidden max-sm:peer-checked/Hslide3:hidden">
             <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title="Best Sellers" products={bestSellers} />
+              <ProductCarousel title=" " products={allProducts} />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Hslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide1:bg-blue-500"></label>
@@ -114,27 +137,6 @@ const { products: bestSellers } = useProducts({ filter: 'best-sellers', search: 
             </div>
           </div>
           </div>
-        </section>
-        <section className="flex flex-col items-center my-16 justify-center">
-          <Title
-            text="Best Sellers"
-            subtext="Explore products that our customers loves most."
-          />
-          <div className="flex max-sm:flex-col overflow-auto py-4 px-24 space-x-8">
-            <input type="radio" name="Bslider" id="Bslide1" className="hidden peer/Bslide1" defaultChecked />
-            <input type="radio" name="Bslider" id="Bslide2" className="hidden peer/Bslide2" />
-            <input type="radio" name="Bslider" id="Bslide3" className="hidden peer/Bslide3" />
-
-            <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title="" products={featured} />
-            </div>
-            <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
-              <label htmlFor="Bslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Bslide1:bg-blue-500"></label>
-              <label htmlFor="Bslide2" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Bslide2:bg-blue-500"></label>
-              <label htmlFor="Bslide3" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Bslide3:bg-blue-500"></label>
-            </div>
-          </div>
-          <div/>
         </section>
         <section className="flex flex-col px-10 items-center justify-center inset-0 bg-gradient-to-br from-gray-50 to-gray-100 py-24">
           <p className="text-purple-500 font-bold text-lg">Simple Process</p>
