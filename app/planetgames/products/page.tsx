@@ -215,23 +215,32 @@ fetchProducts({
 
   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
     {loading ? (
-      Array.from({ length: 8 }).map((_, index) => (
-        <Product key={index} isLoading />
-      ))
-    ) : products.length === 0 ? (
-      <p className="text-center text-gray-500 col-span-full">No products found.</p>
-    ) : (
-      products.map((product) => (
-        <Product
-          key={product.id}
-          category={product.category?.name || "Uncategorized"}
-          productName={product.title}
-          price={product.act_price}
-          image={`${baseURL}/${product.image}`}
-          link={`/product/${product.slug || product.id}`}
-        />
-      ))
-    )}
+  Array.from({ length: 8 }).map((_, index) => (
+    <Product
+      key={index}
+      category=""
+      productName=""
+      price={0}
+      image=""
+      link=""
+      isLoading
+    />
+  ))
+) : products.length === 0 ? (
+  <p className="text-center text-gray-500 col-span-full">No products found.</p>
+) : (
+  products.map((product) => (
+    <Product
+      key={product.id}
+      category={product.category?.name || "Uncategorized"}
+      productName={product.title}
+      price={product.act_price}
+      image={`${baseURL}/${product.image}`}
+      link={`/product/${product.slug || product.id}`}
+    />
+  ))
+)}
+
   </div>
 </div>
 
