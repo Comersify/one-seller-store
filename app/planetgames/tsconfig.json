@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "login/page.js", "account/orders/layout.js", "account/layout.js"  ],
   "exclude": [
     "node_modules"
   ]

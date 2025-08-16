@@ -1,6 +1,6 @@
 "use client";
 
-import { useStateContext } from "@/context/contextProvider";
+import { useStateContext } from "../context/contextProvider";
 import { usePOST } from "./utils";
 import { useState } from "react";
 
@@ -56,6 +56,7 @@ export const useCreateOrder = (id) => {
       });
       return;
     }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     usePOST("one-seller/order/create/", {
       data: { ...data, ...order },
     }).then((res) => {

@@ -1,6 +1,6 @@
 "use client";
-import { Input } from "@/comps/shared/Input";
-import { Title } from "@/comps/shared/Title";
+import { Input } from "../../../comps/shared/Input";
+import { Title } from "../../../comps/shared/Title";
 
 export default function ContactUS() {
   return (

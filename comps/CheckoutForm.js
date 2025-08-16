@@ -1,4 +1,4 @@
-import { Input } from "@/comps/shared/Input";
+import { Input } from "../comps/shared/Input";
 import { useState } from "react";
 
 export const CheckoutForm = ({ hasPacks, submit }) => {

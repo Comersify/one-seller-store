@@ -28,7 +28,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "app/planetgames/login/page.js", "app/planetgames/account/orders/layout.js", "app/planetgames/account/layout.js"  ],
   "exclude": [
     "node_modules"
   ]
