@@ -1,12 +1,5 @@
 "use client";
 import { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Thumbs } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/thumbs";
-import 'material-icons/iconfont/material-icons.css';
-
-
 import React from "react";
 
 /**
@@ -87,7 +80,6 @@ export default function TailwindSlider({
 
 
 export function DetailsOfProducts() {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   const images = [
     "https://backend.odigix.com/storage/1754/conversions/psn100chf-large.jpg",
