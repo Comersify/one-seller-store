@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { signup } from "../services/api/auth"; 
+import { signup } from "../../api/auth";
 import { useRouter } from "next/navigation"; // استيراد useRouter
 const SignupForm = () => {
   const router = useRouter(); // تهيئة useRouter
@@ -19,10 +19,10 @@ const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-function validateField(value) {
-  const val = typeof value === 'string' ? value.trim() : '';
-  return val === '' ? 'This field is required' : '';
-}
+  function validateField(value) {
+    const val = typeof value === 'string' ? value.trim() : '';
+    return val === '' ? 'This field is required' : '';
+  }
 
 
 
@@ -90,7 +90,7 @@ function validateField(value) {
         password: formData.password,
       });
       setSuccessMessage("Account created successfully! 🎉");
-        router.push(`/account?email=${encodeURIComponent(formData.email)}&firstName=${encodeURIComponent(formData.firstName)}&lastName=${encodeURIComponent(formData.lastName)}`);
+      router.push(`/account?email=${encodeURIComponent(formData.email)}&firstName=${encodeURIComponent(formData.firstName)}&lastName=${encodeURIComponent(formData.lastName)}`);
       setFormData({
         firstName: "",
         lastName: "",
@@ -117,13 +117,12 @@ function validateField(value) {
           {/* الاسم الأول واسم العائلة */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[{ id: "firstName", placeholder: "First Name", icon: "👤" },
-              { id: "lastName", placeholder: "Last Name", icon: "👤" }].map(({ id, placeholder, icon }) => (
+            { id: "lastName", placeholder: "Last Name", icon: "👤" }].map(({ id, placeholder, icon }) => (
               <div key={id} className="relative w-full">
                 <span className="absolute left-3 top-3 text-lg opacity-70">{icon}</span>
                 <input
-                  className={`w-full pl-10 p-3 border rounded-lg outline-none transition-all duration-300 ${
-                    errors[id] ? "border-red-500" : "border-gray-300 focus:border-indigo-600"
-                  }`}
+                  className={`w-full pl-10 p-3 border rounded-lg outline-none transition-all duration-300 ${errors[id] ? "border-red-500" : "border-gray-300 focus:border-indigo-600"
+                    }`}
                   id={id}
                   type="text"
                   placeholder={placeholder}
@@ -138,22 +137,21 @@ function validateField(value) {
 
           {/* باقي الحقول */}
           {[{ id: "email", type: "text", placeholder: "Email", icon: "📧" },
-            { id: "phone", type: "tel", placeholder: "Phone", icon: "📱" },
-            { id: "password", type: "password", placeholder: "Password", icon: "🔒" },
-            { id: "confirmPassword", type: "password", placeholder: "Confirm Password", icon: "🔒" },
+          { id: "phone", type: "tel", placeholder: "Phone", icon: "📱" },
+          { id: "password", type: "password", placeholder: "Password", icon: "🔒" },
+          { id: "confirmPassword", type: "password", placeholder: "Confirm Password", icon: "🔒" },
           ].map(({ id, type, placeholder, icon }) => (
             <div key={id} className="relative w-full">
               <span className="absolute left-3 top-3 text-lg opacity-70">{icon}</span>
               <input
-                className={`w-full pl-10 p-3 border rounded-lg outline-none transition-all duration-300 ${
-                  id === "confirmPassword" && formData.password
+                className={`w-full pl-10 p-3 border rounded-lg outline-none transition-all duration-300 ${id === "confirmPassword" && formData.password
                     ? formData.password === formData.confirmPassword
                       ? "border-green-500"
                       : "border-red-500"
                     : errors[id]
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-indigo-600"
-                }`}
+                      ? "border-red-500"
+                      : "border-gray-300 focus:border-indigo-600"
+                  }`}
                 id={id}
                 type={type}
                 placeholder={placeholder}
@@ -178,11 +176,10 @@ function validateField(value) {
           <button
             type="submit"
             disabled={!isFormValid || loading}
-            className={`w-full p-3 text-white font-medium rounded-lg transition-all ${
-              isFormValid && !loading
+            className={`w-full p-3 text-white font-medium rounded-lg transition-all ${isFormValid && !loading
                 ? "bg-indigo-600 hover:bg-indigo-700"
                 : "bg-indigo-400 cursor-not-allowed"
-            }`}
+              }`}
           >
             {loading ? "Creating..." : "Create Account"}
           </button>
