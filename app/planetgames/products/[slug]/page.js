@@ -11,7 +11,7 @@ import React from "react";
  * Props:
  *  - slides: Array<{ src: string, alt?: string, caption?: string }>
  */
-export default function TailwindSlider({
+export function TailwindSlider({
   slides,
 }) {
   const name = "twslider-" + Math.random().toString(36).slice(2, 7);
@@ -79,7 +79,7 @@ export default function TailwindSlider({
 
 
 
-export function DetailsOfProducts() {
+export default function DetailsPage() {
 
   const images = [
     "https://backend.odigix.com/storage/1754/conversions/psn100chf-large.jpg",
