@@ -248,7 +248,7 @@ const Categories = ({ onSelectCategory }) => {
 };
 // Main Home Component
 export default function Home() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState({});
   const [loading, setLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(null);
   const [minPrice, setMinPrice] = useState('');
