@@ -11,7 +11,7 @@ import React from "react";
  * Props:
  *  - slides: Array<{ src: string, alt?: string, caption?: string }>
  */
-export function TailwindSlider({
+function TailwindSlider({
   slides,
 }) {
   const name = "twslider-" + Math.random().toString(36).slice(2, 7);
