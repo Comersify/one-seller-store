@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { login } from "../services/api/auth"; // تأكد أن المسار صحيح حسب مجلدك
+import { login } from "../../api/auth"; // تأكد أن المسار صحيح حسب مجلدك
 import { useRouter } from "next/navigation";
 
 const AuthenticationForm = () => {
@@ -39,18 +39,18 @@ const AuthenticationForm = () => {
       return;
     }
 
-  try {
-  const data = await login(formData.email, formData.password);
+    try {
+      const data = await login(formData.email, formData.password);
 
-  // احفظ اسم المستخدم وصورته مثلاً
-  localStorage.setItem("userName", data.name);
-  if (data.image) localStorage.setItem("userImage", data.image);
+      // احفظ اسم المستخدم وصورته مثلاً
+      localStorage.setItem("userName", data.name);
+      if (data.image) localStorage.setItem("userImage", data.image);
 
-  router.push("/account");
-} catch (error) {
-  setErrorMessage(error.message || "Login failed");
-}
- finally {
+      router.push("/account");
+    } catch (error) {
+      setErrorMessage(error.message || "Login failed");
+    }
+    finally {
       setLoading(false);
     }
   };
