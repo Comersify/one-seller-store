@@ -268,7 +268,7 @@ export default function Home() {
 
       .then((data) => {
 
-        setProducts(data || []);
+        setProducts(data);
         setLoading(false);
       })
       .catch((err) => {
