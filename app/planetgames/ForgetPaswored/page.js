@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
-import { resetPassword } from "../services/api/auth"; // تأكد من المسار الصحيح
+import { resetPassword } from "../../services/api/auth";
 
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
@@ -51,13 +51,12 @@ const ResetPassword = () => {
               onFocus={() => setIsFocused(true)}
               onBlur={handleBlur}
               required
-              className={`w-full p-2 border rounded mt-1 transition outline-none ${
-                isFocused
+              className={`w-full p-2 border rounded mt-1 transition outline-none ${isFocused
                   ? "border-indigo-600"
                   : error
-                  ? "border-red-500"
-                  : "border-gray-300"
-              }`}
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
               placeholder="Email"
             />
             {error && <p className="text-red-500 text-sm mt-1">Email is required</p>}

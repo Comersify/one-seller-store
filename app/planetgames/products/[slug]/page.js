@@ -6,6 +6,86 @@ import "swiper/css";
 import "swiper/css/thumbs";
 import 'material-icons/iconfont/material-icons.css';
 
+
+import React from "react";
+
+/**
+ * Tailwind-only CSS Slider (no custom CSS, no JS behavior)
+ * - Uses hidden radio inputs + labels for navigation
+ * - Prev/Next arrows and dot indicators
+ * - All styling via Tailwind utility classes
+ *
+ * Props:
+ *  - slides: Array<{ src: string, alt?: string, caption?: string }>
+ */
+export default function TailwindSlider({
+  slides,
+}) {
+  const name = "twslider-" + Math.random().toString(36).slice(2, 7);
+
+  return (
+    <div className="w-full max-w-4xl mx-auto select-none">
+      <div className="relative">
+        {/* RADIOs + SLIDES */}
+        <div className="relative h-0 pb-[50%] overflow-hidden rounded-2xl shadow">
+          {slides.map((s, i) => (
+            <div key={`slide-wrap-${i}`} className="absolute inset-0">
+              {/* Radio for this slide */}
+              <input
+                id={`${name}-${i}`}
+                name={name}
+                type="radio"
+                defaultChecked={i === 0}
+                className="peer hidden"
+              />
+
+              {/* Slide content controlled by the peer radio above */}
+              <figure className="absolute inset-0 opacity-0 scale-[1.02] transition-all duration-500 ease-in-out peer-checked:opacity-100 peer-checked:scale-100 peer-checked:z-10">
+                <img
+                  src={s.src}
+                  alt={`Slide ${i + 1}`}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+
+
+                {/* Prev / Next arrows */}
+                <div className="pointer-events-none">
+                  <label
+                    htmlFor={`${name}-${(i - 1 + slides.length) % slides.length}`}
+                    className="pointer-events-auto absolute left-2 top-1/2 -translate-y-1/2 rounded-xl bg-white/80 px-3 py-1 text-xl font-semibold shadow hover:bg-white"
+                  >
+                    ‹
+                  </label>
+                  <label
+                    htmlFor={`${name}-${(i + 1) % slides.length}`}
+                    className="pointer-events-auto absolute right-2 top-1/2 -translate-y-1/2 rounded-xl bg-white/80 px-3 py-1 text-xl font-semibold shadow hover:bg-white"
+                  >
+                    ›
+                  </label>
+                </div>
+              </figure>
+            </div>
+          ))}
+        </div>
+
+        {/* DOTS */}
+        <div className="mt-3 flex items-center justify-center gap-2">
+          {slides.map((_, i) => (
+            <label
+              key={`dot-${i}`}
+              htmlFor={`${name}-${i}`}
+              className="h-3 w-3 cursor-pointer rounded-full bg-gray-300 hover:bg-gray-400"
+              title={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
 export default function DetailsOfProducts() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
@@ -42,34 +122,9 @@ export default function DetailsOfProducts() {
       {/* Image Gallery */}
       <div className="w-full max-w-sm mx-auto lg:max-w-md">
         <div className="mx-auto bg-gray-100 rounded relative">
-          <Swiper modules={[Thumbs]} thumbs={{ swiper: thumbsSwiper }}>
-            {images.map((image, index) => (
-              <SwiperSlide key={index}>
-                <img
-                  src={image}
-                  alt={`image-${index}`}
-                  className="w-full h-[300px] sm:h-[350px] md:h-[400px] lg:h-[450px] object-contain"  // تم تحسين الأبعاد للصور
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <TailwindSlider slides={images} />
         </div>
 
-        <div className="mt-2">
-          <Swiper
-            onSwiper={setThumbsSwiper}
-            slidesPerView={3}
-            spaceBetween={20}
-            watchSlidesProgress
-            className="swiper-thumbs"
-          >
-            {images.map((image, index) => (
-              <SwiperSlide key={index}>
-                <img src={image} alt={`thumb-${index}`} className="w-full h-full object-contain" />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
       </div>
 
       {/* Product Details */}
@@ -186,52 +241,52 @@ export default function DetailsOfProducts() {
             </div>
           </div>
           <div className="grid grid-cols-3 gap-4 mt-6 p-6 border border-white/20">
-          <div className="flex flex-col items-center text-center space-y-3 group hover:transform hover:scale-105 transition-all duration-300">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 rounded-full"></div>
-              <div className="relative bg-white p-3 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-zap-icon w-6 h-6 text-primary group-hover:animate-pulse">
-                  <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path>
-                </svg>
+            <div className="flex flex-col items-center text-center space-y-3 group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="relative">
+                <div className="absolute inset-0 bg-primary/20 rounded-full"></div>
+                <div className="relative bg-white p-3 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-zap-icon w-6 h-6 text-primary group-hover:animate-pulse">
+                    <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"></path>
+                  </svg>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <span className="text-sm font-bold text-primary">Instant Delivery</span>
+                <p className="text-xs text-gray-500">Get it right away</p>
               </div>
             </div>
-            <div className="space-y-1">
-              <span className="text-sm font-bold text-primary">Instant Delivery</span>
-              <p className="text-xs text-gray-500">Get it right away</p>
-            </div>
-          </div>
 
-          <div className="flex flex-col items-center text-center space-y-3 group hover:transform hover:scale-105 transition-all duration-300">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 rounded-full"></div>
-              <div className="relative bg-white p-3 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-shield-check-icon w-6 h-6 text-primary group-hover:animate-pulse">
-                  <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
-                  <path d="m9 12 2 2 4-4"></path>
-                </svg>
+            <div className="flex flex-col items-center text-center space-y-3 group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="relative">
+                <div className="absolute inset-0 bg-primary/20 rounded-full"></div>
+                <div className="relative bg-white p-3 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-shield-check-icon w-6 h-6 text-primary group-hover:animate-pulse">
+                    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path>
+                    <path d="m9 12 2 2 4-4"></path>
+                  </svg>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <span className="text-sm font-bold text-primary">Secure Payment</span>
+                <p className="text-xs text-gray-500">100% Protected</p>
               </div>
             </div>
-            <div className="space-y-1">
-              <span className="text-sm font-bold text-primary">Secure Payment</span>
-              <p className="text-xs text-gray-500">100% Protected</p>
-            </div>
-          </div>
 
-          <div className="flex flex-col items-center text-center space-y-3 group hover:transform hover:scale-105 transition-all duration-300">
-            <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 rounded-full"></div>
-              <div className="relative bg-white p-3 rounded-full">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones-icon w-6 h-6 text-primary group-hover:animate-pulse"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"></path></svg>
+            <div className="flex flex-col items-center text-center space-y-3 group hover:transform hover:scale-105 transition-all duration-300">
+              <div className="relative">
+                <div className="absolute inset-0 bg-primary/20 rounded-full"></div>
+                <div className="relative bg-white p-3 rounded-full">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-headphones-icon w-6 h-6 text-primary group-hover:animate-pulse"><path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"></path></svg>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <span className="text-sm font-bold text-primary">24/7 Available</span>
+                <p className="text-xs text-gray-500">Customer Support</p>
               </div>
             </div>
-            <div className="space-y-1">
-              <span className="text-sm font-bold text-primary">24/7 Available</span>
-              <p className="text-xs text-gray-500">Customer Support</p>
-            </div>
           </div>
-        </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
