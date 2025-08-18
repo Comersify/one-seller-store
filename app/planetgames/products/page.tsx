@@ -312,9 +312,9 @@ export default function Home() {
           <div className="w-full flex items-center justify-between">
 
             <p className="px-12 pb-4">
-              Showing <b>{products.results.length}</b> of <b>{products.count}</b> products
+              Showing <b>{products?.results?.length}</b> of <b>{products?.count}</b> products
             </p>
-            <PaginationButtons previousUrl={products.previous} nextUrl={products.next} />
+            <PaginationButtons previousUrl={products?.previous} nextUrl={products?.next} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
@@ -330,10 +330,10 @@ export default function Home() {
                   isLoading
                 />
               ))
-            ) : products.count === 0 ? (
+            ) : products?.count === 0 ? (
               <p className="text-center text-gray-500 col-span-full">No products found.</p>
             ) : (
-              products.results.map((product) => (
+              products?.results?.map((product) => (
                 <Product
                   key={product.id}
                   category={product.category || "Uncategorized"}
