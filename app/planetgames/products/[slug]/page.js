@@ -86,7 +86,7 @@ export default function TailwindSlider({
 
 
 
-export default function DetailsOfProducts() {
+export function DetailsOfProducts() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   const images = [
