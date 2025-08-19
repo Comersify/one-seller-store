@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export const Product = ({
   category,
   productName,
@@ -27,7 +29,7 @@ export const Product = ({
   }
 
   return (
-    <a href={link}>
+    <Link href={link}>
       <div className="rounded-md hover:cursor-pointer bg-white p-2">
         <div className="relative mb-2 overflow-hidden rounded bg-gray-200 h-[280px]">
           <img
@@ -54,6 +56,6 @@ export const Product = ({
         </p>
         <p className="text-sm text-purple-600 font-bold">{price} DZD</p>
       </div>
-    </a>
+    </Link>
   );
 };

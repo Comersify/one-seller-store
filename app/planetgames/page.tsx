@@ -8,9 +8,9 @@ import Link from "next/link";
 import PCIcon from "./resources/game.png";
 import Image from "next/image";
 import { Product } from "./components/Product";
-import ProductCarousel from"./components/ProductCarousel"
-import { useProducts }from "../../roupi/product"
-import { fetchProducts } from "./services/api/products"; // ← استدعاء الدالة الصحيحة
+import ProductCarousel from "./components/ProductCarousel"
+import { useProducts } from "../../roupi/product"
+import { fetchProducts } from "../api/products"; // ← استدعاء الدالة الصحيحة
 import { useEffect, useState } from "react";
 
 
@@ -31,34 +31,34 @@ const Category = ({ name, slug, children, p = "p-7" }) => (
 )
 
 
-export default function Home(){
-const [allProducts, setAllProducts] = useState([]);
-useEffect(() => {
-  const controller = new AbortController();
+export default function Home() {
+  const [allProducts, setAllProducts] = useState([]);
+  useEffect(() => {
+    const controller = new AbortController();
 
-  const loadProducts = async () => {
-    try {
-      const res = await fetch("https://comercifyapi.up.railway.app/v2/products/?page=1&category=1", {
-        method: "GET",
-        signal: controller.signal,
-        headers: {
-          "X-Client-Domain": "https://planet.up.railway.app"
-        }
-      });
+    const loadProducts = async () => {
+      try {
+        const res = await fetch("https://comercifyapi.up.railway.app/v2/products/?page=1&category=1", {
+          method: "GET",
+          signal: controller.signal,
+          headers: {
+            "X-Client-Domain": "https://planet.up.railway.app"
+          }
+        });
 
-      if (!res.ok) throw new Error("Failed to fetch products");
+        if (!res.ok) throw new Error("Failed to fetch products");
 
-      const data = await res.json();
-      console.log("Fetched data:", data); // مصفوفة مباشرة
-      setAllProducts(data || []); // <-- التصحيح هنا
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  };
+        const data = await res.json();
+        console.log("Fetched data:", data); // مصفوفة مباشرة
+        setAllProducts(data || []); // <-- التصحيح هنا
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
 
-  loadProducts();
-  return () => controller.abort();
-}, []);
+    loadProducts();
+    return () => controller.abort();
+  }, []);
 
   return (
     <>
@@ -86,9 +86,9 @@ useEffect(() => {
             <input type="radio" name="slider" id="slide3" className="hidden peer/slide3" />
 
             <div className=" w-full  max-sm:w-[300px]   ">
-             <ProductCarousel title=" " products={allProducts} />
+              <ProductCarousel title=" " products={allProducts} />
             </div>
-              
+
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="slide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/slide1:bg-blue-500"></label>
               <label htmlFor="slide2" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/slide2:bg-blue-500"></label>
@@ -127,15 +127,15 @@ useEffect(() => {
             <input type="radio" name="Hslider" id="Hslide3" className="hidden peer/Hslide3" />
 
             <div className="max-sm:peer-checked/Hslide1:opacity-100 max-sm:peer-checked/Hslide2:hidden max-sm:peer-checked/Hslide3:hidden">
-            <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title=" " products={allProducts} />
+              <div className=" w-full  max-sm:w-[300px]   ">
+                <ProductCarousel title=" " products={allProducts} />
+              </div>
+              <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
+                <label htmlFor="Hslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide1:bg-blue-500"></label>
+                <label htmlFor="Hslide2" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide2:bg-blue-500"></label>
+                <label htmlFor="Hslide3" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide3:bg-blue-500"></label>
+              </div>
             </div>
-            <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
-              <label htmlFor="Hslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide1:bg-blue-500"></label>
-              <label htmlFor="Hslide2" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide2:bg-blue-500"></label>
-              <label htmlFor="Hslide3" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide3:bg-blue-500"></label>
-            </div>
-          </div>
           </div>
         </section>
         <section className="flex flex-col px-10 items-center justify-center inset-0 bg-gradient-to-br from-gray-50 to-gray-100 py-24">
@@ -238,13 +238,13 @@ useEffect(() => {
             </div>
           </div>
           <Link href="/products">
-      <div className="bg-purple-600 hover:bg-purple-700 group flex items-center justify-center px-4 py-2 text-white rounded-md text-md font-bold cursor-pointer">
-        Start Shopping
-        <div className="pl-2 transform group-hover:translate-x-1 transition-transform">
-          <RightArrow />
-        </div>
-      </div>
-    </Link>
+            <div className="bg-purple-600 hover:bg-purple-700 group flex items-center justify-center px-4 py-2 text-white rounded-md text-md font-bold cursor-pointer">
+              Start Shopping
+              <div className="pl-2 transform group-hover:translate-x-1 transition-transform">
+                <RightArrow />
+              </div>
+            </div>
+          </Link>
         </section>
       </main>
     </>
