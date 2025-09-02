@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { fetchProducts, fetchCategories } from "../../api/products";
 import { Product } from "../components/Product";
-const baseURL = process.env.NEXT_PUBLIC_MEDIA_URL;
+import { MEDIA_URL } from "../../../urls";
 
 /**
  * PaginationButtons
@@ -341,7 +341,7 @@ export default function Home() {
                   category={product.category || "Uncategorized"}
                   productName={product.title}
                   price={product.act_price}
-                  image={`${baseURL}/${product.image}`}
+                  image={`${MEDIA_URL}/${product.image}`}
                   link={`/products/${product.slug || product.id}`}
                 />
               ))

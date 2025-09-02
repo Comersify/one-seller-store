@@ -90,17 +90,23 @@ export const fetchProductReviews = async (productId) => {
 
 // 💸 16. Get super deals
 export const fetchSuperDeals = async () => {
-  const res = await fetch(`${API_BASE_URL}/products/super-deals/`);
+  const res = await fetch(`${API_BASE_URL}/products/super-deals/`, {
+    'X-Client-Domain': 'https://planetgames.localhost:3001',
+  });
   return await res.json();
 };
 
 export const fetchRecentProducts = async () => {
-  const res = await fetch(`${API_BASE_URL}/products/new/`);
+  const res = await fetch(`${API_BASE_URL}/products/new/`, {
+    'X-Client-Domain': 'https://planetgames.localhost:3001',
+  });
   return await res.json();
 };
 
 export const fetchBestSellers = async () => {
-  const res = await fetch(`${API_BASE_URL}/products/best-sellers/`);
+  const res = await fetch(`${API_BASE_URL}/products/best-sellers/`, {
+    'X-Client-Domain': 'https://planetgames.localhost:3001',
+  });
   return await res.json();
 };
 
