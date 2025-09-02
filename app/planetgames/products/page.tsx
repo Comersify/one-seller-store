@@ -341,7 +341,7 @@ export default function Home() {
                   category={product.category || "Uncategorized"}
                   productName={product.title}
                   price={product.act_price}
-                  image={`${MEDIA_URL}/${product.image}`}
+                  image={product.image}
                   link={`/products/${product.slug || product.id}`}
                 />
               ))
