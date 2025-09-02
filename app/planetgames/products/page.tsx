@@ -80,7 +80,7 @@ function PaginationButtons({ previousUrl, nextUrl, setPage, page }) {
       </Btn>
 
       {/* Current page number (disabled) */}
-      <Btn disabled ariaLabel={`Current page ${currentPage}`}>
+      <Btn disabled onClick={() => { }} ariaLabel={`Current page ${currentPage}`}>
         {currentPage}
       </Btn>
 
