@@ -30,7 +30,6 @@ const Category = ({ name, slug, children, p = "p-7" }) => (
 
 
 export default function Home() {
-  const [allProducts, setAllProducts] = useState([]);
   const [hotDeals, setHotDeals] = useState([]);
   const [newProducts, setNewProducts] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
