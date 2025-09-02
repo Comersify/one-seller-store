@@ -54,7 +54,7 @@ const ProductCarousel = ({ title, products }) => {
               price={product.price}
               tag={product.outOfStock ? "outOfStock" : undefined}
               image={product.image}
-              link={product.link}
+              link={`/products/${product.slug}`}
             />
           </div>
         ))}
@@ -65,11 +65,10 @@ const ProductCarousel = ({ title, products }) => {
           <button
             key={index}
             onClick={() => scrollToIndex(index)}
-            className={`h-2 transition-all duration-300 ease-in-out ${
-              activeIndex === index
+            className={`h-2 transition-all duration-300 ease-in-out ${activeIndex === index
                 ? 'w-6 bg-blue-500 rounded-full'
                 : 'w-2 bg-gray-300 rounded-full opacity-60'
-            }`}
+              }`}
           ></button>
         ))}
       </div>
