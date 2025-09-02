@@ -5,8 +5,6 @@ import { fetchProducts, fetchCategories } from "../../api/products";
 import { Product } from "../components/Product";
 const baseURL = process.env.NEXT_PUBLIC_MEDIA_URL;
 
-import React from "react";
-
 /**
  * PaginationButtons
  * Renders up to 5 buttons: Prev, prev page number, current page number,
@@ -16,7 +14,8 @@ import React from "react";
  * - previousUrl: string | null  (URL containing ?page=... or null)
  * - nextUrl: string | null      (URL containing ?page=... or null)
  */
-function PaginationButtons({ previousUrl, nextUrl }) {
+// Now accepts a 'page' prop
+function PaginationButtons({ previousUrl, nextUrl, setPage, page }) {
   // Parse a URL (absolute or relative) and get the numeric `page` param
   const getPageFromUrl = (url) => {
     if (!url) return null;
@@ -29,38 +28,19 @@ function PaginationButtons({ previousUrl, nextUrl }) {
     }
   };
 
-  // Given a URL template (prev or next), return the same URL with a new page value
-  const setPageInUrl = (url, page) => {
-    if (!url || !page) return null;
-    try {
-      const u = new URL(url, window.location.href);
-      u.searchParams.set("page", String(page));
-      return u.toString();
-    } catch {
-      return null;
-    }
-  };
 
   const prevPage = getPageFromUrl(previousUrl);
   const nextPage = getPageFromUrl(nextUrl);
 
-  // Infer current page
-  // If both present, assume pages are consecutive
-  // current = nextPage - 1 OR prevPage + 1 (consistent if API is well-formed)
-  let currentPage = 1;
-  if (nextPage && prevPage) currentPage = nextPage - 1;
-  else if (nextPage && !prevPage) currentPage = Math.max(1, nextPage - 1);
-  else if (!nextPage && prevPage) currentPage = prevPage + 1;
-
   // Build number-button URLs using whichever template we have
-  const templateUrl = nextUrl || previousUrl || null;
-  const prevNumberUrl = prevPage ? setPageInUrl(templateUrl, prevPage) : null;
-  const currNumberUrl = setPageInUrl(templateUrl, currentPage);
-  const nextNumberUrl = nextPage ? setPageInUrl(templateUrl, nextPage) : null;
+  const prevNumberUrl = prevPage ? prevPage : null;
+  let currentPage = page ?? 1;
+  const nextNumberUrl = nextPage ? nextPage : null;
 
-  const Btn = ({ disabled, href, children, ariaLabel }) => (
-    <a
-      href={disabled ? undefined : href}
+  // Button component for pagination
+  const Btn = ({ disabled, onClick, children, ariaLabel }) => (
+    <button
+      type="button"
       aria-label={ariaLabel}
       className={
         "inline-flex items-center justify-center rounded-2xl px-4 py-2 text-sm font-medium " +
@@ -68,38 +48,61 @@ function PaginationButtons({ previousUrl, nextUrl }) {
           ? "bg-gray-200 text-gray-400 cursor-not-allowed"
           : "bg-white shadow border hover:shadow-md")
       }
-      onClick={(e) => {
-        if (disabled) e.preventDefault();
-      }}
+      disabled={disabled}
+      onClick={disabled ? undefined : onClick}
     >
       {children}
-    </a>
+    </button>
   );
 
   return (
     <div className="flex items-center gap-2">
       {/* Prev */}
-      <Btn disabled={!previousUrl} href={previousUrl || undefined} ariaLabel="Previous page">
+      <Btn
+        disabled={!previousUrl}
+        onClick={() => {
+          if (prevPage) setPage(prevPage);
+        }}
+        ariaLabel="Previous page"
+      >
         Prev
       </Btn>
 
       {/* Prev page number */}
-      <Btn disabled={!prevNumberUrl} href={prevNumberUrl || undefined} ariaLabel={`Page ${prevPage || ""}`}>
+      <Btn
+        disabled={!prevNumberUrl}
+        onClick={() => {
+          if (prevPage) setPage(prevPage);
+        }}
+        ariaLabel={`Page ${prevPage || ""}`}
+      >
         {prevPage ?? "--"}
       </Btn>
 
       {/* Current page number (disabled) */}
-      <Btn disabled href={currNumberUrl || undefined} ariaLabel={`Current page ${currentPage}`}>
+      <Btn disabled ariaLabel={`Current page ${currentPage}`}>
         {currentPage}
       </Btn>
 
       {/* Next page number */}
-      <Btn disabled={!nextNumberUrl} href={nextNumberUrl || undefined} ariaLabel={`Page ${nextPage || ""}`}>
+      <Btn
+        disabled={!nextNumberUrl}
+        onClick={() => {
+          if (nextPage) setPage(nextPage);
+        }}
+        ariaLabel={`Page ${nextPage || ""}`}
+      >
         {nextPage ?? "--"}
       </Btn>
 
       {/* Next */}
-      <Btn disabled={!nextUrl} href={nextUrl || undefined} ariaLabel="Next page">
+      <Btn
+        disabled={!nextUrl}
+        onClick={() => {
+          if (nextPage) setPage(nextPage);
+        }}
+        ariaLabel="Next page"
+      >
         Next
       </Btn>
     </div>
@@ -108,7 +111,7 @@ function PaginationButtons({ previousUrl, nextUrl }) {
 
 
 // Banner Component
-const Banner = ({ text, subtext }: any) => (
+const Banner = () => (
   <div className="relative rounded-2xl overflow-hidden shadow-xl bg-gradient-to-r from-purple-600/10 to-purple-600/10">
     <div className="inset-0 bg-gradient-to-r from-purple-600 to-purple-600/90">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 h-full">
@@ -170,36 +173,34 @@ const Title = ({ icon, name }) => (
 );
 
 // Price Filter Component
-const PriceFilter = ({ minPrice, maxPrice, onMinChange, onMaxChange }) => {
-  return (
-    <div className="p-2">
-      <Title icon="💰" name="Price Range (DZD)" />
-      <div className="flex py-2 items-center justify-center gap-2">
-        <div className="flex items-center px-2 justify-center border rounded-md">
-          <span className="text-gray-400 pr-2">DZD</span>
-          <input
-            type="number"
-            className="py-2 focus:outline-none focus:ring-0 w-full"
-            placeholder="Min"
-            value={minPrice}
-            onChange={onMinChange}
-          />
-        </div>
-        <span className="text-xl font-bold text-gray-400">-</span>
-        <div className="flex items-center px-2 justify-center border rounded-md">
-          <span className="text-gray-400 pr-2">DZD</span>
-          <input
-            type="number"
-            className="py-2 focus:outline-none focus:ring-0 w-full"
-            placeholder="Max"
-            value={maxPrice}
-            onChange={onMaxChange}
-          />
-        </div>
+const PriceFilter = ({ minPrice, maxPrice, onMinChange, onMaxChange }) => (
+  <div className="p-2">
+    <Title icon="💰" name="Price Range (DZD)" />
+    <div className="flex py-2 items-center justify-center gap-2">
+      <div className="flex items-center px-2 justify-center border rounded-md">
+        <span className="text-gray-400 pr-2">DZD</span>
+        <input
+          type="number"
+          className="py-2 focus:outline-none focus:ring-0 w-full"
+          placeholder="Min"
+          value={minPrice}
+          onChange={onMinChange}
+        />
+      </div>
+      <span className="text-xl font-bold text-gray-400">-</span>
+      <div className="flex items-center px-2 justify-center border rounded-md">
+        <span className="text-gray-400 pr-2">DZD</span>
+        <input
+          type="number"
+          className="py-2 focus:outline-none focus:ring-0 w-full"
+          placeholder="Max"
+          value={maxPrice}
+          onChange={onMaxChange}
+        />
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 // Categories Component
 
@@ -253,6 +254,7 @@ export default function Home() {
   const [categoryId, setCategoryId] = useState(null);
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -263,7 +265,7 @@ export default function Home() {
       category_id: categoryId,
       price_gte: minPrice !== '' ? Number(minPrice) : undefined,
       price_lte: maxPrice !== '' ? Number(maxPrice) : undefined,
-      page: 1,
+      page: page,
     })
 
       .then((data) => {
@@ -278,7 +280,7 @@ export default function Home() {
       });
 
     return () => controller.abort();
-  }, [categoryId, minPrice, maxPrice]);
+  }, [categoryId, minPrice, maxPrice, page]);
 
   return (
     <div className="max-w-[1800px] gap-24 px-8 flex flex-col my-16 items-center justify-center">
@@ -314,7 +316,7 @@ export default function Home() {
             <p className="px-12 pb-4">
               Showing <b>{products?.results?.length}</b> of <b>{products?.count}</b> products
             </p>
-            <PaginationButtons previousUrl={products?.previous} nextUrl={products?.next} />
+            <PaginationButtons previousUrl={products?.previous} nextUrl={products?.next} setPage={setPage} page={page} />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
