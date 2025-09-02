@@ -7,10 +7,8 @@ import {
 import Link from "next/link";
 import PCIcon from "./resources/game.png";
 import Image from "next/image";
-import { Product } from "./components/Product";
 import ProductCarousel from "./components/ProductCarousel"
-import { useProducts } from "../../roupi/product"
-import { fetchProducts, fetchSuperDeals } from "../api/products";
+import { fetchBestSellers, fetchRecentProducts, fetchSuperDeals } from "../api/products";
 import { useEffect, useState } from "react";
 
 
@@ -34,11 +32,27 @@ const Category = ({ name, slug, children, p = "p-7" }) => (
 export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
   const [hotDeals, setHotDeals] = useState([]);
+  const [newProducts, setNewProducts] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
   useEffect(() => {
     // Fetch hot deals
     fetchSuperDeals()
       .then((data) => {
-        setHotDeals(data?.results || []);
+        setHotDeals(data?.data || []);
+      })
+      .catch((err) => {
+        console.error("Error fetching hot deals:", err);
+      });
+    fetchRecentProducts()
+      .then((data) => {
+        setNewProducts(data?.data || []);
+      })
+      .catch((err) => {
+        console.error("Error fetching hot deals:", err);
+      });
+    fetchBestSellers()
+      .then((data) => {
+        setBestSellers(data?.data || []);
       })
       .catch((err) => {
         console.error("Error fetching hot deals:", err);
@@ -60,9 +74,9 @@ export default function Home() {
             <Category p="p-[20px]" name="PC" slug="pc"><Image src={PCIcon} width={200} height={200} alt="pc-games" className="w-16 h-16 max-md:w-8 max-md:h-8" /></Category>
           </div>
         </section>
-        <section className="flex flex-col items-center my-16 justify-center overflow-hidden">
+        < section className="flex flex-col items-center my-16 justify-center overflow-hidden">
           <Title
-            text="Hot Deals"
+            text="New Deals"
             subtext="Check the latest products in our collection."
           />
           <div className="flex max-sm:flex-col overflow-auto py-4   px-24 space-x-8">
@@ -71,7 +85,7 @@ export default function Home() {
             <input type="radio" name="slider" id="slide3" className="hidden peer/slide3" />
 
             <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title="Hot Deals" products={hotDeals} />
+              <ProductCarousel title="" products={newProducts} />
             </div>
 
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
@@ -83,8 +97,8 @@ export default function Home() {
         </section>
         <section className="flex flex-col items-center my-16 justify-center">
           <Title
-            text="Featured products"
-            subtext="We selected these for you."
+            text="Best Sellers"
+            subtext="Our most popular products, chosen by customers."
           />
           <div className="flex max-sm:flex-col overflow-auto py-4 px-24 space-x-8">
             <input type="radio" name="Fslider" id="Fslide1" className="hidden peer/Fslide1" defaultChecked />
@@ -92,7 +106,7 @@ export default function Home() {
             <input type="radio" name="Fslider" id="Fslide3" className="hidden peer/Fslide3" />
 
             <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title="" products={allProducts} />
+              <ProductCarousel title="" products={bestSellers} />
             </div>
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
               <label htmlFor="Fslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Fslide1:bg-blue-500"></label>
@@ -101,7 +115,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section className="flex flex-col items-center my-16 justify-center">
+        {hotDeals ?? <section className="flex flex-col items-center my-16 justify-center">
           <Title
             text="Hot deals"
             subtext="Check the latest products in our collection."
@@ -113,7 +127,7 @@ export default function Home() {
 
             <div className="max-sm:peer-checked/Hslide1:opacity-100 max-sm:peer-checked/Hslide2:hidden max-sm:peer-checked/Hslide3:hidden">
               <div className=" w-full  max-sm:w-[300px]   ">
-                <ProductCarousel title=" " products={allProducts} />
+                <ProductCarousel title=" " products={hotDeals} />
               </div>
               <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
                 <label htmlFor="Hslide1" className="w-4 h-4 rounded-full cursor-pointer transition-all bg-gray-400 peer-checked/Hslide1:bg-blue-500"></label>
@@ -122,7 +136,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
+        </section>}
         <section className="flex flex-col px-10 items-center justify-center inset-0 bg-gradient-to-br from-gray-50 to-gray-100 py-24">
           <p className="text-purple-500 font-bold text-lg">Simple Process</p>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 mt-4">
@@ -231,7 +245,7 @@ export default function Home() {
             </div>
           </Link>
         </section>
-      </main>
+      </main >
     </>
   );
 }

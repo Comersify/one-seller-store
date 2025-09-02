@@ -94,3 +94,13 @@ export const fetchSuperDeals = async () => {
   return await res.json();
 };
 
+export const fetchRecentProducts = async () => {
+  const res = await fetch(`${API_BASE_URL}/products/new/`);
+  return await res.json();
+};
+
+export const fetchBestSellers = async () => {
+  const res = await fetch(`${API_BASE_URL}/products/best-sellers/`);
+  return await res.json();
+};
+
