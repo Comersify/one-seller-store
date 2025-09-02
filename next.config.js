@@ -6,9 +6,9 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ["127.0.0.1"],
-     domains: ['backend.odigix.com'],
+    domains: ['comercify.s3.amazonaws.com'],
   },
- 
+
 };
 
 module.exports = nextConfig;

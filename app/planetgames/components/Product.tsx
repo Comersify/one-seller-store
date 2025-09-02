@@ -1,4 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
+import { MEDIA_URL } from "../../../urls";
 
 export const Product = ({
   category,
@@ -32,9 +34,11 @@ export const Product = ({
     <Link href={link}>
       <div className="rounded-md hover:cursor-pointer bg-white p-2">
         <div className="relative mb-2 overflow-hidden rounded bg-gray-200 h-[280px]">
-          <img
-            src={image}
+          <Image
+            src={`${MEDIA_URL}/${image}`}
             alt={productName}
+            width={10000}
+            height={10000}
             className="w-full h-full object-cover"
           />
           {tag === "outOfStock" && (
