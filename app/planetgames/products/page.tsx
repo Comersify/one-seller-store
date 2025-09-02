@@ -21,7 +21,7 @@ function PaginationButtons({ previousUrl, nextUrl, setPage, page }) {
     if (!url) return null;
     try {
       const u = new URL(url, window.location.href);
-      const p = u.searchParams.get("page");
+      const p = u.searchParams.get("page") ?? 1;
       return p ? Number(p) : null;
     } catch {
       return null;
@@ -34,7 +34,7 @@ function PaginationButtons({ previousUrl, nextUrl, setPage, page }) {
 
   // Build number-button URLs using whichever template we have
   const prevNumberUrl = prevPage ? prevPage : null;
-  let currentPage = page ?? 1;
+  let currentPage = page;
   const nextNumberUrl = nextPage ? nextPage : null;
 
   // Button component for pagination
