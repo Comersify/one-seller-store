@@ -10,7 +10,7 @@ import Image from "next/image";
 import { Product } from "./components/Product";
 import ProductCarousel from "./components/ProductCarousel"
 import { useProducts } from "../../roupi/product"
-import { fetchProducts } from "../api/products"; // ← استدعاء الدالة الصحيحة
+import { fetchProducts, fetchSuperDeals } from "../api/products";
 import { useEffect, useState } from "react";
 
 
@@ -33,31 +33,16 @@ const Category = ({ name, slug, children, p = "p-7" }) => (
 
 export default function Home() {
   const [allProducts, setAllProducts] = useState([]);
+  const [hotDeals, setHotDeals] = useState([]);
   useEffect(() => {
-    const controller = new AbortController();
-
-    const loadProducts = async () => {
-      try {
-        const res = await fetch("https://comercifyapi.up.railway.app/v2/products/?page=1&category=1", {
-          method: "GET",
-          signal: controller.signal,
-          headers: {
-            "X-Client-Domain": "https://planet.up.railway.app"
-          }
-        });
-
-        if (!res.ok) throw new Error("Failed to fetch products");
-
-        const data = await res.json();
-        console.log("Fetched data:", data); // مصفوفة مباشرة
-        setAllProducts(data || []); // <-- التصحيح هنا
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    loadProducts();
-    return () => controller.abort();
+    // Fetch hot deals
+    fetchSuperDeals()
+      .then((data) => {
+        setHotDeals(data?.results || []);
+      })
+      .catch((err) => {
+        console.error("Error fetching hot deals:", err);
+      });
   }, []);
 
   return (
@@ -86,7 +71,7 @@ export default function Home() {
             <input type="radio" name="slider" id="slide3" className="hidden peer/slide3" />
 
             <div className=" w-full  max-sm:w-[300px]   ">
-              <ProductCarousel title=" " products={allProducts} />
+              <ProductCarousel title="Hot Deals" products={hotDeals} />
             </div>
 
             <div className="hidden max-sm:flex my-2 gap-x-4 justify-center items-center">
