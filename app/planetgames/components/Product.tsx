@@ -9,7 +9,7 @@ export const Product = ({
   tag,
   image,
   link,
-  isLoading = false, // 🔹 حالة التحميل
+  isLoading = false,
 }: {
   category: string;
   productName: string;

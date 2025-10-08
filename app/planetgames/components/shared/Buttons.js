@@ -1,3 +1,5 @@
+'use client';
+
 import Link from "next/link";
 import {
   CloseMenuIcon,
@@ -7,7 +9,7 @@ import {
   OpenMenuIcon,
   RightArrow,
 } from "./Icons";
-import { useStateContext } from "../../context/contextProvider";
+import { useStateContext } from "../../../../context/contextProvider";
 import Image from "next/image";
 import AvatarImage from "../../resources/avatar.png";
 import { useState } from "react";
@@ -154,7 +156,7 @@ export const AuthButtons = () => {
       {/* Cart Component */}
       {showCart && <EmptyCart onClose={() => setShowCart(false)} />}
 
-        
+
       {/* Login and Signup */}
       <Link
         href="/login"

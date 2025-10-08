@@ -1,28 +1,32 @@
-const API_BASE_URL = 'https://api.comercify.shop';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API;
 
 export const fetchProducts = async ({
   page = 1,
   category_id,
   price_gte,
   price_lte,
-  signal
+  signal,
 } = {}) => {
   const queryParams = new URLSearchParams({
     page: page.toString(),
     ...(category_id && { category_id: category_id.toString() }),
-    ...(price_gte !== undefined && price_gte !== null ? { price_gte: price_gte.toString() } : {}),
-    ...(price_lte !== undefined && price_lte !== null ? { price_lte: price_lte.toString() } : {}),
-
+    ...(price_gte !== undefined && price_gte !== null
+      ? { price_gte: price_gte.toString() }
+      : {}),
+    ...(price_lte !== undefined && price_lte !== null
+      ? { price_lte: price_lte.toString() }
+      : {}),
   });
   const res = await fetch(
     `${API_BASE_URL}/v2/products/?${queryParams.toString()}`,
     {
-      method: 'GET',
+      method: "GET",
       signal,
       headers: {
-        'Content-Type': 'application/json',
-        'X-Client-Domain': 'https://planetgames.localhost:3001'
+        "Content-Type": "application/json",
+        "X-Client-Domain": window?.location?.host,
       },
+      credentials: 'include'
     }
   );
 
@@ -35,52 +39,47 @@ export const fetchProducts = async ({
 export const getProductDetails = async (id) => {
   const res = await fetch(`${API_BASE_URL}/products/id/${id}/`, {
     headers: {
-      'X-Client-Domain': 'https://planetgames.localhost:3001',
-    }
+      "Content-Type": "application/json",
+      "X-Client-Domain": window?.location?.host,
+    },
+    credentials: 'include'
   });
   return await res.json();
 };
-
 
 export const fetchCategories = async () => {
   const res = await fetch(`${API_BASE_URL}/v2/categories/`, {
     headers: {
-      'X-Client-Domain': 'https://planetgames.localhost:3001',
+      "X-Client-Domain": window?.location?.host,
     },
   });
 
   if (!res.ok) {
-    throw new Error('Failed to fetch categories');
+    throw new Error("Failed to fetch categories");
   }
 
   return await res.json();
 };
-
 
 export const fetchTopCategories = async () => {
   const res = await fetch(`${API_BASE_URL}/categories/top/`);
   return await res.json();
 };
 
-
 export const fetchVariants = async () => {
   const res = await fetch(`${API_BASE_URL}/v2/variants/`);
   return await res.json();
 };
-
 
 export const fetchAttributes = async () => {
   const res = await fetch(`${API_BASE_URL}/v2/attributes/`);
   return await res.json();
 };
 
-
 export const fetchAttributeValues = async () => {
   const res = await fetch(`${API_BASE_URL}/v2/attribute-values/`);
   return await res.json();
 };
-
-
 
 // ⭐ 15. Get product reviews
 export const fetchProductReviews = async (productId) => {
@@ -92,8 +91,8 @@ export const fetchProductReviews = async (productId) => {
 export const fetchSuperDeals = async () => {
   const res = await fetch(`${API_BASE_URL}/products/super-deals/`, {
     headers: {
-      'X-Client-Domain': 'https://planetgames.localhost:3001',
-    }
+      "X-Client-Domain": window?.location?.host,
+    },
   });
   return await res.json();
 };
@@ -101,8 +100,8 @@ export const fetchSuperDeals = async () => {
 export const fetchRecentProducts = async () => {
   const res = await fetch(`${API_BASE_URL}/products/new/`, {
     headers: {
-      'X-Client-Domain': 'https://planetgames.localhost:3001',
-    }
+      "X-Client-Domain": window?.location?.host,
+    },
   });
   return await res.json();
 };
@@ -110,9 +109,8 @@ export const fetchRecentProducts = async () => {
 export const fetchBestSellers = async () => {
   const res = await fetch(`${API_BASE_URL}/products/best-sellers/`, {
     headers: {
-      'X-Client-Domain': 'https://planetgames.localhost:3001',
-    }
+      "X-Client-Domain": window?.location?.host,
+    },
   });
   return await res.json();
 };
-

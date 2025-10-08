@@ -1,6 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import React from "react";
+import { getProductDetails } from "../../../api/products";
+import { MEDIA_URL } from "../../../../urls";
+import Image from "next/image";
 
 /**
  * Tailwind-only CSS Slider (no custom CSS, no JS behavior)
@@ -17,7 +21,7 @@ function TailwindSlider({
   const name = "twslider-" + Math.random().toString(36).slice(2, 7);
 
   return (
-    <div className="w-full max-w-4xl mx-auto select-none">
+    <div className="w-full mx-auto select-none">
       <div className="relative">
         {/* RADIOs + SLIDES */}
         <div className="relative h-0 pb-[50%] overflow-hidden rounded-2xl shadow">
@@ -33,10 +37,12 @@ function TailwindSlider({
               />
 
               {/* Slide content controlled by the peer radio above */}
-              <figure className="absolute inset-0 opacity-0 scale-[1.02] transition-all duration-500 ease-in-out peer-checked:opacity-100 peer-checked:scale-100 peer-checked:z-10">
-                <img
-                  src={s.src}
+              <figure className="absolute max-h-[400px] max-w-[400px] inset-0 opacity-0 scale-[1.02] transition-all duration-500 ease-in-out peer-checked:opacity-100 peer-checked:scale-100 peer-checked:z-10">
+                <Image
+                  src={`${MEDIA_URL}/${s.image}`}
                   alt={`Slide ${i + 1}`}
+                  width={10000}
+                  height={10000}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
 
@@ -108,13 +114,24 @@ export default function DetailsPage() {
     setSelectedDenomination(option);
     setShowDenominationOptions(false);
   };
+  const params = useParams(); // ✅ works in Client Components
+  const slug = params.slug;
+  const [product, setProduct] = useState({})
+  useEffect(() => {
+    async function fetch() {
+      const resp = await getProductDetails(slug)
+      setProduct(resp.data)
+    }
+    fetch()
+  }, [])
+  console.log(product)
 
   return (
     <div className="w-full bg-gray-100 p-4 flex flex-col lg:flex-row gap-8">
       {/* Image Gallery */}
-      <div className="w-full max-w-sm mx-auto lg:max-w-md">
-        <div className="mx-auto bg-gray-100 rounded relative">
-          <TailwindSlider slides={images} />
+      <div className="w-full mx-auto ">
+        <div className="mx-auto bg-gray-100 w-full rounded relative">
+          <TailwindSlider slides={product.images || []} />
         </div>
 
       </div>
@@ -126,11 +143,11 @@ export default function DetailsPage() {
           <svg className="lucide lucide-chevron-right-icon w-4 h-4 text-gray-400" viewBox="0 0 24 24">
             <path d="m9 18 6-6-6-6"></path>
           </svg>
-          <a href="/shop?category=playstation-gift-cards" className="hover:text-primary">Playstation</a>
+          <a href="/shop?category=playstation-gift-cards" className="hover:text-primary">{product.category__name}</a>
         </div>
 
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">PlayStation Network Card 100 CHF (CH) PSN Key SWITZERLAND</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
           <div className="flex gap-2 mt-3">
             <div className="q-chip row inline no-wrap items-center bg-primary uppercase text-white rounded-none m-0">
               <div className="ellipsis p-2">Instant</div>
@@ -139,9 +156,9 @@ export default function DetailsPage() {
         </div>
 
         <div className="bg-white p-4 rounded-lg">
-          <div className="text-4xl font-bold text-primary m-4">1140 DZD</div>
+          <div className="text-4xl font-bold text-primary m-4">{product.price} DZD</div>
           <p className="text-gray-600">
-            Add funds to your PlayStation® Network wallet without the need for a credit card...
+            {product.description}
           </p>
 
           <div className="pt-4">

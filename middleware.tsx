@@ -12,9 +12,9 @@ export function middleware(request: NextRequest) {
   const domainMap: Record<string, string> = {
     "admin.localhost": "/admin",
     "demo.localhost": "/one-seller",
-    localhost: "/default",
-    "planet.up.railway.app": "/planetgames", 
-    "planetgames.localhost": "/planetgames",
+    //localhost: "/default",
+    "planet.up.railway.app": "/planetgames",
+    "localhost": "/planetgames",
     "planetgames.comercify.shop": "/planetgames",
   };
 

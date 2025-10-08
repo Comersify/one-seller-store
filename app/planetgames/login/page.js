@@ -1,8 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { login } from "../../api/auth"; // تأكد أن المسار صحيح حسب مجلدك
+import { login, signupWithProvider } from "../../api/auth"; // تأكد أن المسار صحيح حسب مجلدك
 import { useRouter } from "next/navigation";
+import { useStateContext } from "../../../context/contextProvider";
+import { GoogleAuth } from "../../../comps/GoogleAuth";
 
 const AuthenticationForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -10,7 +12,12 @@ const AuthenticationForm = () => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
-
+  const { profile, setProfile } = useStateContext()
+  useEffect(() => {
+    if (profile?.email) {
+      router.push('/account')
+    }
+  }, [profile])
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -27,7 +34,6 @@ const AuthenticationForm = () => {
     setLoading(true);
     setErrorMessage("");
 
-    // تحقق من أن الحقول غير فارغة قبل الإرسال
     if (formData.email.trim() === "") {
       setErrors((prev) => ({ ...prev, email: true }));
       setLoading(false);
@@ -41,10 +47,12 @@ const AuthenticationForm = () => {
 
     try {
       const data = await login(formData.email, formData.password);
+      if (data['type'] == 'success') {
+        setProfile(data.data)
+      } else {
+        setErrorMessage(data.message || "Login failed");
 
-      // احفظ اسم المستخدم وصورته مثلاً
-      localStorage.setItem("userName", data.name);
-      if (data.image) localStorage.setItem("userImage", data.image);
+      }
 
       router.push("/account");
     } catch (error) {
@@ -53,7 +61,20 @@ const AuthenticationForm = () => {
     finally {
       setLoading(false);
     }
+
   };
+
+  async function googleSignup(provider, token, user) {
+    setLoading(true)
+    const resp = await signupWithProvider(provider, token, user)
+    setLoading(false)
+    if (resp['type'] == 'success') {
+      setProfile(resp.data)
+      router.push('/account');
+    } else {
+      setErrorMessage(resp.message);
+    }
+  }
 
   return (
     <div className="relative bg-white shadow-lg rounded-2xl flex flex-col overflow-hidden p-8">
@@ -95,12 +116,10 @@ const AuthenticationForm = () => {
           {errors.password && <p className="text-red-500 text-sm mt-1">Password is required!</p>}
         </div>
 
-        {/* رسالة الخطأ */}
         {errorMessage && (
           <p className="text-red-500 text-sm text-center">{errorMessage}</p>
         )}
 
-        {/* زر تسجيل الدخول */}
         <button
           type="submit"
           className={`w-full p-3 rounded-lg font-medium text-white transition-all 
@@ -117,16 +136,8 @@ const AuthenticationForm = () => {
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
-        {/* زر تسجيل الدخول بجوجل */}
-        <button
-          className="w-full flex items-center justify-center gap-2 p-3 border-2 border-gray-300 rounded-lg transition-all hover:bg-gray-100"
-          disabled={loading}
-        >
-          <i className="fa-brands fa-google text-red-500"></i>
-          <span className="text-gray-700 font-medium">Sign up with Google</span>
-        </button>
+        <GoogleAuth signup={googleSignup} />
 
-        {/* زر إعادة تعيين كلمة المرور */}
         <div className="text-center">
           <Link href="/ForgetPaswored" className="text-indigo-600 font-bold">
             Reset Password
@@ -139,6 +150,7 @@ const AuthenticationForm = () => {
             Sign Up
           </Link>
         </p>
+
       </form>
     </div>
   );
@@ -193,12 +205,10 @@ const FeatureHighlightSection = () => {
 const AuthenticationContainer = () => {
   return (
     <div className="flex w-full flex-col lg:flex-row bg-gradient-to-br min-h-[77vh] from-indigo-50 to-indigo-100 items-center justify-center gap-12 p-8">
-      {/* القسم الترويجي */}
       <div>
         <FeatureHighlightSection />
       </div>
 
-      {/* نموذج التحقق */}
       <div className="w-full max-w-lg">
         <AuthenticationForm />
       </div>

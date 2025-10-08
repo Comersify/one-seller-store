@@ -10,8 +10,8 @@ import {
 import { useStateContext } from "../../../context/contextProvider";
 import LogoImage from "../resources/logo.png";
 import Image from "next/image";
-import { useSettings } from "../../../roupi/auth";
 import { SearchIcon } from "./shared/Icons";
+import { fetchInfo } from "../../api/auth";
 // slsjlk
 export const Logo = () => {
   return (
@@ -83,12 +83,21 @@ const Navigation = () => {
 };
 
 export const Nav = () => {
-  useSettings();
-  const { profile } = useStateContext();
+  const { profile, setProfile } = useStateContext();
   const [openMenu, setOpenMenu] = useState(false);
   const [search, setSearch] = useState(false);
   const openSearchRef = useRef();
-  const results = [];
+  useEffect(() => {
+    async function check() {
+      const resp = await fetchInfo()
+      console.log('resp', resp)
+      if (resp['type'] == 'success') {
+        setProfile(resp.data)
+      }
+
+    }
+    check()
+  }, [])
   return (
     <nav className="bg-gray-50 top-0 sticky z-10">
       <div className="mx-auto max-w-full px-2 sm:px-6 lg:px-8">
@@ -98,7 +107,7 @@ export const Nav = () => {
             onclick={() => setOpenMenu(!openMenu)}
             open={openMenu}
           />
-          
+
           <div className="flex flex-1 justify-center sm:items-stretch sm:justify-start">
             <Logo />
             <p className="font-bold text-lg text-gray-900 pt-[12px]">
@@ -117,7 +126,7 @@ export const Nav = () => {
                   </p>
                 </div>
               </div>
-              
+
               {/* Dropdown that appears when checkbox is checked */}
             </div>
 
@@ -133,17 +142,17 @@ export const Nav = () => {
               <DropDownMenu Icon={ProfileButoon}>
                 <DropDownLink href="/account/orders" title="Orders" />
                 <DropDownLink href="/account/settings" title="Settings" />
-                
+
               </DropDownMenu>
-              
+
             </div>
-            
+
           )}
-          
+
         </div>
       </div>
       <div className="border-t sm:hidden">
-        
+
         <div className="flex w-full items-center justify-center relative">
           <input
             ref={openSearchRef}
@@ -178,7 +187,7 @@ export const Nav = () => {
           <Navigation />
         </div>
       )}
-      
+
     </nav>
   );
 };

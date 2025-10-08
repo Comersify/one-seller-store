@@ -1,27 +1,17 @@
 "use client";
-
-import { useState } from "react";
+import Link from "next/link";
+import { useStateContext } from "../../../context/contextProvider";
+import useWithAuth from "../_authRouter";
 
 function Orders() {
-  const [messages, setMessages] = useState([
-    { text: "Hello, how can I help you?", sender: "bot" },
-    { text: "I need some help with my orders.", sender: "user" },
-  ]);
-  const [message, setMessage] = useState("");
-
-  const sendMessage = () => {
-    if (message.trim() === "") return;
-    setMessages([...messages, { text: message, sender: "user" }]);
-    setMessage("");
-  };
-
+  const { profile } = useStateContext()
   return (
     <>
       <section className="flex  w-full flex-col text-gray-900 items-center justify-center">
         <div className="p-4 space-y-4 flex-grow w-full mb-[30px]">
           <div className="bg-white rounded-lg p-6 shadow-sm w-full">
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Welcome back, Houssine! 👋
+              Welcome back, {profile?.first_name}! 👋
             </h1>
             <p className="text-gray-600 text-sm">
               Manage your orders, update your profile, and explore your account
@@ -31,7 +21,7 @@ function Orders() {
 
           {/* Cards Section */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-            <a
+            <Link
               href="/account/orders"
               className="relative bg-white rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow group w-full h-[140px] flex items-center"
             >
@@ -65,9 +55,9 @@ function Orders() {
                   View all orders &gt;
                 </span>
               </div>
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="/account/settings"
               className="relative bg-white rounded-lg p-5 shadow-sm hover:shadow-md transition-shadow group w-full h-[140px] flex items-center"
             >
@@ -99,49 +89,48 @@ function Orders() {
                   Manage settings &gt;
                 </span>
               </div>
-            </a>
+            </Link>
           </div>
-          {/* Chat Section */}
-<div className="w-full">
-  <div className="bg-white rounded-lg p-5 shadow-sm w-full">
-    <h2 className="text-lg font-bold text-gray-900 mb-4">Chat</h2>
-    <div className="space-y-2 h-40 overflow-y-auto border-b pb-2">
-      {messages.map((msg, index) => (
-        <div
-          key={index}
-          className={`p-2 rounded-lg break-words w-fit max-w-[80%] ${
-            msg.sender === "user"
-              ? "bg-primary text-white ml-auto text-right"
-              : "bg-gray-200 text-gray-900 text-left"
-          }`}
-          style={{ direction: msg.sender === "user" ? "rtl" : "ltr" }}
-        >
-          {msg.text}
-        </div>
-      ))}
-    </div>
-    <div className="mt-3 flex gap-2">
-      <input
-        type="text"
-        className="border rounded-lg p-2 flex-grow outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary border-gray-300"
-        placeholder="Type a message..."
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-      />
-      <button
-        className="bg-primary text-white px-4 py-2 rounded-lg"
-        onClick={sendMessage}
-      >
-        Send
-      </button>
-    </div>
-  </div>
-</div>
-
+          {/* Chat Section 
+          <div className="w-full">
+            <div className="bg-white rounded-lg p-5 shadow-sm w-full">
+              <h2 className="text-lg font-bold text-gray-900 mb-4">Chat</h2>
+              <div className="space-y-2 h-40 overflow-y-auto border-b pb-2">
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`p-2 rounded-lg break-words w-fit max-w-[80%] ${msg.sender === "user"
+                        ? "bg-primary text-white ml-auto text-right"
+                        : "bg-gray-200 text-gray-900 text-left"
+                      }`}
+                    style={{ direction: msg.sender === "user" ? "rtl" : "ltr" }}
+                  >
+                    {msg.text}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 flex gap-2">
+                <input
+                  type="text"
+                  className="border rounded-lg p-2 flex-grow outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary border-gray-300"
+                  placeholder="Type a message..."
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                />
+                <button
+                  className="bg-primary text-white px-4 py-2 rounded-lg"
+                  onClick={sendMessage}
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+          </div>
+        */}
         </div>
       </section>
     </>
   );
 }
 
-export default Orders;
+export default useWithAuth(Orders);

@@ -1,10 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { signup } from "../../api/auth";
-import { useRouter } from "next/navigation"; // استيراد useRouter
+import { signup, signupWithProvider } from "../../api/auth";
+import { useRouter } from "next/navigation";
+import { GoogleAuth } from "../../../comps/GoogleAuth";
+import { useStateContext } from "../../../context/contextProvider";
+
+
 const SignupForm = () => {
-  const router = useRouter(); // تهيئة useRouter
+  const router = useRouter();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -12,9 +16,14 @@ const SignupForm = () => {
     phone: "+213",
     password: "",
     confirmPassword: "",
-    termsAccepted: false,
+    userType: 'CUSTOMER',
   });
-
+  const { profile, setProfile } = useStateContext()
+  useEffect(() => {
+    if (profile?.email) {
+      router.push('/account')
+    }
+  }, [profile])
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
@@ -89,8 +98,14 @@ const SignupForm = () => {
         phone: formData.phone,
         password: formData.password,
       });
-      setSuccessMessage("Account created successfully! 🎉");
-      router.push(`/account?email=${encodeURIComponent(formData.email)}&firstName=${encodeURIComponent(formData.firstName)}&lastName=${encodeURIComponent(formData.lastName)}`);
+      if (result['type'] === 'error') {
+        setErrorMessage(result.message)
+
+      } else {
+        setSuccessMessage("Account created successfully! 🎉");
+        setProfile(result.data)
+      }
+      router.push('/account');
       setFormData({
         firstName: "",
         lastName: "",
@@ -107,6 +122,20 @@ const SignupForm = () => {
     }
   };
 
+  async function googleSignup(provider, token, user) {
+    setLoading(true)
+    const resp = await signupWithProvider(provider, token, user)
+    setLoading(false)
+    if (resp['type'] == 'success') {
+      setSuccessMessage("Account created successfully! 🎉");
+      setProfile(resp.data)
+      router.push('/account');
+    } else {
+      setErrorMessage(resp.message);
+    }
+  }
+
+
   return (
     <div className="relative bg-white shadow-lg rounded-2xl flex flex-col overflow-hidden ">
       <div className="p-8">
@@ -114,7 +143,6 @@ const SignupForm = () => {
         <p className="text-indigo-600 mt-2 text-center">Join the largest digital store in Algeria</p>
 
         <form className="space-y-6 mt-6" onSubmit={handleSubmit}>
-          {/* الاسم الأول واسم العائلة */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[{ id: "firstName", placeholder: "First Name", icon: "👤" },
             { id: "lastName", placeholder: "Last Name", icon: "👤" }].map(({ id, placeholder, icon }) => (
@@ -134,8 +162,6 @@ const SignupForm = () => {
               </div>
             ))}
           </div>
-
-          {/* باقي الحقول */}
           {[{ id: "email", type: "text", placeholder: "Email", icon: "📧" },
           { id: "phone", type: "tel", placeholder: "Phone", icon: "📱" },
           { id: "password", type: "password", placeholder: "Password", icon: "🔒" },
@@ -145,12 +171,12 @@ const SignupForm = () => {
               <span className="absolute left-3 top-3 text-lg opacity-70">{icon}</span>
               <input
                 className={`w-full pl-10 p-3 border rounded-lg outline-none transition-all duration-300 ${id === "confirmPassword" && formData.password
-                    ? formData.password === formData.confirmPassword
-                      ? "border-green-500"
-                      : "border-red-500"
-                    : errors[id]
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-indigo-600"
+                  ? formData.password === formData.confirmPassword
+                    ? "border-green-500"
+                    : "border-red-500"
+                  : errors[id]
+                    ? "border-red-500"
+                    : "border-gray-300 focus:border-indigo-600"
                   }`}
                 id={id}
                 type={type}
@@ -167,22 +193,19 @@ const SignupForm = () => {
               {errors[id] && <p className="text-red-500 text-sm mt-1">{errors[id]}</p>}
             </div>
           ))}
-
-          {/* رسائل النجاح / الفشل */}
           {successMessage && <p className="text-green-600 text-center">{successMessage}</p>}
           {errorMessage && <p className="text-red-600 text-center">{errorMessage}</p>}
-
-          {/* زر إنشاء الحساب */}
           <button
             type="submit"
             disabled={!isFormValid || loading}
             className={`w-full p-3 text-white font-medium rounded-lg transition-all ${isFormValid && !loading
-                ? "bg-indigo-600 hover:bg-indigo-700"
-                : "bg-indigo-400 cursor-not-allowed"
+              ? "bg-indigo-600 hover:bg-indigo-700"
+              : "bg-indigo-400 cursor-not-allowed"
               }`}
           >
             {loading ? "Creating..." : "Create Account"}
           </button>
+          <GoogleAuth signup={googleSignup} />
         </form>
       </div>
 
@@ -254,14 +277,13 @@ const PromoSection = () => {
 };
 
 const Container = () => {
+
   return (
     <div className="bg-gradient-to-br from-indigo-50 to-indigo-100">
       <div className="flex flex-col lg:flex-row items-center justify-center gap-12 max-w-5xl mx-auto  p-8">
-        {/* نموذج التسجيل */}
         <div className="w-full max-w-lg">
           <SignupForm />
         </div>
-        {/* القسم الترويجي */}
         <div>
           <PromoSection />
         </div>
