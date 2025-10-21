@@ -127,11 +127,11 @@ export const MobileMenuButtons = ({ onclick, open }) => {
 };
 export const AuthButtons = () => {
   const [showCart, setShowCart] = useState(false);
-
+  const { profile } = useStateContext()
   return (
     <>
       {/* Cart Button */}
-      <button
+      {profile.email && <button
         onClick={() => setShowCart(true)}
         className="relative bg-[rgb(90,71,251)] mr-4 text-white px-4 py-2 rounded-lg flex items-center gap-2"
       >
@@ -153,23 +153,25 @@ export const AuthButtons = () => {
         <span className="hidden sm:inline text-sm font-medium">200 DZD</span>
       </button>
 
-      {/* Cart Component */}
+      }
       {showCart && <EmptyCart onClose={() => setShowCart(false)} />}
 
-
       {/* Login and Signup */}
-      <Link
-        href="/login"
-        className="hover:bg-gradient-to-r from-[#ff80b5] to-[#9089fc]  hover:text-white text-indigo-400 border border-indigo-400 mr-4 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-      >
-        Login
-      </Link>
-      <Link
-        href="/signup"
-        className="bg-gradient-to-r from-[#ff80b5] to-[#9089fc] text-white font-bold py-2 px-4 rounded focus:outline-none border border-indigo-400 focus:shadow-outline"
-      >
-        Sign Up
-      </Link>
+      {!profile.email &&
+        <>
+          <Link
+            href="/login"
+            className="hover:bg-gradient-to-r from-[#ff80b5] to-[#9089fc]  hover:text-white text-indigo-400 border border-indigo-400 mr-4 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Login
+          </Link>
+          <Link
+            href="/signup"
+            className="bg-gradient-to-r from-[#ff80b5] to-[#9089fc] text-white font-bold py-2 px-4 rounded focus:outline-none border border-indigo-400 focus:shadow-outline"
+          >
+            Sign Up
+          </Link>
+        </>}
     </>
   );
 };

@@ -2,14 +2,27 @@
 import { useStateContext } from "../../../../context/contextProvider";
 import useWithAuth from "../../_authRouter";
 import { PlusIcon } from "../../components/shared/Icons";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
+import { updateSettings } from '../../../api/auth'
+import Image from "next/image";
+
 
 const UserProfileForm = () => {
+  const { profile } = useStateContext()
+  const [form, setForm] = useState({
+    firstName: profile.first_name,
+    email: profile.email,
+    lastName: profile.last_name,
+    file: null
+  })
   const fileInputRef = useRef(null);
   const handleButtonClick = () => {
     fileInputRef.current.click();
   };
-  const { profile } = useStateContext()
+  const submit = (e) => {
+    e.preventDefault()
+    updateSettings({ ...form })
+  }
   return (
     <>
       <section className="flex pt-4 min-h-[70vh] w-full flex-col  text-gray-900 items-center justify-center ">
@@ -26,9 +39,11 @@ const UserProfileForm = () => {
             <div className="flex flex-col sm:flex-row items-center gap-6 my-6 p-4 border border-gray-200 rounded-lg bg-white">
               <div className="flex flex-col items-center">
                 <div className="relative group">
-                  <img
-                    src="https://backend.odigix.com/storage/avatars/45053c83-1b35-4492-9b9a-477bcbe107fa.png"
+                  <Image
+                    src={profile.image || "https://backend.odigix.com/storage/avatars/45053c83-1b35-4492-9b9a-477bcbe107fa.png"}
                     alt="Avatar Preview"
+                    width={20000}
+                    height={20000}
                     className="w-32 h-32 rounded-xl object-cover bg-gray-50 ring-2 ring-primary/10"
                   />
                   <div className="absolute bottom-0 right-0">
@@ -43,7 +58,7 @@ const UserProfileForm = () => {
                       ref={fileInputRef}
                       className="hidden"
                       accept="image/*"
-                      onChange={(e) => console.log("Selected file:", e.target.files[0])}
+                      onChange={(e) => setForm((state) => ({ ...state, file: e.target.files[0] }))}
                     />
                   </div>
                 </div>
@@ -62,7 +77,8 @@ const UserProfileForm = () => {
                   <input
                     type="text"
                     className="w-full border p-2 rounded-lg outline-none transition-all duration-300 focus:ring-2 focus:ring-primary/50 focus:border-primary border-gray-300 bg-white"
-                    defaultValue={profile.first_name}
+                    defaultValue={form.firstName}
+                    onChange={(e) => setForm((state) => ({ ...state, firstName: e.target.value }))}
                   />
                 </div>
 
@@ -71,7 +87,9 @@ const UserProfileForm = () => {
                   <input
                     type="text"
                     className="w-full border p-2 rounded-lg outline-none transition-all duration-300 focus:ring-2 focus:ring-primary/50 focus:border-primary border-gray-300 bg-white"
-                    defaultValue={profile.last_name}
+                    defaultValue={form.lastName}
+                    onChange={(e) => setForm((state) => ({ ...state, lastName: e.target.value }))}
+
                   />
                 </div>
 
@@ -80,7 +98,8 @@ const UserProfileForm = () => {
                   <input
                     type="email"
                     className="w-full border p-2 rounded-lg outline-none transition-all duration-300 focus:ring-2 focus:ring-primary/50 focus:border-primary border-gray-300 bg-white"
-                    defaultValue={profile.email}
+                    defaultValue={form.email}
+                    onChange={(e) => setForm((state) => ({ ...state, email: e.target.value }))}
                   />
                 </div>
 
@@ -98,7 +117,7 @@ const UserProfileForm = () => {
 
               <div className="flex items-center justify-end gap-4 pt-4 border-t border-gray-300 bg-white rounded-b-2xl">
                 <button
-                  type="submit"
+                  onClick={submit}
                   className="bg-primary text-white px-6 py-2 rounded-lg shadow-lg hover:scale-105 hover:bg-primary-dark transition border border-primary"
                 >
                   Save Changes

@@ -120,3 +120,55 @@ export const resetPassword = async (email) => {
     throw error.message ? error : { message: 'Reset password failed' };
   }
 };
+
+export async function updateSettings({
+  firstName,
+  lastName,
+  email,
+  file
+}) {
+  try {
+    let options = {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'X-Client-Domain': window?.location?.host
+      },
+    };
+
+    if (file) {
+      // multipart/form-data request
+      const formData = new FormData();
+      formData.append("file", file);
+      const jsonData = JSON.stringify({
+        firstName,
+        lastName,
+        email,
+      });
+      formData.append("json_data", jsonData);
+      options.body = formData;
+    } else {
+      // JSON-only request
+      options.headers["Content-Type"] = "application/json";
+      options.body = JSON.stringify({
+        firstName,
+        lastName,
+        email,
+      });
+    }
+
+    const response = await fetch(`${API_BASE_URL}/account/update/`, options);
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Request failed");
+    }
+
+    console.log("✅ Success:", data);
+    return data;
+  } catch (error) {
+    console.error("❌ Error updating settings:", error);
+    return { type: "error", message: error.message };
+  }
+}

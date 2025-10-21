@@ -5,8 +5,7 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
-    domains: ["127.0.0.1"],
-    domains: ['comercify.s3.amazonaws.com'],
+    domains: ['comercify.s3.amazonaws.com', 'backend.odigix.com'],
   },
 
 };
