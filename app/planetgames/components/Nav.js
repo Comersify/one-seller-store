@@ -12,7 +12,10 @@ import LogoImage from "../resources/logo.png";
 import Image from "next/image";
 import { SearchIcon } from "./shared/Icons";
 import { fetchInfo } from "../../api/auth";
-// slsjlk
+import { fetchProducts } from "../../api/products";
+import { MEDIA_URL } from "../../../urls";
+
+
 export const Logo = () => {
   return (
     <div className="flex flex-shrink-0 items-center w-14 h-14">
@@ -85,12 +88,12 @@ const Navigation = () => {
 export const Nav = () => {
   const { profile, setProfile } = useStateContext();
   const [openMenu, setOpenMenu] = useState(false);
-  const [search, setSearch] = useState(false);
+  const [keyword, setSearch] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
   const openSearchRef = useRef();
   useEffect(() => {
     async function check() {
       const resp = await fetchInfo()
-      console.log('resp', resp)
       if (resp['type'] == 'success') {
         setProfile(resp.data)
       }
@@ -98,6 +101,17 @@ export const Nav = () => {
     }
     check()
   }, [])
+  useEffect(() => {
+    async function fetchData() {
+      const resp = await fetchProducts({ keyword })
+      if (resp.count > 0) {
+        setSearchResults(resp.results)
+        console.log(resp.results)
+      }
+
+    }
+    fetchData()
+  }, [keyword])
   return (
     <nav className="bg-gray-50 top-0 sticky z-10">
       <div className="mx-auto max-w-full px-2 sm:px-6 lg:px-8">
@@ -119,11 +133,34 @@ export const Nav = () => {
               >
                 <SearchIcon />
                 <input
+                  value={keyword}
+                  onChange={(e) => setSearch(e.target.value)}
                   className="ml-2 peer/search bg-gray-50 border-none py-1 focus:outline-none focus:ring-0 w-full" />
-                <div className="border peer-focus/search:block hidden shadow-md flex-col items-center justify-center top-12 rounded-md min-h-12 w-[min(100%,400px)] px-2 py-2 absolute bg-white">
-                  <p className="text-gray-500 text-sm font-bold px-4 py-4">
+                <div className="border peer-focus/search:block hidden shadow-md hover:block flex-col items-center justify-center top-12 rounded-md min-h-12 w-[min(100%,400px)] absolute bg-white">
+
+                  {searchResults.length > 0 ? <>
+                    <div className="px-2 py-2 flex flex-col gap-2 max-h-[400px] overflow-y-auto ">
+                      {searchResults.map((product) => (
+                        <Link href={`/products/${product.slug}`} className="flex border rounded-md p-1">
+                          <Image src={`${MEDIA_URL}/${product.image}`}
+                            alt={product.title}
+                            className="w-16 h-16 rounded-md"
+                            width={10000}
+                            height={10000} />
+                          <div className="flex ml-2 flex-col gapp-2">
+                            <p className="text-md font-bold">{product.title}</p>
+                            <p className="text-sm font-bold text-purple-600">{product.act_price} DZD</p>
+                          </div>
+                        </Link>
+                      ))}
+
+                    </div>
+                    <Link href={`/products/?keyword=${keyword}`} className="flex hover:underline font-bold text-purple-600 z-[1000] absolute w-full rounded-b-md bottom-0 items-center justify-center bg-gray-200  h-[40px]">
+                      Show all results
+                    </Link>
+                  </> : <p className="text-gray-500 text-sm font-bold px-4 py-4">
                     Start Typing To Search
-                  </p>
+                  </p>}
                 </div>
               </div>
 

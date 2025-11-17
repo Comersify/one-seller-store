@@ -4,12 +4,14 @@ export const fetchProducts = async ({
   page = 1,
   category_id,
   price_gte,
+  keyword,
   price_lte,
   signal,
 } = {}) => {
   const queryParams = new URLSearchParams({
     page: page.toString(),
     ...(category_id && { category_id: category_id.toString() }),
+    ...(keyword && { name: keyword.toString() }),
     ...(price_gte !== undefined && price_gte !== null
       ? { price_gte: price_gte.toString() }
       : {}),
@@ -36,8 +38,9 @@ export const fetchProducts = async ({
 };
 
 
-export const getProductDetails = async (id) => {
-  const res = await fetch(`${API_BASE_URL}/products/id/${id}/`, {
+
+export const getProductDetails = async (slug) => {
+  const res = await fetch(`${API_BASE_URL}/v2/products/${slug}/`, {
     headers: {
       "Content-Type": "application/json",
       "X-Client-Domain": window?.location?.host,

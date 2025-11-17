@@ -15,6 +15,70 @@ import Image from "next/image";
  * Props:
  *  - slides: Array<{ src: string, alt?: string, caption?: string }>
  */
+
+
+
+export function ImageGallery({ images = [] }) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+
+  const nextImage = () => {
+    setSelectedIndex((prev) => (prev + 1) % images.length);
+  };
+
+
+  const prevImage = () => {
+    setSelectedIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+
+  return (
+    <div className="flex flex-col items-center gap-4 p-4">
+      <div className="relative w-full max-w-md">
+        <img
+          src={images[selectedIndex]?.image}
+          alt="Product"
+          className="w-full h-full object-cover rounded-2xl shadow"
+        />
+
+
+        {images.length > 1 && (
+          <>
+            <button
+              onClick={prevImage}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow"
+            >
+              ◀
+            </button>
+            <button
+              onClick={nextImage}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow"
+            >
+              ▶
+            </button>
+          </>
+        )}
+      </div>
+
+
+      <div className="flex gap-2 overflow-x-auto p-2">
+        {images.map((img, idx) => (
+          <Image
+            key={idx}
+            src={img.image}
+            alt="thumbnail"
+            width={10000}
+            height={10000}
+            onClick={() => setSelectedIndex(idx)}
+            className={`w-16 h-16 object-cover rounded cursor-pointer border-2 ${idx === selectedIndex ? "border-blue-500" : "border-transparent"
+              }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function TailwindSlider({
   slides,
 }) {
@@ -87,51 +151,25 @@ function TailwindSlider({
 
 export default function DetailsPage() {
 
-  const images = [
-    "https://backend.odigix.com/storage/1754/conversions/psn100chf-large.jpg",
-    "https://backend.odigix.com/storage/1755/conversions/psnswmain-large.jpg",
-    "https://backend.odigix.com/storage/1756/conversions/psnswmain-large.jpg",
-  ];
-
-  const [showRegionOptions, setShowRegionOptions] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState("Switzerland 🇨🇭");
-
-  const [showDenominationOptions, setShowDenominationOptions] = useState(false);
-  const [selectedDenomination, setSelectedDenomination] = useState("100 CHF");
-
-  const regionOptions = ["United States 🇺🇲", "Europe 🇪🇺", "Turkey 🇹🇷", "Brazil 🇧🇷"];
-  const denominationOptions = ["10 USD", "15 USD", "25 USD", "50 USD", "5 USD", "100 USD"];
-
-  const toggleRegionDropdown = () => setShowRegionOptions(!showRegionOptions);
-  const toggleDenominationDropdown = () => setShowDenominationOptions(!showDenominationOptions);
-
-  const selectRegion = (option) => {
-    setSelectedRegion(option);
-    setShowRegionOptions(false);
-  };
-
-  const selectDenomination = (option) => {
-    setSelectedDenomination(option);
-    setShowDenominationOptions(false);
-  };
   const params = useParams(); // ✅ works in Client Components
   const slug = params.slug;
   const [product, setProduct] = useState({})
   useEffect(() => {
     async function fetch() {
       const resp = await getProductDetails(slug)
-      setProduct(resp.data)
+      setProduct(resp)
     }
-    fetch()
+    if (slug) {
+      fetch()
+    }
   }, [])
-  console.log(product)
 
   return (
     <div className="w-full bg-gray-100 p-4 flex flex-col lg:flex-row gap-8">
       {/* Image Gallery */}
-      <div className="w-full mx-auto ">
+      <div className="mx-auto ">
         <div className="mx-auto bg-gray-100 w-full rounded relative">
-          <TailwindSlider slides={product.images || []} />
+          <ImageGallery images={product.images || []} />
         </div>
 
       </div>
@@ -161,66 +199,7 @@ export default function DetailsPage() {
             {product.description}
           </p>
 
-          <div className="pt-4">
-            <h3 className="text-sm font-medium text-gray-900 mb-3">Available Options</h3>
-            <div className="space-y-2">
-              {/* Region Dropdown */}
-              <div className="w-full relative">
-                <div className="font-bold mb-2">Region</div>
-                <div
-                  onClick={toggleRegionDropdown}
-                  className="px-3 rounded-md py-2 border-2 cursor-pointer relative bg-white"
-                >
-                  {selectedRegion}
-                  <i className="material-icons absolute inset-y-0 right-3 top-1/2 transform -translate-y-1/2">
-                    arrow_drop_down
-                  </i>
-                </div>
 
-                {showRegionOptions && (
-                  <div className="absolute z-50 bg-white shadow-lg rounded-md border mt-1 w-full p-2 max-h-48 overflow-auto">
-                    {regionOptions.map((option) => (
-                      <div
-                        key={option}
-                        onClick={() => selectRegion(option)}
-                        className={`px-2 py-2 cursor-pointer rounded-md mb-1 hover:bg-gray-200 ${option === selectedRegion ? "bg-primary text-white" : ""}`}
-                      >
-                        {option}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              {/* Denomination Dropdown */}
-              <div className="w-full relative">
-                <div className="font-bold mb-2">DENOMINATION</div>
-                <div
-                  onClick={toggleDenominationDropdown}
-                  className="px-3 rounded-md py-2 border-2 cursor-pointer relative bg-white"
-                >
-                  {selectedDenomination}
-                  <i className="material-icons absolute inset-y-0 right-3 top-1/2 transform -translate-y-1/2">
-                    arrow_drop_down
-                  </i>
-                </div>
-
-                {showDenominationOptions && (
-                  <div className="absolute z-50 bg-white shadow-lg rounded-md border mt-1 w-full p-2 max-h-48 overflow-auto">
-                    {denominationOptions.map((option) => (
-                      <div
-                        key={option}
-                        onClick={() => selectDenomination(option)}
-                        className={`px-2 py-2 cursor-pointer rounded-md mb-1 hover:bg-gray-200 ${option === selectedDenomination ? "bg-primary text-white" : ""}`}
-                      >
-                        {option}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
 
           <div className="w-full mt-4">
             <div className="grid grid-cols-1">

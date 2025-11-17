@@ -9,7 +9,8 @@ function Orders() {
   useEffect(() => {
     async function get() {
       const resp = await fetchOrders()
-      setOrders(resp)
+      console.log(resp)
+      setOrders(resp.data)
     }
     get()
   }, [])

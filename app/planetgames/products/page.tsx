@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { fetchProducts, fetchCategories } from "../../api/products";
 import { Product } from "../components/Product";
 import { MEDIA_URL } from "../../../urls";
+import { useSearchParams } from "next/navigation";
 
 /**
  * PaginationButtons
@@ -249,6 +250,9 @@ const Categories = ({ onSelectCategory }) => {
 };
 // Main Home Component
 export default function Home() {
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("keyword");
+
   const [products, setProducts] = useState({ count: 0, results: [], next: null, previous: null });
   const [loading, setLoading] = useState(true);
   const [categoryId, setCategoryId] = useState(null);
@@ -266,6 +270,7 @@ export default function Home() {
       price_gte: minPrice !== '' ? Number(minPrice) : undefined,
       price_lte: maxPrice !== '' ? Number(maxPrice) : undefined,
       page: page,
+      keyword: keyword || ''
     })
 
       .then((data) => {
