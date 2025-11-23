@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import Comond from "../components/Comond";
+import { deleteFromCart, getCart } from "../../api/cart"
+import { MEDIA_URL } from '../../../urls';
 
 const EmptyCart = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
-
+  const [cart, setCart] = useState([])
   useEffect(() => {
     setIsVisible(true);
+    async function fetchCart() {
+      const resp = await getCart()
+      setCart(resp.data)
+    }
+    fetchCart()
   }, []);
 
   const handleClose = () => {
@@ -13,29 +20,15 @@ const EmptyCart = ({ onClose }) => {
     setTimeout(onClose, 300);
   };
 
-  // سلة المنتجات (يمكنك تحديثها من Props أو Context لاحقًا)
-  const cartItems = [
-    {
-      image: "https://backend.odigix.com/storage/643/conversions/jup12months-large.jpg",
-      title: "Modern Chair",
-      price: "$99.99",
-      quantity: 2,
-      total: "$199.98",
-      onRemove: () => alert("Remove clicked"),
-    },
-    // يمكنك إضافة المزيد هنا
-  ];
 
   return (
     <div
-      className={`fixed inset-0 bg-black bg-opacity-50 z-40 flex justify-end items-center transition-all duration-300 ${
-        isVisible ? 'opacity-100' : 'opacity-0'
-      }`}
+      className={`fixed z-[10000] inset-0 bg-black bg-opacity-50 z-40 flex justify-end items-center transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'
+        }`}
     >
       <div
-        className={`fixed right-0 top-0 h-screen w-full sm:w-1/3 bg-white shadow-lg z-50 transition-all duration-300 transform ${
-          isVisible ? 'translate-x-0' : 'translate-x-full'
-        } flex flex-col`}
+        className={`fixed right-0 z-[10000] top-0 h-screen w-full sm:w-1/3 bg-white shadow-lg z-50 transition-all duration-300 transform ${isVisible ? 'translate-x-0' : 'translate-x-full'
+          } flex flex-col`}
       >
         {/* Header */}
         <div className="flex-none px-4 py-4 border-b">
@@ -67,18 +60,17 @@ const EmptyCart = ({ onClose }) => {
         </div>
 
         {/* Content */}
-        {cartItems.length > 0 ? (
+        {cart?.orders?.length > 0 ? (
           <>
             <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-              {cartItems.map((item, index) => (
+              {cart.orders?.map((item, index) => (
                 <Comond
                   key={index}
-                  image={item.image}
-                  title={item.title}
-                  price={item.price}
+                  image={`${MEDIA_URL}/${item.product__image}`}
+                  title={item.product__title}
+                  price={item.product__price}
                   quantity={item.quantity}
-                  total={item.total}
-                  onRemove={item.onRemove}
+                  onRemove={() => deleteFromCart(item.id)}
                 />
               ))}
             </div>
@@ -88,7 +80,7 @@ const EmptyCart = ({ onClose }) => {
               <div className="flex items-center justify-between mb-4">
                 <span className="text-gray-600 font-bold ">Total</span>
                 <span className="text-lg font-bold text-primary truncate">
-                  2390 DZD
+                  {cart?.checkout?.total} DZD
                 </span>
               </div>
               <a
@@ -96,16 +88,16 @@ const EmptyCart = ({ onClose }) => {
                 href="/checkout/cart"
               >
                 <span className="q-focus-helper"></span>
-<span className="q-btn__content text-center col items-center q-anchor--skip justify-center row">
-  <div className="flex items-center justify-center bg-purple-600 gap-2">
-    {/* كلمة Checkout كأيقونة بنفسجية */}
-    <span className="truncate p-6 bg-purple-600 text-white px-3 py-1 rounded-lg text-sm font-semibold flex items-center gap-2">
-      {/* أيقونة السهم لليسار */}
-     
-      Checkout
-    </span>
-  </div>
-</span>
+                <span className="q-btn__content text-center col items-center q-anchor--skip justify-center row">
+                  <div className="flex items-center justify-center bg-purple-600 gap-2">
+                    {/* كلمة Checkout كأيقونة بنفسجية */}
+                    <span className="truncate p-6 bg-purple-600 text-white px-3 py-1 rounded-lg text-sm font-semibold flex items-center gap-2">
+                      {/* أيقونة السهم لليسار */}
+
+                      Checkout
+                    </span>
+                  </div>
+                </span>
 
               </a>
             </div>

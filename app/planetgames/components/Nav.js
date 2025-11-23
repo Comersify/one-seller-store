@@ -14,6 +14,7 @@ import { SearchIcon } from "./shared/Icons";
 import { fetchInfo } from "../../api/auth";
 import { fetchProducts } from "../../api/products";
 import { MEDIA_URL } from "../../../urls";
+import EmptyCart from "./EmptyCart";
 
 
 export const Logo = () => {
@@ -50,7 +51,7 @@ const DropDownMenu = ({ Icon, children }) => {
     document.addEventListener("click", (e) => handleClickOutside(e));
   }, []);
   return (
-    <div ref={dropdownRef} className="relative ml-3">
+    <div ref={dropdownRef} className="relative">
       <Icon action={() => setDropdown(!dropdown)} />
       {dropdown && (
         <div
@@ -88,6 +89,7 @@ const Navigation = () => {
 export const Nav = () => {
   const { profile, setProfile } = useStateContext();
   const [openMenu, setOpenMenu] = useState(false);
+  const [showCart, setShowCart] = useState(false);
   const [keyword, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const openSearchRef = useRef();
@@ -175,14 +177,37 @@ export const Nav = () => {
             </div>
           )}
           {profile.email && (
-            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              <DropDownMenu Icon={ProfileButoon}>
-                <DropDownLink href="/account/orders" title="Orders" />
-                <DropDownLink href="/account/settings" title="Settings" />
+            <>
+              <button
+                onClick={() => setShowCart(true)}
+                className="relative bg-[rgb(90,71,251)] mr-1 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="w-6 h-6"
+                >
+                  <circle cx="8" cy="21" r="1"></circle>
+                  <circle cx="19" cy="21" r="1"></circle>
+                  <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+                </svg>
+              </button>
+              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                <DropDownMenu Icon={ProfileButoon}>
+                  <DropDownLink href="/account/orders" title="Orders" />
+                  <DropDownLink href="/account/settings" title="Settings" />
 
-              </DropDownMenu>
+                </DropDownMenu>
 
-            </div>
+              </div>
+              {showCart && <EmptyCart onClose={() => setShowCart(false)} />}
+            </>
 
           )}
 

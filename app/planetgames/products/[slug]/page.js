@@ -5,6 +5,7 @@ import React from "react";
 import { getProductDetails } from "../../../api/products";
 import { MEDIA_URL } from "../../../../urls";
 import Image from "next/image";
+import { addToCart } from "../../../api/cart";
 
 /**
  * Tailwind-only CSS Slider (no custom CSS, no JS behavior)
@@ -203,7 +204,7 @@ export default function DetailsPage() {
 
           <div className="w-full mt-4">
             <div className="grid grid-cols-1">
-              <button className="q-btn q-btn-item non-selectable no-outline q-btn--unelevated q-btn--rectangle bg-primary text-white q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase w-full py-3 rounded-lg hover:bg-primary-dark transition-colors duration-200">
+              <button onClick={() => addToCart(product.id)} className="q-btn q-btn-item non-selectable no-outline q-btn--unelevated q-btn--rectangle bg-primary text-white q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase w-full py-3 rounded-lg hover:bg-primary-dark transition-colors duration-200">
                 <span className="q-btn__content text-center col items-center q-anchor--skip justify-center row">
                   <div className="flex items-center justify-center space-x-2">
                     <span className="text-white text-lg font-medium">Add to cart</span>
