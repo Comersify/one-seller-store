@@ -19,7 +19,7 @@ import { addToCart } from "../../../api/cart";
 
 
 
-export function ImageGallery({ images = [] }) {
+function ImageGallery({ images = [] }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
 
