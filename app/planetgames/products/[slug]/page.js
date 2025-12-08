@@ -155,6 +155,7 @@ export default function DetailsPage() {
   const params = useParams(); // ✅ works in Client Components
   const slug = params.slug;
   const [product, setProduct] = useState({})
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     async function fetch() {
       const resp = await getProductDetails(slug)
@@ -164,6 +165,11 @@ export default function DetailsPage() {
       fetch()
     }
   }, [])
+  const addProduct = async () => {
+    setLoading(true)
+    await addToCart(product.id)
+    setLoading(false)
+  }
 
   return (
     <div className="w-full bg-gray-100 p-4 flex flex-col lg:flex-row gap-8">
@@ -204,10 +210,10 @@ export default function DetailsPage() {
 
           <div className="w-full mt-4">
             <div className="grid grid-cols-1">
-              <button onClick={() => addToCart(product.id)} className="q-btn q-btn-item non-selectable no-outline q-btn--unelevated q-btn--rectangle bg-primary text-white q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase w-full py-3 rounded-lg hover:bg-primary-dark transition-colors duration-200">
+              <button disabled={loading} onClick={() => addProduct()} className="q-btn q-btn-item non-selectable no-outline q-btn--unelevated q-btn--rectangle bg-primary text-white q-btn--actionable q-focusable q-hoverable q-btn--no-uppercase w-full py-3 rounded-lg hover:bg-primary-dark disabled:bg-[#b3aaff] disabled:cursor-wait transition-colors duration-200">
                 <span className="q-btn__content text-center col items-center q-anchor--skip justify-center row">
                   <div className="flex items-center justify-center space-x-2">
-                    <span className="text-white text-lg font-medium">Add to cart</span>
+                    <span className="text-white text-lg font-medium">{loading ? "Adding to cart..." : "Add To Cart"}</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
