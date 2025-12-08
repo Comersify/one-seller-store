@@ -8,7 +8,7 @@ const Logo = () => {
 
 export const Footer = () => {
   return (
-    <footer className="bg-gray-900 relative z-20 text-gray-300 py-10">
+    <footer className="bg-gray-900 relative z-2 text-gray-300 py-10">
       <div
         className="container mx-auto flex flex-col md:flex-row md:items-start space-y-8 items-center
        justify-between"

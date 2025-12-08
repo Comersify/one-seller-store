@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react';
-import Comond from "../components/Comond";
+import Order from "../components/Comond";
+import { LoadingOrder } from "../components/Comond";
 import { deleteFromCart, getCart } from "../../api/cart"
 import { MEDIA_URL } from '../../../urls';
+import Link from 'next/link';
 
 const EmptyCart = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [cart, setCart] = useState([])
+  const [loading, setLoading] = useState(false)
   useEffect(() => {
     setIsVisible(true);
     async function fetchCart() {
+      setLoading(true)
       const resp = await getCart()
       setCart(resp.data)
+      setLoading(false)
     }
     fetchCart()
   }, []);
@@ -19,7 +24,33 @@ const EmptyCart = ({ onClose }) => {
     setIsVisible(false);
     setTimeout(onClose, 300);
   };
+  const loadingOrders = Array(4).fill(0).map(() => <LoadingOrder />)
+  function buildWhatsAppMessage(data) {
+    let message = `🧾 *Order Summary*\n\n`;
 
+    data.orders.forEach(order => {
+      message += `📦 *${order.product__title.trim()}*\n`;
+      message += `🆔 Product ID: ${order.product__id}\n`;
+      message += `🔢 Quantity: ${order.quantity}\n`;
+      message += `💰 Price: ${order.product__price} DA\n\n`;
+    });
+
+    message += `-------------------------\n`;
+    message += `Subtotal: ${data.checkout.sub_total} DA\n`;
+    message += `Discount: ${data.checkout.discount} DA\n`;
+    message += `Total: *${data.checkout.total} DA*\n`;
+    message += `-------------------------\n`;
+
+    return message;
+  }
+  const checkout = () => {
+
+
+    const phone = "213770712371";
+    const message = buildWhatsAppMessage(cart);
+
+    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  }
 
   return (
     <div
@@ -60,11 +91,11 @@ const EmptyCart = ({ onClose }) => {
         </div>
 
         {/* Content */}
-        {cart?.orders?.length > 0 ? (
+        {loading || cart?.orders?.length > 0 ? (
           <>
             <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
-              {cart.orders?.map((item, index) => (
-                <Comond
+              {loading ? loadingOrders : cart.orders?.map((item, index) => (
+                <Order
                   key={index}
                   image={`${MEDIA_URL}/${item.product__image}`}
                   title={item.product__title}
@@ -76,7 +107,7 @@ const EmptyCart = ({ onClose }) => {
             </div>
 
             {/* Total & Checkout */}
-            <div className="flex-none border-t px-4 py-4 bg-white">
+            {!loading && <div className="flex-none border-t px-4 py-4 bg-white">
               <div className="flex items-center justify-between mb-4">
                 <span className="text-gray-600 font-bold ">Total</span>
                 <span className="text-lg font-bold text-primary truncate">
@@ -90,17 +121,14 @@ const EmptyCart = ({ onClose }) => {
                 <span className="q-focus-helper"></span>
                 <span className="q-btn__content text-center col items-center q-anchor--skip justify-center row">
                   <div className="flex items-center justify-center bg-purple-600 gap-2">
-                    {/* كلمة Checkout كأيقونة بنفسجية */}
-                    <span className="truncate p-6 bg-purple-600 text-white px-3 py-1 rounded-lg text-sm font-semibold flex items-center gap-2">
-                      {/* أيقونة السهم لليسار */}
-
+                    <a target="_blank" rel="noopener noreferrer" href={checkout()} className="truncate p-6 bg-purple-600 text-white px-3 py-1 rounded-lg text-sm font-semibold flex items-center gap-2">
                       Checkout
-                    </span>
+                    </a>
                   </div>
                 </span>
 
               </a>
-            </div>
+            </div>}
           </>
         ) : (
           <div className="flex-1 overflow-y-auto px-4 w-full">

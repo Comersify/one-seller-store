@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 
-const Comond = ({
+const Order = ({
   image,
   title,
   price,
@@ -51,4 +51,36 @@ const Comond = ({
   );
 };
 
-export default Comond;
+
+export const LoadingOrder = () => {
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-3 items-center p-3 rounded-xl bg-gray-20 hover:bg-gray-50 transition-colors border">
+        <div className="flex-none h-20 rounded-lg overflow-hidden bg-white border">
+          <div className="w-[70px] bg-gray-300 animate-pulse h-full object-cover"> </div>
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-md font-bold bg-gray-200 animate-pulse mb-4 text-gray-900 h-[10px] rounded-md w-[100px]"></div>
+              <div className="text-md font-bold bg-gray-200 animate-pulse mb-4 text-gray-900 h-[10px] rounded-md w-[40px]"></div>
+
+              <div className="text-md font-bold bg-gray-200 animate-pulse  text-gray-900 h-[5px] rounded-md w-[20px]"></div>
+            </div>
+
+            <button
+              className="flex-none w-8 h-8 bg-gray-200 animate-pulse  rounded-lg  hover:bg-white/80 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"
+            >
+
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+export default Order;
