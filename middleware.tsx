@@ -16,6 +16,7 @@ export function middleware(request: NextRequest) {
     "planet.up.railway.app": "/planetgames",
     "localhost": "/planetgames",
     "planetgames.comercify.shop": "/planetgames",
+    "planetgamesdz.net": "/planetgames",
   };
 
   // Determine the path based on domain

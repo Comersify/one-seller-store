@@ -3,11 +3,8 @@
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import {
-  AuthButtons,
   MobileMenuButtons,
-  ProfileButoon,
 } from "./shared/Buttons";
-import { useStateContext } from "../../../context/contextProvider";
 import LogoImage from "../resources/logo.png";
 import Image from "next/image";
 import { SearchIcon } from "./shared/Icons";
@@ -87,28 +84,16 @@ const Navigation = () => {
 };
 
 export const Nav = () => {
-  const { profile, setProfile } = useStateContext();
   const [openMenu, setOpenMenu] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [keyword, setSearch] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const openSearchRef = useRef();
   useEffect(() => {
-    async function check() {
-      const resp = await fetchInfo()
-      if (resp['type'] == 'success') {
-        setProfile(resp.data)
-      }
-
-    }
-    check()
-  }, [])
-  useEffect(() => {
     async function fetchData() {
       const resp = await fetchProducts({ keyword })
       if (resp.count > 0) {
         setSearchResults(resp.results)
-        console.log(resp.results)
       }
 
     }
@@ -171,45 +156,29 @@ export const Nav = () => {
 
 
           </div>
-          {!profile.email && (
-            <div className="flex h-full items-center">
-              <AuthButtons />
-            </div>
-          )}
-          {profile.email && (
-            <>
-              <button
-                onClick={() => setShowCart(true)}
-                className="relative bg-[rgb(90,71,251)] mr-1 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="w-6 h-6"
-                >
-                  <circle cx="8" cy="21" r="1"></circle>
-                  <circle cx="19" cy="21" r="1"></circle>
-                  <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
-                </svg>
-              </button>
-              <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <DropDownMenu Icon={ProfileButoon}>
-                  <DropDownLink href="/account/orders" title="Orders" />
-                  <DropDownLink href="/account/settings" title="Settings" />
 
-                </DropDownMenu>
+          <button
+            onClick={() => setShowCart(true)}
+            className="relative bg-[rgb(90,71,251)] mr-1 text-white px-4 py-2 rounded-lg flex items-center gap-2"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="w-6 h-6"
+            >
+              <circle cx="8" cy="21" r="1"></circle>
+              <circle cx="19" cy="21" r="1"></circle>
+              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+            </svg>
+          </button>
+          {showCart && <EmptyCart onClose={() => setShowCart(false)} />}
 
-              </div>
-              {showCart && <EmptyCart onClose={() => setShowCart(false)} />}
-            </>
-
-          )}
 
         </div>
       </div>

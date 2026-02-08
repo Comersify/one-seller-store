@@ -169,22 +169,6 @@ export const Footer = () => {
               Products
             </Link>
           </li>
-          <li className="hover:text-purple-600">
-            <Link
-              href="/login"
-              className="hover:text-purple-600 transition-all duration-100 text-gray-400 text-lg font-bold"
-            >
-              Login
-            </Link>
-          </li>
-          <li className="hover:text-purple-600">
-            <Link
-              href="/signup"
-              className="hover:text-purple-600 transition-all duration-100 text-gray-400 text-lg font-bold"
-            >
-              Sign up
-            </Link>
-          </li>
         </div>
         <div className="flex flex-col gap-y-4">
           <div className="flex flex-col mb-2">
